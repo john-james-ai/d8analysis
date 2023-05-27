@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
-# Version    : 0.1.19                                                                              #
+# Project    : Explorer                                                                            #
+# Version    : 0.1.0                                                                               #
 # Python     : 3.10.11                                                                             #
-# Filename   : /cadx/analyzer/visual.py                                                            #
+# Filename   : /explorer/visual.py                                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/explorer                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Friday May 26th 2023 06:43:31 pm                                                    #
+# Modified   : Saturday May 27th 2023 04:04:12 am                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -56,7 +56,7 @@ class Canvas:
     figsize: tuple = (12, 3)
     nrows: int = 1
     ncols: int = 1
-    color: str = None
+    color: str = Colors.blue
     palette: str = Palette.blues_r
     fig: plt.figure = None
     ax: plt.axes = None

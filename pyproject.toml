@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "explorer"
+name = "d8a-explorer"
 version = "0.0.1"
 description = "Exploratory Data Analysis Framework"
 authors = [
@@ -26,8 +26,7 @@ classifiers = [
 ]
 
 packages = [
-    { include = "explorer", from = "src" }
-]
+{ include="explorer", from="."}]
 
 [tool.poetry.dependencies]
 python = ">=3.7.1, <4.0"
@@ -62,13 +61,14 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 profile = "black"
-src_paths = ["src", "tests"]
+src_paths = ["explorer", "tests"]
 
 [tool.black]
 target-version = ["py37", "py38", "py39"]
 include = '\.pyi?$'
 
 [tool.pytest.ini_options]
+log_cli = true
 addopts = """\
     --cov explorer \
     --cov tests \

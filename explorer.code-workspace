@@ -4,5 +4,14 @@
 			"path": "."
 		}
     ],
-    "settings": {}
+    "settings": {
+        "psi-header.variables": [
+
+            ["projectCreationYear", "2023"],
+            ["url", "https://github.com/john-james-ai/explorer"],
+            ["projectname", "Explorer"],
+            ["version", "0.1.0"],
+            ["pythonversion","3.10.11"]
+        ],
+    }
 }
