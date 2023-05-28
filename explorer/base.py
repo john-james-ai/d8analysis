@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/explorer                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 06:14:59 pm                                                    #
-# Modified   : Saturday May 27th 2023 05:17:10 am                                                  #
+# Modified   : Saturday May 27th 2023 08:37:15 am                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -62,6 +62,27 @@ class StatTestOne(StatTest):
 
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
+class StatTestOneGoF(StatTestOne):
+    distribution: str
+    method: str = "approx"
+
+    def __repr__(self) -> str:
+        return f"{self.__class__.__name__}(test={self.test}, x={self.x}, statistic={self.statistic}, pvalue={self.pvalue})"
+
+    def __str__(self) -> str:
+        width = 32
+        s = f"\t{'Analyzer:'.rjust(width,' ')} | {self.analyzer}\n"
+        s += f"\t{'Test:'.rjust(width,' ')} | {self.test}\n"
+        s += f"\t{'Distribution:'.rjust(width,' ')} | {self.distribution}\n"
+        s += f"\t{'Method:'.rjust(width,' ')} | {self.method}\n"
+        s += f"\t{'Variable:'.rjust(width,' ')} | {self.x}\n"
+        s += f"\t{'Statistic:'.rjust(width,' ')} | {self.statistic}\n"
+        s += f"\t{'p-Value:'.rjust(width,' ')} | {self.pvalue}\n"
+        return s
+
+
+# ------------------------------------------------------------------------------------------------ #
+@dataclass
 class StatTestTwo(StatTest):
     a: str
     b: str
@@ -81,28 +102,9 @@ class Analysis(ABC):
         self._data = data
         self._logger = logging.getLogger(f"{self.__class__.__name__}")
 
-    def describe(self, name: str) -> pd.DataFrame:
-        """Returns descriptive statistics for a categorical variable.
-
-        This method assumes nominal variables, unless indicated as ordinal.
-
-        Args:
-            name (str): Name of variable. Optional
-        """
-        try:
-            return self._data[name].describe().to_frame()
-        except KeyError:
-            msg = f"Exception occurred. {name} is not a variable in the dataset."
-            self._logger.error(msg)
-            raise
-
     @abstractmethod
-    def test_distribution(self, *args, **kwargs) -> StatTest:
-        """Tests distribution of frequencies or continuous random variable."""
-
-    @abstractmethod
-    def plot_distribution(self, ax: plt.Axes = None, *args, **kwargs) -> plt.Axes:
-        """Returns a matplotlib axis object with the plot"""
+    def describe(self, *args, **kwargs) -> pd.DataFrame:
+        """Computes descriptive statistics and returns a DataFrame."""
 
     def _check_name(self, name: str) -> None:
         """Checks name against variables in data"""

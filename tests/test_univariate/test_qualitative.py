@@ -4,14 +4,14 @@
 # Project    : Explorer                                                                            #
 # Version    : 0.1.0                                                                               #
 # Python     : 3.10.10                                                                             #
-# Filename   : /tests/test_univariate/test_categorical.py                                          #
+# Filename   : /tests/test_univariate/test_qualitative.py                                          #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/explorer                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:10:42 pm                                                    #
-# Modified   : Saturday May 27th 2023 04:55:39 am                                                  #
+# Modified   : Saturday May 27th 2023 07:42:12 pm                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,7 +24,7 @@ import pandas as pd
 import numpy as np
 
 from explorer.base import StatTestOne
-from explorer.univariate import CategoricalOne
+from explorer.univariate import QualitativeOne
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -36,11 +36,11 @@ logger.setLevel(logging.DEBUG)
 double_line = f"\n{100 * '='}"
 single_line = f"\n{100 * '-'}"
 # ------------------------------------------------------------------------------------------------ #
-NAME = "educ"
+NAME = "Education"
 
 
 @pytest.mark.cat1
-class TestCategoricalOne:  # pragma: no cover
+class TestQualitativeOne:  # pragma: no cover
     # ============================================================================================ #
     def test_describe(self, dataset, caplog):
         start = datetime.now()
@@ -54,7 +54,7 @@ class TestCategoricalOne:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        a = CategoricalOne(data=dataset)
+        a = QualitativeOne(data=dataset)
         result = a.describe(name=NAME)
         assert isinstance(result, pd.Series)
         assert result["count"] == len(dataset[NAME])
@@ -87,7 +87,7 @@ class TestCategoricalOne:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        a = CategoricalOne(data=dataset)
+        a = QualitativeOne(data=dataset)
         result = a.frequency(name=NAME)
         logger.debug(f"\nresult={result}\n")
         assert result.shape[1] == 3
@@ -121,7 +121,7 @@ class TestCategoricalOne:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        a = CategoricalOne(data=dataset)
+        a = QualitativeOne(data=dataset)
         result = a.test_distribution(name=NAME)
         assert isinstance(result, StatTestOne)
         assert isinstance(result.test, str)
@@ -158,7 +158,7 @@ class TestCategoricalOne:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        a = CategoricalOne(data=dataset)
+        a = QualitativeOne(data=dataset)
 
         # Test Exception
         idx = ["high"]
