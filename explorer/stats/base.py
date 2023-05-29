@@ -4,21 +4,27 @@
 # Project    : Explorer                                                                            #
 # Version    : 0.1.0                                                                               #
 # Python     : 3.10.11                                                                             #
-# Filename   : /explorer/__init__.py                                                               #
+# Filename   : /explorer/stats/base.py                                                             #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/explorer                                           #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Sunday May 28th 2023 08:14:08 pm                                                    #
+# Created    : Sunday May 28th 2023 06:24:28 pm                                                    #
+# Modified   : Sunday May 28th 2023 06:27:03 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
-IMMUTABLE_TYPES: tuple = (str, int, float, bool, type(None))
-SEQUENCE_TYPES: tuple = (list, tuple)
+"""Stats Base Module"""
+from abc import ABC
+from dataclasses import dataclass
+
+
 # ------------------------------------------------------------------------------------------------ #
-VARIABLE_TYPES = ["continuous", "discrete", "ordinal", "nominal"]
-CATEGORICAL = ["ordinal", "nominal"]
-NUMERIC = ["continuous", "discrete"]
+@dataclass
+class StatTestResult(ABC):
+    analyzer: str
+    test: str
+    statistic: float
+    pvalue: float

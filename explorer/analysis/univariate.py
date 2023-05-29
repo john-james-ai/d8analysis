@@ -4,14 +4,14 @@
 # Project    : Explorer                                                                            #
 # Version    : 0.1.0                                                                               #
 # Python     : 3.10.10                                                                             #
-# Filename   : /explorer/univariate.py                                                             #
+# Filename   : /explorer/analysis/univariate.py                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/explorer                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 06:22:28 pm                                                    #
-# Modified   : Sunday May 28th 2023 02:01:32 am                                                    #
+# Modified   : Sunday May 28th 2023 04:01:04 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,7 +24,7 @@ import numpy as np
 from scipy import stats
 
 from explorer.base import Analysis, StatTestOne, StatTestOneGoF, Canvas
-from explorer.stats import DISTRIBUTIONS, DistGen
+from explorer.stats.distribution import DISTRIBUTIONS, DistGen
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -107,7 +107,7 @@ class QualitativeOne(Analysis):
         """
         self._check_name(name=name)
 
-        ax = ax or self._get_axes()
+        ax = ax or Canvas().ax
 
         ax = sns.countplot(data=self._data, x=name, ax=ax, palette=Canvas.palette, **kwargs)
 
@@ -206,7 +206,7 @@ class QuantitativeOne(Analysis):
         """
         self._check_name(name=name)
 
-        ax = ax or self._get_axes()
+        ax = ax or Canvas().ax
         self.plot_pdf(name=name, distribution=distribution, ax=ax)
 
         if title is not None:
@@ -222,7 +222,7 @@ class QuantitativeOne(Analysis):
            distribution (str): The expected distribution
            ax (plt.Axes): An axes object. Optional
         """
-        ax = ax or self._get_axes()
+        ax = ax or Canvas().ax
 
         # Create Observed Distribution Dataset
         observed = self._data[name].to_frame()
@@ -251,7 +251,7 @@ class QuantitativeOne(Analysis):
            ax (plt.Axes): An axes object. Optional
         """
 
-        ax = ax or self._get_axes()
+        ax = ax or Canvas().ax
 
         # Generate theoretical distribution
         dg = DistGen()
@@ -280,7 +280,7 @@ class QuantitativeOne(Analysis):
     def cdfplot(self, name: str, distribution: str, ax: plt.Axes = None) -> None:
         """Plots the empirical cdf  a histogram of the variable of interest."""
 
-        ax = ax or self._get_axes()
+        ax = ax or Canvas().ax
 
         # Create Observed Distribution Dataset
         observed = self._data[name].to_frame()
@@ -302,7 +302,7 @@ class QuantitativeOne(Analysis):
 
     def boxplot(self, name: str, distribution: str, ax: plt.Axes = None) -> None:
         """Renders a boxplot of both the sample and theoretical distribution."""
-        ax = ax or self._get_axes()
+        ax = ax or Canvas().ax
 
         # Create Observed Distribution Dataset
         observed = self._data[name].to_frame()

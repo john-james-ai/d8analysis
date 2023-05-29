@@ -9,6 +9,8 @@ __pycache__/
 # Data
 /data
 
+# Admin
+/admin
 
 # Distribution / packaging
 .Python
@@ -28,6 +30,10 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
+
+# Database Management Scripts
+/scripts/database/management
+*.sql
 
 # Installer logs
 pip-log.txt

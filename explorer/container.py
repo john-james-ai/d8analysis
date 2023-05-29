@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/explorer                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday March 27th 2023 07:02:56 pm                                                  #
-# Modified   : Saturday May 27th 2023 06:57:10 pm                                                  #
+# Modified   : Monday May 29th 2023 12:35:38 am                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -25,7 +25,7 @@ from dependency_injector import containers, providers
 # ------------------------------------------------------------------------------------------------ #
 #                                        LOGGING                                                   #
 # ------------------------------------------------------------------------------------------------ #
-class LoggingContainer(containers.DeclarativeContainer):
+class ServicesContainer(containers.DeclarativeContainer):
     config = providers.Configuration()
 
     logging = providers.Resource(
@@ -40,4 +40,4 @@ class LoggingContainer(containers.DeclarativeContainer):
 class ExplorerContainer(containers.DeclarativeContainer):
     config = providers.Configuration(yaml_files=["config.yml"])
 
-    logs = providers.Container(LoggingContainer, config=config)
+    services = providers.Container(ServicesContainer, config=config)

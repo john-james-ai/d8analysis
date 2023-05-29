@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
-# Version    : 0.1.19                                                                              #
+# Project    : Explorer                                                                            #
+# Version    : 0.1.0                                                                               #
 # Python     : 3.10.10                                                                             #
-# Filename   : /tests/test_univariate/__init__.py                                                  #
+# Filename   : /explorer/__init__.py                                                               #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/explorer                                           #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Saturday May 27th 2023 03:45:23 am                                                  #
-# Modified   : Saturday May 27th 2023 03:45:23 am                                                  #
+# Created    : Friday May 26th 2023 11:59:46 pm                                                    #
+# Modified   : Saturday May 27th 2023 08:57:51 pm                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #

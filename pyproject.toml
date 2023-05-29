@@ -68,6 +68,7 @@ target-version = ["py37", "py38", "py39"]
 include = '\.pyi?$'
 
 [tool.pytest.ini_options]
+pythonpath = ["."]
 log_cli = true
 addopts = """\
     --cov explorer \
@@ -75,6 +76,10 @@ addopts = """\
     --cov-report term-missing \
     --no-cov-on-fail \
 """
+filterwarnings = [
+    "ignore::pytest.PytestCollectionWarning",
+    "ignore::pytest.PytestUnknownMarkWarning",
+    ]
 
 [tool.coverage.report]
 fail_under = 100
