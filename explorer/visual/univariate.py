@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /explorer/analysis/univariate.py                                                    #
+# Filename   : /explorer/visual/univariate.py                                                      #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 06:22:28 pm                                                    #
-# Modified   : Sunday May 28th 2023 04:01:04 pm                                                    #
+# Modified   : Monday June 5th 2023 06:20:24 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,7 +24,7 @@ import numpy as np
 from scipy import stats
 
 from explorer.base import Analysis, StatTestOne, StatTestOneGoF, Canvas
-from explorer.stats.distribution import DISTRIBUTIONS, DistGen
+from explorer.stats.generator import DISTRIBUTIONS, DistGen
 
 
 # ------------------------------------------------------------------------------------------------ #

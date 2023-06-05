@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /conftest.py                                                                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Sunday May 28th 2023 05:35:00 pm                                                    #
+# Modified   : Monday June 5th 2023 06:37:11 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -29,7 +29,7 @@ DATAFILE = "data/Credit Score Classification Dataset.csv"
 RESET_SCRIPT = "tests/scripts/reset.sh"
 
 # ------------------------------------------------------------------------------------------------ #
-collect_ignore_glob = ["*_univariate/*.py", "*_bivariate/*.py", "*statistics/*.py"]
+collect_ignore_glob = ["*_univariate/*.py", "*_bivariate/*.py"]
 
 
 # ------------------------------------------------------------------------------------------------ #

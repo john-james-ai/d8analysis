@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /explorer/analysis/bivariate.py                                                     #
+# Filename   : /explorer/visual/bivariate.py                                                       #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 06:22:28 pm                                                    #
-# Modified   : Sunday May 28th 2023 06:31:27 pm                                                    #
+# Modified   : Monday June 5th 2023 06:20:30 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -25,7 +25,7 @@ import numpy as np
 
 from explorer.analysis.base import Analysis
 from explorer.stats.result import StatTestResultTwo
-from explorer.service.visual import Canvas, PlotConfig
+from explorer.visual.config import Canvas, PlotConfig
 
 
 # ------------------------------------------------------------------------------------------------ #

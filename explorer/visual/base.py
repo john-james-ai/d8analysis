@@ -1,35 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
-# Python     : 3.10.11                                                                             #
-# Filename   : /explorer/analysis/base.py                                                          #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
+# Python     : 3.10.10                                                                             #
+# Filename   : /explorer/visual/base.py                                                            #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 06:23:03 pm                                                    #
-# Modified   : Sunday May 28th 2023 06:30:07 pm                                                    #
-# ------------------------------------------------------------------------------------------------ #
-# License    : MIT License                                                                         #
-# Copyright  : (c) 2023 John James                                                                 #
-# ================================================================================================ #
-#!/usr/bin/env python3
-# -*- coding:utf-8 -*-
-# ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
-# Python     : 3.10.10                                                                             #
-# Filename   : /explorer/base.py                                                                   #
-# ------------------------------------------------------------------------------------------------ #
-# Author     : John James                                                                          #
-# Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
-# ------------------------------------------------------------------------------------------------ #
-# Created    : Friday May 26th 2023 06:14:59 pm                                                    #
-# Modified   : Sunday May 28th 2023 10:51:23 am                                                    #
+# Modified   : Monday June 5th 2023 05:16:47 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -43,7 +25,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from explorer.service.visual import Canvas
+from explorer.visual.config import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
 sns.set_style(Canvas.style)

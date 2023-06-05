@@ -4,46 +4,50 @@
 # Project    : Enter Project Name in Workspace Settings                                            #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /explorer/container.py                                                              #
+# Filename   : /explorer/setup.py                                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Monday March 27th 2023 07:02:56 pm                                                  #
-# Modified   : Monday June 5th 2023 05:41:30 pm                                                    #
+# Created    : Monday June 5th 2023 04:58:20 pm                                                    #
+# Modified   : Monday June 5th 2023 05:44:05 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
-"""Framework Dependency Container"""
-import logging.config  # pragma: no cover
+import logging
 
-from dependency_injector import containers, providers
+import pandas as pd
 
-
-# ------------------------------------------------------------------------------------------------ #
-#                                        LOGGING                                                   #
-# ------------------------------------------------------------------------------------------------ #
-class LoggingContainer(containers.DeclarativeContainer):
-    config = providers.Configuration()
-
-    logging = providers.Resource(
-        logging.config.dictConfig,
-        config=config,
-    )
-
+from explorer.service.io import IOService
 
 # ------------------------------------------------------------------------------------------------ #
-#                                       FRAMEWORK                                                  #
+SOURCE = "notes/Statistical Tests.xlsx"
+DEST = "config/stats.yml"
 # ------------------------------------------------------------------------------------------------ #
-class ExplorerContainer(containers.DeclarativeContainer):
-    config = providers.Configuration(yaml_files=["config/logging.yml"])
+logger = logging.getLogger(__name__)
 
-    logs = providers.Container(LoggingContainer, config=config.logging)
+
+def get_stat_tests(source: str) -> pd.DataFrame:
+    return pd.read_excel(source, sheet_name="stats", index_col="id")
+
+
+def save_as_yaml(df: pd.DataFrame, destination: str) -> None:
+    d = df.to_dict(orient="index")
+    IOService.write(filepath=destination, data=d)
+
+
+def report(df: pd.DataFrame) -> None:
+    report = df[["name", "atype"]]
+    print(f"Statistical Tests Loaded\n{report}")
+
+
+def main():
+    df = get_stat_tests(source=SOURCE)
+    save_as_yaml(df=df, destination=DEST)
+    report(df=df)
 
 
 if __name__ == "__main__":
-    container = ExplorerContainer()
-    container.init_resources()
-    container.wire(modules=[__name__])
+    main()

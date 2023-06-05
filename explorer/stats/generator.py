@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
-# Filename   : /explorer/stats.py                                                                  #
+# Filename   : /explorer/stats/generator.py                                                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday May 27th 2023 08:56:02 pm                                                  #
-# Modified   : Sunday May 28th 2023 02:03:27 am                                                    #
+# Modified   : Sunday June 4th 2023 09:24:50 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -134,8 +134,15 @@ def get_params(data: np.ndarray, distribution: str) -> tuple:
 # ------------------------------------------------------------------------------------------------ #
 #                               DISTRIBUTION GENERATOR                                             #
 # ------------------------------------------------------------------------------------------------ #
-class DistGen:
-    """Random variable generator for various distributions from parameters estimated from data.
+class Generator:
+    """Random variable generator for various distributions. Parameters estimated from data.
+
+    The parameters for the specified distribution will be estimated from the data provided.
+    It returns an array of the designated distribution, the parameters estimated from
+    the data provided, of length matching provided data.
+
+    This is used by goodness of fit tests to evaluate the degree to which a distribution
+    matches an hypothesized distribution.
 
     Args:
         data (pd.DataFrame): Data from which distribution parameters are estimated.
@@ -154,7 +161,12 @@ class DistGen:
         self._logger = logging.getLogger(f"{self.__class__.__name__}")
 
     def __call__(self, data: np.ndarray, distribution: str) -> np.ndarray:
-        """Returns random values of the designated distribution"""
+        """Returns random values of the designated distribution
+
+        Args:
+            data (np.ndarray): The data from which the distribution parameters are estimated
+            distribution (str): One of the supported distributions. See the README.
+        """
         try:
             return self.__GENERATORS[distribution](data=data)
         except KeyError:  # pragma: no cover

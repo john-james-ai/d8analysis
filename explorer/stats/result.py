@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /explorer/stats/result.py                                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 06:25:22 pm                                                    #
-# Modified   : Sunday May 28th 2023 07:11:15 pm                                                    #
+# Modified   : Monday June 5th 2023 06:20:45 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -20,7 +20,7 @@
 from dataclasses import dataclass, field
 from typing import List
 
-from explorer.stats.base import StatTestResult
+from explorer.stats.profile import StatTestResult
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -35,12 +35,10 @@ class StatTestResultOne(StatTestResult):
         )
 
     def __str__(self) -> str:
+        s = ""
         width = 32
-        s = f"\t{'Analyzer:'.rjust(width,' ')} | {self.analyzer}\n"
-        s += f"\t{'Test:'.rjust(width,' ')} | {self.test}\n"
-        s += f"\t{'Variable:'.rjust(width,' ')} | {self.x}\n"
-        s += f"\t{'Statistic:'.rjust(width,' ')} | {self.statistic}\n"
-        s += f"\t{'p-Value:'.rjust(width,' ')} | {self.pvalue}\n"
+        for k, v in self.__dict__.items():
+            s += f"\t{k.rjust(width,' ')} | {v}\n"
         return s
 
 

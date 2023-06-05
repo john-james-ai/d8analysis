@@ -26,7 +26,7 @@ classifiers = [
 ]
 
 packages = [
-{ include="explorer", from="."}]
+{ include="explorer"}]
 
 [tool.poetry.dependencies]
 python = ">=3.7.1, <4.0"
@@ -68,8 +68,6 @@ target-version = ["py37", "py38", "py39"]
 include = '\.pyi?$'
 
 [tool.pytest.ini_options]
-pythonpath = ["."]
-log_cli = true
 addopts = """\
     --cov explorer \
     --cov tests \

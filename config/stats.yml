@@ -1,0 +1,389 @@
+ad:
+  '#': 13
+  Function: scipy.stats.anderson
+  Package: Scipy
+  Status: Pending
+  Version: 1
+  Xvtype: continuous
+  Yvtype: .nan
+  assumes_homoscedasticity: false
+  assumes_normality: false
+  assumptions: .nan
+  atype: univariate
+  description: The Anderson-Darling test tests the null hypothesis that a sample is
+    drawn from a population that follows a particular distribution. For the Anderson-Darling
+    test, the critical values depend on which distribution is being tested against.
+    This function works for normal, exponential, logistic, or Gumbel (Extreme Value
+    Type I) distributions.
+  h0: Data drawn from stated distribution family
+  htype: gof
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.anderson.html#scipy.stats.anderson
+  min_sample_size: 20
+  name: Anderson-Darling Test
+  parametric: false
+  small_sample_sizes: true
+  statistic: A2
+  use_when: More powerful in fatty tails, e.g. financial analysis
+anova1:
+  '#': 7
+  Function: scipy.stats.f_oneway
+  Package: Scipy
+  Status: Pending
+  Version: 1
+  Xvtype: continuous
+  Yvtype: .nan
+  assumes_homoscedasticity: true
+  assumes_normality: true
+  assumptions: '1. Response variable residuals are normally distributed (or approximately
+    normally distributed).
+
+    2. Variances of populations are equal.
+
+    3. Responses for a given group are independent and identically distributed normal
+    random variables (not a simple random sample (SRS)).'
+  atype: univariate
+  description: 'Perform one-way ANOVA.
+
+
+    The one-way ANOVA tests the null hypothesis that two or more groups have the same
+    population mean. The test is applied to samples from two or more groups, possibly
+    with differing sizes.'
+  h0: Means are the same
+  htype: centrality
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.f_oneway.html
+  min_sample_size: 30
+  name: Anova (One-Way)
+  parametric: true
+  small_sample_sizes: true
+  statistic: F
+  use_when: When the number of groups to compare > 2
+fisher:
+  '#': 5
+  Function: scipy.stats.fisher_exact
+  Package: Scipy
+  Status: Pending
+  Version: 2
+  Xvtype: nominal
+  Yvtype: nominal
+  assumes_homoscedasticity: false
+  assumes_normality: false
+  assumptions: '1: The row and column totals are fixed, not random.
+
+    2. Sampling or allocation are random and observations are mutually independent
+    within the constraints of fixed marginal totals.
+
+    3. Each observation is mutually exclusive - in other words each observation can
+    only be classified in one cell.'
+  atype: bivariate
+  description: "Perform a Fisher exact test on a 2x2 contingency table.\n\nThe null\
+    \ hypothesis is that the true odds ratio of the populations underlying the observations\
+    \ is one, and the observations were sampled from these populations under a condition:\
+    \ the marginals of the resulting table must equal those of the observed table.\
+    \ The statistic returned is the unconditional maximum likelihood estimate of the\
+    \ odds ratio, and the p-value is the probability under the null hypothesis of\
+    \ obtaining a table at least as extreme as the one that was actually observed.\
+    \ There are other possible choices of statistic and two-sided p-value definition\
+    \ associated with Fisher\u2019s exact test; please see the Notes for more information."
+  h0: The relative proportions of one variable are independent of the second variable;
+    in other words, the proportions at one variable are the same for different values
+    of the second variable
+  htype: ind
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.fisher_exact.html#scipy.stats.fisher_exact
+  min_sample_size: 30
+  name: Fisher's Exact Test
+  parametric: false
+  small_sample_sizes: true
+  statistic: .nan
+  use_when: Small Sample Sizes, or expected cell size < 5
+ks:
+  '#': 3
+  Function: scipy.stats.kstest
+  Package: Scipy
+  Status: Pending
+  Version: 1
+  Xvtype: continuous
+  Yvtype: continuous
+  assumes_homoscedasticity: false
+  assumes_normality: false
+  assumptions: '1. The two samples are mutually independent.
+
+    2. The scale of measurement is at least ordinal.
+
+    3. The test is only exact for continuous variables.'
+  atype: univariate
+  description: 'Performs the (one-sample or two-sample) Kolmogorov-Smirnov test for
+    goodness of fit.
+
+
+    The one-sample test compares the underlying distribution F(x) of a sample against
+    a given distribution G(x). The two-sample test compares the underlying distributions
+    of two independent samples. Both tests are valid only for continuous distributions.'
+  h0: Data drawn from stated distribution family
+  htype: gof
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html#scipy.stats.kstest
+  min_sample_size: 2000
+  name: Kolmogorov-Smirnov Test
+  parametric: false
+  small_sample_sizes: false
+  statistic: KS
+  use_when: Large samples sizes > 50
+kw:
+  '#': 11
+  Function: scipy.stats.kruskal
+  Package: Scipy
+  Status: Pending
+  Version: 1
+  Xvtype: continuous
+  Yvtype: continuous
+  assumes_homoscedasticity: false
+  assumes_normality: false
+  assumptions: '1. Samples are random samples, or allocation to treatment group is
+    random.
+
+    2. The two samples are mutually independent.
+
+    3. The measurement scale is at least ordinal, and the variable is continuous.'
+  atype: univariate
+  description: The Kruskal-Wallis H-test tests the null hypothesis that the population
+    median of all of the groups are equal. It is a non-parametric version of ANOVA.
+    The test works on 2 or more independent samples, which may have different sizes.
+    Note that rejecting the null hypothesis does not indicate which of the groups
+    differs. Post hoc comparisons between groups are required to determine which groups
+    are different.
+  h0: Variances of groups are the same
+  htype: centrality
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kruskal.html#scipy.stats.kruskal
+  min_sample_size: 30
+  name: "Kruskal\u2013Wallis Test"
+  parametric: false
+  small_sample_sizes: true
+  statistic: H
+  use_when: Assumptions of ANOVA are not met.
+mwu:
+  '#': 10
+  Function: scipy.stats.mannwhitneyu
+  Package: Scipy
+  Status: Pending
+  Version: 1
+  Xvtype: continuous
+  Yvtype: continuous
+  assumes_homoscedasticity: false
+  assumes_normality: false
+  assumptions: '1. All the observations from both groups are independent of each other,
+
+    2. The responses are at least ordinal (i.e., one can at least say, of any two
+    observations, which is the greater),'
+  atype: univariate
+  description: 'Perform the Mann-Whitney U rank test on two independent samples.
+
+
+    The Mann-Whitney U test is a nonparametric test of the null hypothesis that the
+    distribution underlying sample x is the same as the distribution underlying sample
+    y. It is often used as a test of difference in location between distributions.'
+  h0: Distributions are the same
+  htype: dist
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mannwhitneyu.html#scipy.stats.mannwhitneyu
+  min_sample_size: 5
+  name: Mann-Whitney U Rank Test
+  parametric: false
+  small_sample_sizes: true
+  statistic: U
+  use_when: Data are non-normal
+pearson:
+  '#': 14
+  Function: scipy.stats.pearsonr
+  Package: Scipy
+  Status: Pending
+  Version: 2
+  Xvtype: continuous
+  Yvtype: continuous
+  assumes_homoscedasticity: false
+  assumes_normality: true
+  assumptions: '1. Both variables are continuous
+
+    2. Both variables are normally distributed
+
+    3. Linear relationship between the two variables.
+
+    4. Data are homoscedastic.'
+  atype: bivariate
+  description: 'The Pearson correlation coefficient [1] measures the linear relationship
+    between two datasets. Like other correlation coefficients, this one varies between
+    -1 and +1 with 0 implying no correlation. Correlations of -1 or +1 imply an exact
+    linear relationship. Positive correlations imply that as x increases, so does
+    y. Negative correlations imply that as x increases, y decreases.
+
+
+    This function also performs a test of the null hypothesis that the distributions
+    underlying the samples are uncorrelated and normally distributed. (See Kowalski
+    [3] for a discussion of the effects of non-normality of the input on the distribution
+    of the correlation coefficient.) The p-value roughly indicates the probability
+    of an uncorrelated system producing datasets that have a Pearson correlation at
+    least as extreme as the one computed from these datasets.'
+  h0: Distributions are uncorrelated
+  htype: corr
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pearsonr.html#scipy.stats.pearsonr
+  min_sample_size: 25
+  name: Pearson's Correlation Test
+  parametric: true
+  small_sample_sizes: true
+  statistic: R
+  use_when: Variables are normally distributed and linearly related.
+spearman:
+  '#': 15
+  Function: scipy.stats.spearmanr
+  Package: Scipy
+  Status: Pending
+  Version: 2
+  Xvtype: continuous
+  Yvtype: continuous
+  assumes_homoscedasticity: false
+  assumes_normality: false
+  assumptions: "1: Two variables should be measured on an ordinal, interval or ratio\
+    \ scale. \n2. Two variables represent paired observations.\n3. There is a monotonic\
+    \ relationship between the two variables."
+  atype: bivariate
+  description: .nan
+  h0: 'Calculate a Spearman correlation coefficient with associated p-value.
+
+
+    The Spearman rank-order correlation coefficient is a nonparametric measure of
+    the monotonicity of the relationship between two datasets. Like other correlation
+    coefficients, this one varies between -1 and +1 with 0 implying no correlation.
+    Correlations of -1 or +1 imply an exact monotonic relationship. Positive correlations
+    imply that as x increases, so does y. Negative correlations imply that as x increases,
+    y decreases.
+
+
+    The p-value roughly indicates the probability of an uncorrelated system producing
+    datasets that have a Spearman correlation at least as extreme as the one computed
+    from these datasets. Although calculation of the p-value does not make strong
+    assumptions about the distributions underlying the samples, it is only accurate
+    for very large samples (>500 observations). For smaller sample sizes, consider
+    a permutation test (see Examples section below).'
+  htype: corr
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html#scipy.stats.spearmanr
+  min_sample_size: 15
+  name: Spearman's Correlation Test
+  parametric: false
+  small_sample_sizes: true
+  statistic: S
+  use_when: Assumptions of Pearson's Correlation are not met or data are ordinal.
+sw:
+  '#': 12
+  Function: scipy.stats.shapiro
+  Package: Scipy
+  Status: Pending
+  Version: 1
+  Xvtype: continuous
+  Yvtype: .nan
+  assumes_homoscedasticity: false
+  assumes_normality: false
+  assumptions: .nan
+  atype: univariate
+  description: The Shapiro-Wilk test tests the null hypothesis that the data was drawn
+    from a normal distribution.
+  h0: Samples drawn from normal distribution
+  htype: norm
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html#scipy.stats.shapiro
+  min_sample_size: 30
+  name: Shapiro-Wilk Test
+  parametric: false
+  small_sample_sizes: true
+  statistic: W
+  use_when: Sample sizes < 50
+t2:
+  '#': 6
+  Function: scipy.stats.ttest_ind
+  Package: Scipy
+  Status: Pending
+  Version: 1
+  Xvtype: continuous
+  Yvtype: continuous
+  assumes_homoscedasticity: false
+  assumes_normality: true
+  assumptions: '1. The two samples are mutually independent.
+
+    2. Two samples follow normal distributions.'
+  atype: univariate
+  description: 'Calculate the T-test for the means of two independent samples of scores.
+
+
+    This is a test for the null hypothesis that 2 independent samples have identical
+    average (expected) values. This test assumes that the populations have identical
+    variances by default.'
+  h0: Means are the same
+  htype: centrality
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html#scipy.stats.ttest_ind
+  min_sample_size: 30
+  name: T-Test (2-Sample)
+  parametric: true
+  small_sample_sizes: true
+  statistic: T
+  use_when: Data are normally distributed
+x2gof:
+  '#': 2
+  Function: scipy.stats.chisquare
+  Package: Scipy
+  Status: Pending
+  Version: 1
+  Xvtype: nominal
+  Yvtype: .nan
+  assumes_homoscedasticity: false
+  assumes_normality: false
+  assumptions: '1. Data values that are a simple random sample from the full population.
+
+    2. Categorical or nominal data.
+
+    3. A data set that is large enough so that at least five values are expected in
+    each of the observed data categories.'
+  atype: univariate
+  description: 'Calculate a one-way chi-square test.
+
+
+    The chi-square test tests the null hypothesis that the categorical data has the
+    given frequencies.'
+  h0: Categorical data has the given frequencies
+  htype: gof
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html#scipy.stats.chisquare
+  min_sample_size: 50
+  name: Chi-Square Test of Goodness of Fit
+  parametric: false
+  small_sample_sizes: false
+  statistic: X2
+  use_when: Expected frequency for all cells is > 5
+x2i:
+  '#': 4
+  Function: scipy.stats.chi2_contingency
+  Package: Scipy
+  Status: Pending
+  Version: 2
+  Xvtype: nominal
+  Yvtype: nominal
+  assumes_homoscedasticity: false
+  assumes_normality: false
+  assumptions: '1: Both variables are categorical.
+
+    2: All observations are independent.
+
+    3: Cells in the contingency table are mutually exclusive.
+
+    4: Expected value of cells should be 5 or greater in at least 80% of cells.'
+  atype: bivariate
+  description: 'Chi-square test of independence of variables in a contingency table.
+
+
+    This function computes the chi-square statistic and p-value for the hypothesis
+    test of independence of the observed frequencies in the contingency table [1]
+    observed. The expected frequencies are computed based on the marginal sums under
+    the assumption of independence; see scipy.stats.contingency.expected_freq. The
+    number of degrees of freedom is (expressed using numpy functions and attributes):'
+  h0: Two or more categorical variables are independent
+  htype: ind
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chi2_contingency.html
+  min_sample_size: 1000
+  name: Chi-Square of Independence
+  parametric: false
+  small_sample_sizes: false
+  statistic: X2
+  use_when: Two groups with dichotomous dependent variable.
