@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 04:58:20 pm                                                    #
-# Modified   : Monday June 5th 2023 05:44:05 pm                                                    #
+# Modified   : Tuesday June 6th 2023 01:10:10 am                                                   #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -39,7 +39,7 @@ def save_as_yaml(df: pd.DataFrame, destination: str) -> None:
 
 
 def report(df: pd.DataFrame) -> None:
-    report = df[["name", "atype"]]
+    report = df[["name", "analysis", "hypothesis", "H0"]]
     print(f"Statistical Tests Loaded\n{report}")
 
 

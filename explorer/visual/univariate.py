@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 06:22:28 pm                                                    #
-# Modified   : Monday June 5th 2023 06:20:24 pm                                                    #
+# Modified   : Monday June 5th 2023 06:40:52 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,7 +24,7 @@ import numpy as np
 from scipy import stats
 
 from explorer.base import Analysis, StatTestOne, StatTestOneGoF, Canvas
-from explorer.stats.generator import DISTRIBUTIONS, DistGen
+from explorer.stats.generator import DISTRIBUTIONS, Generator
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -229,7 +229,7 @@ class QuantitativeOne(Analysis):
         observed["Distribution"] = "Sample"
 
         # Create Theoretical Distribution
-        dg = DistGen()
+        dg = Generator()
         rvs = dg(data=self._data[name].values, distribution=distribution)
         d = {name: rvs}
         theoretical = pd.DataFrame(data=d)
@@ -254,7 +254,7 @@ class QuantitativeOne(Analysis):
         ax = ax or Canvas().ax
 
         # Generate theoretical distribution
-        dg = DistGen()
+        dg = Generator()
         rvs = dg(data=self._data[name].values, distribution=distribution)
 
         # Compute quantiles
@@ -287,7 +287,7 @@ class QuantitativeOne(Analysis):
         observed["Distribution"] = "Sample"
 
         # Create Theoretical Distribution
-        dg = DistGen()
+        dg = Generator()
         rvs = dg(data=self._data[name].values, distribution=distribution)
         d = {name: rvs}
         theoretical = pd.DataFrame(data=d)
@@ -309,7 +309,7 @@ class QuantitativeOne(Analysis):
         observed["Distribution"] = "Sample"
 
         # Create Theoretical Distribution
-        dg = DistGen()
+        dg = Generator()
         rvs = dg(data=self._data[name].values, distribution=distribution)
         d = {name: rvs}
         theoretical = pd.DataFrame(data=d)

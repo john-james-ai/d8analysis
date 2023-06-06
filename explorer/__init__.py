@@ -1,24 +1,39 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /explorer/__init__.py                                                               #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Sunday May 28th 2023 08:14:08 pm                                                    #
+# Modified   : Monday June 5th 2023 08:51:30 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
+import numpy as np
+
 IMMUTABLE_TYPES: tuple = (str, int, float, bool, type(None))
 SEQUENCE_TYPES: tuple = (list, tuple)
 # ------------------------------------------------------------------------------------------------ #
-VARIABLE_TYPES = ["continuous", "discrete", "ordinal", "nominal"]
-CATEGORICAL = ["ordinal", "nominal"]
-NUMERIC = ["continuous", "discrete"]
+NUMERICS = [
+    "int16",
+    "int32",
+    "int64",
+    "float16",
+    "float32",
+    "float64",
+    np.int16,
+    np.int32,
+    np.int64,
+    np.int8,
+    np.float16,
+    np.float32,
+    np.float64,
+    np.float128,
+]

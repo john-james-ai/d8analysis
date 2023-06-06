@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 06:13:21 pm                                                    #
-# Modified   : Monday June 5th 2023 06:37:48 pm                                                    #
+# Modified   : Monday June 5th 2023 07:13:36 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,7 +24,7 @@ import logging
 from explorer.stats.profile import StatTestProfileOne
 from explorer.service.io import IOService
 
-ID = "ad"
+ID = "x2gof"
 PROFILES = "config/stats.yml"
 # ------------------------------------------------------------------------------------------------ #
 logger = logging.getLogger(__name__)
@@ -33,7 +33,7 @@ double_line = f"\n{100 * '='}"
 single_line = f"\n{100 * '-'}"
 
 
-@pytest.mark.stat
+@pytest.mark.profile
 class TestStatProfile:  # pragma: no cover
     # ============================================================================================ #
     def test_profile(self, caplog):
@@ -48,19 +48,22 @@ class TestStatProfile:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        profiles = IOService(PROFILES)
+        profiles = IOService.read(PROFILES)
         p = profiles[ID]
         profile = StatTestProfileOne.create(id=ID)
-        assert profile.id == p["id"]
+        assert profile.id == ID
         assert profile.name == p["name"]
         assert profile.description == p["description"]
         assert profile.statistic == p["statistic"]
-        assert profile.atype == p["atype"]
-        assert profile.htype == p["htype"]
+        assert profile.analysis == p["analysis"]
+        assert profile.hypothesis == p["hypothesis"]
         assert profile.h0 == p["h0"]
         assert profile.parametric == p["parametric"]
         assert profile.min_sample_size == p["min_sample_size"]
         assert profile.assumptions == p["assumptions"]
+
+        logger.debug(repr(profile))
+        logger.debug(profile)
 
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()

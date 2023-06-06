@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Monday June 5th 2023 06:37:11 pm                                                    #
+# Modified   : Monday June 5th 2023 09:34:00 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -54,7 +54,7 @@ def mode():
 # ------------------------------------------------------------------------------------------------ #
 @pytest.fixture(scope="module", autouse=False)
 def dataset():
-    return pd.read_csv(DATAFILE)
+    return pd.read_csv(DATAFILE, index_col=None)
 
 
 # ------------------------------------------------------------------------------------------------ #

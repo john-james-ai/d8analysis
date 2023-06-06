@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 06:24:28 pm                                                    #
-# Modified   : Monday June 5th 2023 06:25:36 pm                                                    #
+# Modified   : Monday June 5th 2023 07:06:07 pm                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,11 +24,11 @@ from explorer.stats.base import StatTestProfile
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
 class StatTestProfileOne(StatTestProfile):
-    Xvtype: str = None
+    X_variable_type: str = None
 
 
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
 class StatTestProfileTwo(StatTestProfile):
-    Xvtype: str = None
-    Yvtype: str = None
+    X_variable_type: str = None
+    Y_variable_type: str = None
