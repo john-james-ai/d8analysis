@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 06:22:28 pm                                                    #
-# Modified   : Monday June 5th 2023 06:40:52 pm                                                    #
+# Modified   : Tuesday June 6th 2023 03:28:38 am                                                   #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,7 +24,7 @@ import numpy as np
 from scipy import stats
 
 from explorer.base import Analysis, StatTestOne, StatTestOneGoF, Canvas
-from explorer.stats.generator import DISTRIBUTIONS, Generator
+from explorer.stats.distribution import DISTRIBUTIONS, Generator
 
 
 # ------------------------------------------------------------------------------------------------ #

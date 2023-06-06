@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 09:32:36 pm                                                    #
-# Modified   : Monday June 5th 2023 09:42:23 pm                                                    #
+# Modified   : Tuesday June 6th 2023 01:39:27 am                                                   #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -20,8 +20,10 @@ import inspect
 from datetime import datetime
 import pytest
 import logging
+import pandas as pd
 
-from explorer.stats.goodness_of_fit import ChiSquareGOFTest
+from explorer.stats.goodness_of_fit.chisquare import ChiSquareGOFTest
+from explorer.stats.base import StatTestProfile
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -49,10 +51,11 @@ class TestX2GOF:  # pragma: no cover
         test = ChiSquareGOFTest()
         test(data=dataset["Education"])
         assert "Chi" in test.result.test
-        assert isinstance(test.result.h0, str)
-        assert test.result.statistic == "X2"
+        assert isinstance(test.result.H0, str)
         assert isinstance(test.result.pvalue, float)
         assert test.result.alpha == 0.05
+        assert isinstance(test.data, pd.Series)
+        assert isinstance(test.profile, StatTestProfile)
         logging.debug(test.result)
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()
@@ -83,17 +86,19 @@ class TestX2GOF:  # pragma: no cover
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
         observed = (
-            dataset["Education"].value_counts(sort=True, ascending=False).to_frame().sort_index()
+            dataset["Credit Rating"]
+            .value_counts(sort=True, ascending=False)
+            .to_frame()
+            .sort_index()
         )
         expected = observed
         expected["count"] = observed["count"].sum() / len(expected)
         dexp = expected.to_dict()
 
         test = ChiSquareGOFTest()
-        test(data=dataset["Education"], expected=dexp)
+        test(data=dataset["Credit Rating"], expected=dexp)
         assert "Chi" in test.result.test
-        assert isinstance(test.result.h0, str)
-        assert test.result.statistic == "X2"
+        assert isinstance(test.result.H0, str)
         assert isinstance(test.result.pvalue, float)
         assert test.result.alpha == 0.05
         logging.debug(test.result)

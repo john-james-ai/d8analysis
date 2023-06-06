@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Tuesday June 6th 2023 01:13:51 am                                                   #
+# Modified   : Tuesday June 6th 2023 03:30:34 am                                                   #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -31,21 +31,6 @@ ANALYSIS_TYPES = {
     "univariate": "Univariate",
     "bivariate": "Bivariate",
     "multivariate": "Multivariate",
-}
-HYPOTHESIS_TYPES = {
-    "ind": "Independence",
-    "corr": "Correlation",
-    "gof": "Goodness of Fit",
-    "centrality": "Central Tendency of Groups",
-    "norm": "Normality",
-    "var": "Equal Variance",
-    "dist": "Equal Distributions",
-}
-VARIABLE_TYPES = {
-    "discrete": "Discrete",
-    "continuous": "Continuous",
-    "nominal": "Nominal",
-    "ordinal": "Ordinal",
 }
 STAT_CONFIG = "config/stats.yml"
 
@@ -105,6 +90,7 @@ class StatTestResult(ABC):
     pvalue: float
     inference: str
     alpha: float = 0.05
+    result: str = None
 
     def __repr__(self) -> str:
         return "{}({})".format(

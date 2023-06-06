@@ -1,0 +1,504 @@
+[06/05/2023 06:41:12 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 06:41:12 PM on 06/05/2023
+[06/05/2023 06:41:12 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 06:41:53 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 06:41:53 PM on 06/05/2023
+[06/05/2023 06:41:53 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 06:42:35 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 06:42:35 PM on 06/05/2023
+[06/05/2023 06:42:35 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 06:42:58 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 06:42:58 PM on 06/05/2023
+[06/05/2023 06:42:58 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 06:44:09 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 06:44:09 PM on 06/05/2023
+[06/05/2023 06:44:09 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 06:44:09 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+Completed TestStatProfile test_profile in 0.4 seconds at 06:44:09 PM on 06/05/2023
+[06/05/2023 06:44:09 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 07:03:31 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:03:31 PM on 06/05/2023
+[06/05/2023 07:03:31 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:03:31 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : None
+[06/05/2023 07:03:31 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : 	                              id | x2gof
+	                            name | Chi-Square Test of Goodness of Fit
+	                     description | Calculate a one-way chi-square test.
+
+The chi-square test tests the null hypothesis that the categorical data has the given frequencies.
+	                       statistic | X2
+	                           atype | univariate
+	                           htype | gof
+	                              h0 | Categorical data has the given frequencies
+	                      parametric | False
+	                 min_sample_size | 50
+	                     assumptions | 1. Data values that are a simple random sample from the full population.
+2. Categorical or nominal data.
+3. A data set that is large enough so that at least five values are expected in each of the observed data categories.
+	                        use_when | Expected frequency for all cells is > 5
+	                          Xvtype | nominal
+
+[06/05/2023 07:03:31 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+Completed TestStatProfile test_profile in 0.4 seconds at 07:03:31 PM on 06/05/2023
+[06/05/2023 07:03:31 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 07:08:03 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:08:02 PM on 06/05/2023
+[06/05/2023 07:08:03 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:13:15 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:13:14 PM on 06/05/2023
+[06/05/2023 07:13:15 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:13:43 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:13:42 PM on 06/05/2023
+[06/05/2023 07:13:43 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:13:43 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : StatTestProfileOne(id='x2gof', name='Chi-Square Test of Goodness of Fit', description='Calculate a one-way chi-square test.\n\nThe chi-square test tests the null hypothesis that the categorical data has the given frequencies.', statistic='X2', analysis='univariate', hypothesis='Goodness of Fit', h0='Categorical data has the given frequencies', parametric=False, min_sample_size=50, assumptions='1. Data values that are a simple random sample from the full population.\n2. Categorical or nominal data.\n3. A data set that is large enough so that at least five values are expected in each of the observed data categories.', use_when='Expected frequency for all cells is > 5', X_variable_type='nominal')
+[06/05/2023 07:13:43 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : 	                              id | x2gof
+	                            name | Chi-Square Test of Goodness of Fit
+	                     description | Calculate a one-way chi-square test.
+
+The chi-square test tests the null hypothesis that the categorical data has the given frequencies.
+	                       statistic | X2
+	                        analysis | univariate
+	                      hypothesis | Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                      parametric | False
+	                 min_sample_size | 50
+	                     assumptions | 1. Data values that are a simple random sample from the full population.
+2. Categorical or nominal data.
+3. A data set that is large enough so that at least five values are expected in each of the observed data categories.
+	                        use_when | Expected frequency for all cells is > 5
+	                 X_variable_type | nominal
+
+[06/05/2023 07:13:43 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+Completed TestStatProfile test_profile in 0.4 seconds at 07:13:43 PM on 06/05/2023
+[06/05/2023 07:13:43 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 07:16:19 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:16:19 PM on 06/05/2023
+[06/05/2023 07:16:19 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:16:19 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : StatTestProfileOne(id='x2gof', name='Chi-Square Test of Goodness of Fit', description='Calculate a one-way chi-square test.\n\nThe chi-square test tests the null hypothesis that the categorical data has the given frequencies.', statistic='X2', analysis='univariate', hypothesis='Goodness of Fit', h0='Categorical data has the given frequencies', parametric=False, min_sample_size=50, assumptions='\\n1. Data values that are a simple random sample from the full population.\n2. Categorical or nominal data.\n3. A data set that is large enough so that at least five values are expected in each of the observed data categories.', use_when='Expected frequency for all cells is > 5', X_variable_type='nominal')
+[06/05/2023 07:16:19 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : 	                  id | x2gof
+	                name | Chi-Square Test of Goodness of Fit
+	         description | Calculate a one-way chi-square test.
+
+The chi-square test tests the null hypothesis that the categorical data has the given frequencies.
+	           statistic | X2
+	            analysis | univariate
+	          hypothesis | Goodness of Fit
+	                  h0 | Categorical data has the given frequencies
+	          parametric | False
+	     min_sample_size | 50
+	         assumptions | \n1. Data values that are a simple random sample from the full population.
+2. Categorical or nominal data.
+3. A data set that is large enough so that at least five values are expected in each of the observed data categories.
+	            use_when | Expected frequency for all cells is > 5
+	     X_variable_type | nominal
+
+[06/05/2023 07:16:19 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+Completed TestStatProfile test_profile in 0.5 seconds at 07:16:19 PM on 06/05/2023
+[06/05/2023 07:16:19 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 07:16:52 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:16:52 PM on 06/05/2023
+[06/05/2023 07:16:52 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:16:53 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : StatTestProfileOne(id='x2gof', name='Chi-Square Test of Goodness of Fit', description='Calculate a one-way chi-square test.\n\nThe chi-square test tests the null hypothesis that the categorical data has the given frequencies.', statistic='X2', analysis='univariate', hypothesis='Goodness of Fit', h0='Categorical data has the given frequencies', parametric=False, min_sample_size=50, assumptions='\\\\n1. Data values that are a simple random sample from the full population.\n2. Categorical or nominal data.\n3. A data set that is large enough so that at least five values are expected in each of the observed data categories.', use_when='Expected frequency for all cells is > 5', X_variable_type='nominal')
+[06/05/2023 07:16:53 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : 	                  id | x2gof
+	                name | Chi-Square Test of Goodness of Fit
+	         description | Calculate a one-way chi-square test.
+
+The chi-square test tests the null hypothesis that the categorical data has the given frequencies.
+	           statistic | X2
+	            analysis | univariate
+	          hypothesis | Goodness of Fit
+	                  h0 | Categorical data has the given frequencies
+	          parametric | False
+	     min_sample_size | 50
+	         assumptions | \\n1. Data values that are a simple random sample from the full population.
+2. Categorical or nominal data.
+3. A data set that is large enough so that at least five values are expected in each of the observed data categories.
+	            use_when | Expected frequency for all cells is > 5
+	     X_variable_type | nominal
+
+[06/05/2023 07:16:53 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+Completed TestStatProfile test_profile in 0.4 seconds at 07:16:53 PM on 06/05/2023
+[06/05/2023 07:16:53 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 07:17:26 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:17:25 PM on 06/05/2023
+[06/05/2023 07:17:26 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:17:26 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : StatTestProfileOne(id='x2gof', name='Chi-Square Test of Goodness of Fit', description='Calculate a one-way chi-square test.\n\nThe chi-square test tests the null hypothesis that the categorical data has the given frequencies.', statistic='X2', analysis='univariate', hypothesis='Goodness of Fit', h0='Categorical data has the given frequencies', parametric=False, min_sample_size=50, assumptions='\n1. Data values that are a simple random sample from the full population.\n2. Categorical or nominal data.\n3. A data set that is large enough so that at least five values are expected in each of the observed data categories.', use_when='Expected frequency for all cells is > 5', X_variable_type='nominal')
+[06/05/2023 07:17:26 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : 	                  id | x2gof
+	                name | Chi-Square Test of Goodness of Fit
+	         description | Calculate a one-way chi-square test.
+
+The chi-square test tests the null hypothesis that the categorical data has the given frequencies.
+	           statistic | X2
+	            analysis | univariate
+	          hypothesis | Goodness of Fit
+	                  h0 | Categorical data has the given frequencies
+	          parametric | False
+	     min_sample_size | 50
+	         assumptions | 
+1. Data values that are a simple random sample from the full population.
+2. Categorical or nominal data.
+3. A data set that is large enough so that at least five values are expected in each of the observed data categories.
+	            use_when | Expected frequency for all cells is > 5
+	     X_variable_type | nominal
+
+[06/05/2023 07:17:26 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+Completed TestStatProfile test_profile in 0.4 seconds at 07:17:26 PM on 06/05/2023
+[06/05/2023 07:17:26 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 07:18:18 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:18:18 PM on 06/05/2023
+[06/05/2023 07:18:18 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:18:18 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : StatTestProfileOne(id='x2gof', name='Chi-Square Test of Goodness of Fit', description='Calculate a one-way chi-square test.\n\nThe chi-square test tests the null hypothesis that the categorical data has the given frequencies.', statistic='X2', analysis='univariate', hypothesis='Goodness of Fit', h0='Categorical data has the given frequencies', parametric=False, min_sample_size=50, assumptions='\n1. Data values that are a simple random sample from the full population.\n2. Categorical or nominal data.\n3. A data set that is large enough so that at least five values are expected in each of the observed data categories.', use_when='Expected frequency for all cells is > 5', X_variable_type='nominal')
+[06/05/2023 07:18:18 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : 	   id | x2gof
+	 name | Chi-Square Test of Goodness of Fit
+	description | Calculate a one-way chi-square test.
+
+The chi-square test tests the null hypothesis that the categorical data has the given frequencies.
+	statistic | X2
+	analysis | univariate
+	hypothesis | Goodness of Fit
+	   h0 | Categorical data has the given frequencies
+	parametric | False
+	min_sample_size | 50
+	assumptions | 
+1. Data values that are a simple random sample from the full population.
+2. Categorical or nominal data.
+3. A data set that is large enough so that at least five values are expected in each of the observed data categories.
+	use_when | Expected frequency for all cells is > 5
+	X_variable_type | nominal
+
+[06/05/2023 07:18:18 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+Completed TestStatProfile test_profile in 0.4 seconds at 07:18:18 PM on 06/05/2023
+[06/05/2023 07:18:18 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 07:18:39 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:18:39 PM on 06/05/2023
+[06/05/2023 07:18:39 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:18:40 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : StatTestProfileOne(id='x2gof', name='Chi-Square Test of Goodness of Fit', description='Calculate a one-way chi-square test.\n\nThe chi-square test tests the null hypothesis that the categorical data has the given frequencies.', statistic='X2', analysis='univariate', hypothesis='Goodness of Fit', h0='Categorical data has the given frequencies', parametric=False, min_sample_size=50, assumptions='\n1. Data values that are a simple random sample from the full population.\n2. Categorical or nominal data.\n3. A data set that is large enough so that at least five values are expected in each of the observed data categories.', use_when='Expected frequency for all cells is > 5', X_variable_type='nominal')
+[06/05/2023 07:18:40 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : 	        id | x2gof
+	      name | Chi-Square Test of Goodness of Fit
+	description | Calculate a one-way chi-square test.
+
+The chi-square test tests the null hypothesis that the categorical data has the given frequencies.
+	 statistic | X2
+	  analysis | univariate
+	hypothesis | Goodness of Fit
+	        h0 | Categorical data has the given frequencies
+	parametric | False
+	min_sample_size | 50
+	assumptions | 
+1. Data values that are a simple random sample from the full population.
+2. Categorical or nominal data.
+3. A data set that is large enough so that at least five values are expected in each of the observed data categories.
+	  use_when | Expected frequency for all cells is > 5
+	X_variable_type | nominal
+
+[06/05/2023 07:18:40 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+Completed TestStatProfile test_profile in 0.4 seconds at 07:18:40 PM on 06/05/2023
+[06/05/2023 07:18:40 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 07:18:53 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:18:53 PM on 06/05/2023
+[06/05/2023 07:18:53 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:18:54 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : StatTestProfileOne(id='x2gof', name='Chi-Square Test of Goodness of Fit', description='Calculate a one-way chi-square test.\n\nThe chi-square test tests the null hypothesis that the categorical data has the given frequencies.', statistic='X2', analysis='univariate', hypothesis='Goodness of Fit', h0='Categorical data has the given frequencies', parametric=False, min_sample_size=50, assumptions='\n1. Data values that are a simple random sample from the full population.\n2. Categorical or nominal data.\n3. A data set that is large enough so that at least five values are expected in each of the observed data categories.', use_when='Expected frequency for all cells is > 5', X_variable_type='nominal')
+[06/05/2023 07:18:54 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : 	                  id | x2gof
+	                name | Chi-Square Test of Goodness of Fit
+	         description | Calculate a one-way chi-square test.
+
+The chi-square test tests the null hypothesis that the categorical data has the given frequencies.
+	           statistic | X2
+	            analysis | univariate
+	          hypothesis | Goodness of Fit
+	                  h0 | Categorical data has the given frequencies
+	          parametric | False
+	     min_sample_size | 50
+	         assumptions | 
+1. Data values that are a simple random sample from the full population.
+2. Categorical or nominal data.
+3. A data set that is large enough so that at least five values are expected in each of the observed data categories.
+	            use_when | Expected frequency for all cells is > 5
+	     X_variable_type | nominal
+
+[06/05/2023 07:18:54 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+Completed TestStatProfile test_profile in 0.4 seconds at 07:18:54 PM on 06/05/2023
+[06/05/2023 07:18:54 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 07:24:54 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+
+Started TestStatProfile test_profile at 07:24:54 PM on 06/05/2023
+[06/05/2023 07:24:54 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+====================================================================================================
+[06/05/2023 07:24:54 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : StatTestProfileOne(id='x2gof', name='Chi-Square Test of Goodness of Fit', description='Calculate a one-way chi-square test.\n\nThe chi-square test tests the null hypothesis that the categorical data has the given frequencies.\n\n', statistic='X2', analysis='univariate', hypothesis='Goodness of Fit', h0='Categorical data has the given frequencies', parametric=False, min_sample_size=50, assumptions='\n\n1. Data values that are a simple random sample from the full population.\n2. Categorical or nominal data.\n3. A data set that is large enough so that at least five values are expected in each of the observed data categories.\n\n', use_when='Expected frequency for all cells is > 5', X_variable_type='nominal')
+[06/05/2023 07:24:54 PM] [DEBUG] [test_profile] [test_profile] [test_profile] : 	                  id | x2gof
+	                name | Chi-Square Test of Goodness of Fit
+	         description | Calculate a one-way chi-square test.
+
+The chi-square test tests the null hypothesis that the categorical data has the given frequencies.
+
+
+	           statistic | X2
+	            analysis | univariate
+	          hypothesis | Goodness of Fit
+	                  h0 | Categorical data has the given frequencies
+	          parametric | False
+	     min_sample_size | 50
+	         assumptions | 
+
+1. Data values that are a simple random sample from the full population.
+2. Categorical or nominal data.
+3. A data set that is large enough so that at least five values are expected in each of the observed data categories.
+
+
+	            use_when | Expected frequency for all cells is > 5
+	     X_variable_type | nominal
+
+[06/05/2023 07:24:54 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+Completed TestStatProfile test_profile in 0.4 seconds at 07:24:54 PM on 06/05/2023
+[06/05/2023 07:24:54 PM] [INFO] [test_profile] [test_profile] [test_profile] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 10:02:08 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+
+Started TestX2GOF test_x2 at 10:02:08 PM on 06/05/2023
+[06/05/2023 10:02:08 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+====================================================================================================
+[06/05/2023 10:02:09 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+
+Started TestX2GOF test_with_expected at 10:02:09 PM on 06/05/2023
+[06/05/2023 10:02:09 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+====================================================================================================
+[06/05/2023 10:06:19 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+
+Started TestX2GOF test_x2 at 10:06:19 PM on 06/05/2023
+[06/05/2023 10:06:19 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+====================================================================================================
+[06/05/2023 10:06:20 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+
+Started TestX2GOF test_with_expected at 10:06:20 PM on 06/05/2023
+[06/05/2023 10:06:20 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+====================================================================================================
+[06/05/2023 10:08:02 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+
+Started TestX2GOF test_x2 at 10:08:02 PM on 06/05/2023
+[06/05/2023 10:08:02 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+====================================================================================================
+[06/05/2023 10:08:02 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+
+Started TestX2GOF test_with_expected at 10:08:02 PM on 06/05/2023
+[06/05/2023 10:08:02 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+====================================================================================================
+[06/05/2023 10:09:01 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+
+Started TestX2GOF test_x2 at 10:09:01 PM on 06/05/2023
+[06/05/2023 10:09:01 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+====================================================================================================
+[06/05/2023 10:09:01 PM] [DEBUG] [root] [test_chisq_gof] [test_x2] : 	                            test | Chi-Square Test of Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                       statistic | X2
+	                           value | 5.085365853658536
+	                          pvalue | 0.27865004658054116
+	                       inference | The pvalue 0.27865004658054116 is greater than level of significance 0.05; 
+therefore, the null hypothesis is not rejected. 
+The data have the expected frequencies.
+	                           alpha | 0.05
+
+[06/05/2023 10:09:01 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+Completed TestX2GOF test_x2 in 0.3 seconds at 10:09:01 PM on 06/05/2023
+[06/05/2023 10:09:01 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 10:09:01 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+
+Started TestX2GOF test_with_expected at 10:09:01 PM on 06/05/2023
+[06/05/2023 10:09:01 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+====================================================================================================
+[06/05/2023 10:09:01 PM] [DEBUG] [root] [test_chisq_gof] [test_with_expected] : 	                            test | Chi-Square Test of Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                       statistic | X2
+	                           value | 25.426829268292686
+	                          pvalue | 0.38287206041851835
+	                       inference | The pvalue 0.38287206041851835 is greater than level of significance 0.05; 
+therefore, the null hypothesis is not rejected. 
+The data have the expected frequencies.
+	                           alpha | 0.05
+
+[06/05/2023 10:09:01 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+	Completed TestX2GOF test_with_expected in 0.1 seconds at 10:09:01 PM on 06/05/2023
+[06/05/2023 10:09:01 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 10:15:00 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+
+Started TestX2GOF test_x2 at 10:15:00 PM on 06/05/2023
+[06/05/2023 10:15:00 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+====================================================================================================
+[06/05/2023 10:15:00 PM] [DEBUG] [root] [test_chisq_gof] [test_x2] : 	                            test | Chi-Square Test of Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                       statistic | X2
+	                           value | 5.085365853658536
+	                          pvalue | 0.27865004658054116
+	                       inference | The pvalue 0.27865004658054116 is greater than level of significance 0.05; 
+therefore, the null hypothesis is not rejected. 
+The data have the expected frequencies.
+	                           alpha | 0.05
+
+[06/05/2023 10:15:00 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+Completed TestX2GOF test_x2 in 0.3 seconds at 10:15:00 PM on 06/05/2023
+[06/05/2023 10:15:00 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 10:15:00 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+
+Started TestX2GOF test_with_expected at 10:15:00 PM on 06/05/2023
+[06/05/2023 10:15:00 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+====================================================================================================
+[06/05/2023 10:15:00 PM] [DEBUG] [root] [test_chisq_gof] [test_with_expected] : 	                            test | Chi-Square Test of Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                       statistic | X2
+	                           value | 25.426829268292686
+	                          pvalue | 0.38287206041851835
+	                       inference | The pvalue 0.38287206041851835 is greater than level of significance 0.05; 
+therefore, the null hypothesis is not rejected. 
+The data have the expected frequencies.
+	                           alpha | 0.05
+
+[06/05/2023 10:15:00 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+	Completed TestX2GOF test_with_expected in 0.1 seconds at 10:15:00 PM on 06/05/2023
+[06/05/2023 10:15:00 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 10:15:25 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+
+Started TestX2GOF test_x2 at 10:15:25 PM on 06/05/2023
+[06/05/2023 10:15:25 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+====================================================================================================
+[06/05/2023 10:15:25 PM] [DEBUG] [root] [test_chisq_gof] [test_x2] : 	                            test | Chi-Square Test of Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                       statistic | X2
+	                           value | 5.085365853658536
+	                          pvalue | 0.27865004658054116
+	                       inference | The pvalue 0.27865004658054116 is greater than level of significance 0.05; 
+therefore, the null hypothesis is not rejected. 
+The data have the expected frequencies.
+	                           alpha | 0.05
+
+[06/05/2023 10:15:25 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+Completed TestX2GOF test_x2 in 0.3 seconds at 10:15:25 PM on 06/05/2023
+[06/05/2023 10:15:25 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 10:15:25 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+
+Started TestX2GOF test_with_expected at 10:15:25 PM on 06/05/2023
+[06/05/2023 10:15:25 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+====================================================================================================
+[06/05/2023 10:15:25 PM] [DEBUG] [root] [test_chisq_gof] [test_with_expected] : 	                            test | Chi-Square Test of Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                       statistic | X2
+	                           value | 25.426829268292686
+	                          pvalue | 0.38287206041851835
+	                       inference | The pvalue 0.38287206041851835 is greater than level of significance 0.05; 
+therefore, the null hypothesis is not rejected. 
+The data have the expected frequencies.
+	                           alpha | 0.05
+
+[06/05/2023 10:15:25 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+	Completed TestX2GOF test_with_expected in 0.1 seconds at 10:15:25 PM on 06/05/2023
+[06/05/2023 10:15:25 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 10:16:21 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+
+Started TestX2GOF test_x2 at 10:16:21 PM on 06/05/2023
+[06/05/2023 10:16:21 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+====================================================================================================
+[06/05/2023 10:16:21 PM] [DEBUG] [root] [test_chisq_gof] [test_x2] : 	                            test | Chi-Square Test of Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                       statistic | X2
+	                           value | 5.085365853658536
+	                          pvalue | 0.27865004658054116
+	                       inference | The pvalue 0.27865004658054116 is greater than level of significance 0.05; therefore, the null hypothesis is not rejected. The data have the expected frequencies.
+	                           alpha | 0.05
+
+[06/05/2023 10:16:21 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+Completed TestX2GOF test_x2 in 0.3 seconds at 10:16:21 PM on 06/05/2023
+[06/05/2023 10:16:21 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 10:16:22 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+
+Started TestX2GOF test_with_expected at 10:16:22 PM on 06/05/2023
+[06/05/2023 10:16:22 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+====================================================================================================
+[06/05/2023 10:16:22 PM] [DEBUG] [root] [test_chisq_gof] [test_with_expected] : 	                            test | Chi-Square Test of Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                       statistic | X2
+	                           value | 25.426829268292686
+	                          pvalue | 0.38287206041851835
+	                       inference | The pvalue 0.38287206041851835 is greater than level of significance 0.05; therefore, the null hypothesis is not rejected. The data have the expected frequencies.
+	                           alpha | 0.05
+
+[06/05/2023 10:16:22 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+	Completed TestX2GOF test_with_expected in 0.1 seconds at 10:16:22 PM on 06/05/2023
+[06/05/2023 10:16:22 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 10:16:57 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+
+Started TestX2GOF test_x2 at 10:16:57 PM on 06/05/2023
+[06/05/2023 10:16:57 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+====================================================================================================
+[06/05/2023 10:16:57 PM] [DEBUG] [root] [test_chisq_gof] [test_x2] : 	                            test | Chi-Square Test of Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                       statistic | X2
+	                           value | 5.085365853658536
+	                          pvalue | 0.27865004658054116
+	                       inference | The pvalue 0.28 is greater than level of significance 0.05; therefore, the null hypothesis is not rejected. The data have the expected frequencies.
+	                           alpha | 0.05
+
+[06/05/2023 10:16:57 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+Completed TestX2GOF test_x2 in 0.3 seconds at 10:16:57 PM on 06/05/2023
+[06/05/2023 10:16:57 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_x2] : 
+----------------------------------------------------------------------------------------------------
+[06/05/2023 10:16:57 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+
+Started TestX2GOF test_with_expected at 10:16:57 PM on 06/05/2023
+[06/05/2023 10:16:57 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+====================================================================================================
+[06/05/2023 10:16:57 PM] [DEBUG] [root] [test_chisq_gof] [test_with_expected] : 	                            test | Chi-Square Test of Goodness of Fit
+	                              h0 | Categorical data has the given frequencies
+	                       statistic | X2
+	                           value | 25.426829268292686
+	                          pvalue | 0.38287206041851835
+	                       inference | The pvalue 0.38 is greater than level of significance 0.05; therefore, the null hypothesis is not rejected. The data have the expected frequencies.
+	                           alpha | 0.05
+
+[06/05/2023 10:16:57 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+	Completed TestX2GOF test_with_expected in 0.1 seconds at 10:16:57 PM on 06/05/2023
+[06/05/2023 10:16:57 PM] [INFO] [test_chisq_gof] [test_chisq_gof] [test_with_expected] : 
+----------------------------------------------------------------------------------------------------
