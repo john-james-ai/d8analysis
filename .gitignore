@@ -13,8 +13,10 @@ __pycache__/
 /admin
 
 # Logs
+/logs
+logs/
 /log
-log/
+/logs/explorer.log
 
 # Distribution / packaging
 .Python
