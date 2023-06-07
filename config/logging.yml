@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday April 20th 2023 01:19:19 pm                                                #
-# Modified   : Tuesday June 6th 2023 11:17:36 pm                                                   #
+# Modified   : Wednesday June 7th 2023 12:49:30 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -31,7 +31,7 @@ logging:
   handlers:
     console:
       class: "logging.StreamHandler"
-      level: "INFO"
+      level: "DEBUG"
       formatter: "console"
       stream: "ext://sys.stderr"
     file:

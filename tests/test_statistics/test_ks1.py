@@ -4,14 +4,14 @@
 # Project    : Enter Project Name in Workspace Settings                                            #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /tests/test_statistics/test_ksone_gof.py                                            #
+# Filename   : /tests/test_statistics/test_ks1.py                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 09:32:36 pm                                                    #
-# Modified   : Tuesday June 6th 2023 05:48:11 am                                                   #
+# Modified   : Wednesday June 7th 2023 02:34:36 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,7 +22,7 @@ import pytest
 import logging
 import pandas as pd
 
-from explorer.stats.goodness_of_fit.kstestone import KSTestOne
+from explorer.stats.goodness_of_fit.ksone import KSOneTest
 from explorer.stats.base import StatTestProfile
 
 
@@ -33,10 +33,10 @@ double_line = f"\n{100 * '='}"
 single_line = f"\n{100 * '-'}"
 
 
-@pytest.mark.ks1gof
-class TestKS1GOF:  # pragma: no cover
+@pytest.mark.ks1
+class TestKSOneTest:  # pragma: no cover
     # ============================================================================================ #
-    def test_ks1(self, dataset, caplog):
+    def test_gof(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -48,15 +48,15 @@ class TestKS1GOF:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        test = KSTestOne()
-        test(data=dataset["Income"], reference_distribution="norm")
-        assert "Kol" in test.result.test
+        test = KSOneTest()
+        test(data=dataset["Income"], reference_distribution="normal")
+        assert "Kolmo" in test.result.test
         assert isinstance(test.result.H0, str)
         assert isinstance(test.result.pvalue, float)
         assert test.result.alpha == 0.05
         assert isinstance(test.data, pd.Series)
         assert isinstance(test.profile, StatTestProfile)
-        logging.debug(test.result)
+        logger.debug(f"\n{test.result}")
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()
         duration = round((end - start).total_seconds(), 1)

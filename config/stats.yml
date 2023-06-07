@@ -14,9 +14,9 @@ ad:
 
 
     '
-  function: scipy.stats.anderson
+  function: scipy.stats.goodness_of_fit
   hypothesis: Goodness of Fit
-  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.anderson.html#scipy.stats.anderson
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.goodness_of_fit.html#scipy.stats.goodness_of_fit
   min_sample_size: 20
   name: Anderson-Darling Test
   package: Scipy
@@ -63,7 +63,7 @@ anova1:
   package: Scipy
   parametric: true
   small_sample_sizes: true
-  statistic: F
+  statistic: ANOVA F
   status: Pending
   use_when: When the number of groups to compare > 2
   x_variable_type: continuous
@@ -129,25 +129,23 @@ ks1:
 
 
     '
-  description: 'Performs the (one-sample or two-sample) Kolmogorov-Smirnov test for
-    goodness of fit.
+  description: 'Perform a goodness of fit test comparing data to a distribution family.
 
 
-    The one-sample test compares the underlying distribution F(x) of a sample against
-    a given distribution G(x). The two-sample test compares the underlying distributions
-    of two independent samples. Both tests are valid only for continuous distributions.
-
-
-    '
-  function: scipy.stats.kstest
+    Given a distribution family and data, perform a test of the null hypothesis that
+    the data were drawn from a distribution in that family. Any known parameters of
+    the distribution may be specified. Remaining parameters of the distribution will
+    be fit to the data, and the p-value of the test is computed accordingly. Several
+    statistics for comparing the distribution to data are available.'
+  function: scipy.stats.goodness_of_fit
   hypothesis: Goodness of Fit
-  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html#scipy.stats.kstest
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.goodness_of_fit.html#scipy.stats.goodness_of_fit
   min_sample_size: 50
   name: Kolmogorov-Smirnov Test
   package: Scipy
   parametric: false
   small_sample_sizes: false
-  statistic: KS
+  statistic: "Kolmogorov\u2013Smirnov "
   status: Pending
   use_when: Large samples sizes > 50
   x_variable_type: continuous
@@ -187,7 +185,7 @@ ks2:
   package: Scipy
   parametric: false
   small_sample_sizes: false
-  statistic: KS
+  statistic: "Kolmogorov\u2013Smirnov "
   status: Pending
   use_when: Large samples sizes > 50
   x_variable_type: continuous
@@ -226,7 +224,7 @@ kw:
   package: Scipy
   parametric: false
   small_sample_sizes: true
-  statistic: H
+  statistic: "Kruskal\u2013Wallis H"
   status: Pending
   use_when: Assumptions of ANOVA are not met.
   x_variable_type: continuous
@@ -264,7 +262,7 @@ mwu:
   package: Scipy
   parametric: false
   small_sample_sizes: true
-  statistic: U
+  statistic: Mann-Whitney U
   status: Pending
   use_when: Data are non-normal
   x_variable_type: continuous
@@ -312,7 +310,7 @@ pearson:
   package: Scipy
   parametric: true
   small_sample_sizes: true
-  statistic: R
+  statistic: 'Pearson correlation coefficient (r) '
   status: Pending
   use_when: Variables are normally distributed and linearly related.
   x_variable_type: continuous
@@ -355,7 +353,7 @@ spearman:
   package: Scipy
   parametric: false
   small_sample_sizes: true
-  statistic: S
+  statistic: "Spearman\u2019s rho (S)"
   status: Pending
   use_when: Assumptions of Pearson's Correlation are not met or data are ordinal.
   x_variable_type: continuous
@@ -381,7 +379,7 @@ sw:
   package: Scipy
   parametric: false
   small_sample_sizes: true
-  statistic: W
+  statistic: Shapiro-Wilk W
   status: Pending
   use_when: Sample sizes < 50
   x_variable_type: continuous
@@ -425,7 +423,7 @@ t2:
   y_variable_type: continuous
 x2gof:
   '#': 2
-  H0: Categorical data has the given frequencies
+  H0: Categorical data have the given frequencies
   Version: 1
   analysis: univariate
   assumes_homoscedasticity: false

@@ -11,14 +11,28 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Monday June 5th 2023 08:51:30 pm                                                    #
+# Modified   : Wednesday June 7th 2023 01:53:42 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 import numpy as np
 
-IMMUTABLE_TYPES: tuple = (str, int, float, bool, type(None))
+IMMUTABLE_TYPES: tuple = (
+    str,
+    int,
+    float,
+    bool,
+    type(None),
+    np.int16,
+    np.int32,
+    np.int64,
+    np.int8,
+    np.float16,
+    np.float32,
+    np.float64,
+    np.float128,
+)
 SEQUENCE_TYPES: tuple = (list, tuple)
 # ------------------------------------------------------------------------------------------------ #
 NUMERICS = [

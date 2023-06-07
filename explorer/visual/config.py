@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Tuesday June 6th 2023 09:41:54 pm                                                   #
+# Modified   : Wednesday June 7th 2023 03:53:38 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,8 +24,8 @@ from typing import List
 import matplotlib.pyplot as plt
 
 # ------------------------------------------------------------------------------------------------ #
-IMMUTABLE_TYPES: tuple = (str, int, float, bool, type(None))
-SEQUENCE_TYPES: tuple = (list, tuple)
+from explorer import IMMUTABLE_TYPES, SEQUENCE_TYPES
+
 # ------------------------------------------------------------------------------------------------ #
 #                                            PALETTE                                               #
 # ------------------------------------------------------------------------------------------------ #

@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday May 29th 2023 03:00:39 am                                                    #
-# Modified   : Tuesday June 6th 2023 01:36:32 am                                                   #
+# Modified   : Wednesday June 7th 2023 03:58:27 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -41,15 +41,18 @@ class ChiSquareGOFResult(StatTestResult):
     expected: Union[pd.DataFrame, np.ndarray, pd.Series] = None
 
     def plot(self, varname: str = None, ax: plt.Axes = None) -> plt.Axes:  # pragma: no cover
-        ax = ax or Canvas().ax
+        canvas = Canvas()
+        ax = ax or canvas.ax
         x = np.linspace(stats.chi2.ppf(0.01, self.dof), stats.chi2.ppf(0.99, self.dof), 100)
         y = stats.chi2.pdf(x, self.dof)
-        sns.lineplot(x=x, y=y, markers=False, dashes=False, sort=True, ax=ax)
+        ax = sns.lineplot(x=x, y=y, markers=False, dashes=False, sort=True, ax=ax)
         line = ax.lines[0]
         fill_x = line.get_xydata()[int(self.value) :, 0]  # noqa: E203
         fill_y2 = line.get_xydata()[int(self.value) :, 1]  # noqa: E203
         ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color="red")
-        ax.set_title(f"X\u00b2 Goodness of Fit\nTest Result\n{self.result}")
+        ax.set_title(
+            f"X\u00b2 Goodness of Fit\nTest Result\n{self.result}", fontsize=canvas.fontsize_title
+        )
 
         ax.set_xlabel(r"$X^2$")
         ax.set_ylabel("Probability Density")
@@ -118,7 +121,7 @@ class ChiSquareGOFTest(StatisticalTest):
         self._result = ChiSquareGOFResult(
             test=self._profile.name,
             H0=self._profile.H0,
-            statistic=self._profile.statistic,
+            statistic="X\u00b2",
             hypothesis=self._profile.hypothesis,
             dof=dof,
             value=statistic,

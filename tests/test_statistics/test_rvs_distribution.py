@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 12:41:00 am                                                    #
-# Modified   : Tuesday June 6th 2023 03:15:34 am                                                   #
+# Modified   : Wednesday June 7th 2023 12:32:23 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -23,7 +23,7 @@ import logging
 
 import numpy as np
 
-from explorer.stats.distribution import RVSDistribution, DISTRIBUTIONS
+from explorer.stats.distribution import RVSDistribution, DISTRIBUTIONS, Distribution
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -36,7 +36,7 @@ single_line = f"\n{100 * '-'}"
 @pytest.mark.rvs
 class TestRVSDistribution:  # pragma: no cover
     # ============================================================================================ #
-    def test_Generator(self, dataset, caplog):
+    def test_rvs(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -53,7 +53,14 @@ class TestRVSDistribution:  # pragma: no cover
         for dist in DISTRIBUTIONS.keys():
             dg(data=data, distribution=dist)
             assert isinstance(dg.data, np.ndarray)
+            assert isinstance(dg.rvs, Distribution)
+            assert isinstance(dg.pdf, Distribution)
+            assert isinstance(dg.cdf, Distribution)
             assert len(dg.data) == len(data)
+            logger.debug(f"\n{dg.rvs}")
+            logger.debug(f"\n{dg.pdf}")
+            logger.debug(f"\n{dg.cdf}")
+            logger.debug(repr(dg.rvs))
 
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()

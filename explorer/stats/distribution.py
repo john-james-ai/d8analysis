@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday May 27th 2023 08:56:02 pm                                                  #
-# Modified   : Tuesday June 6th 2023 11:01:39 pm                                                   #
+# Modified   : Wednesday June 7th 2023 03:35:44 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -27,6 +27,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from explorer.visual.config import Canvas
+from explorer import IMMUTABLE_TYPES
 
 logger = logging.getLogger(__name__)
 # ------------------------------------------------------------------------------------------------ #
@@ -46,9 +47,9 @@ DISTRIBUTIONS = {
     "gamma": stats.gamma,
     "logistic": stats.logistic,
     "lognorm": stats.lognorm,
-    "pareto": stats.pareto,
+    # "pareto": stats.pareto,
     "uniform": stats.uniform,
-    "weibull_min": stats.weibull_min,
+    "weibull": stats.weibull_min,
 }
 
 
@@ -63,6 +64,24 @@ class Distribution:
     params: str
     x: np.ndarray
     y: np.ndarray
+
+    def __repr__(self) -> str:
+        return "{}({})".format(
+            self.__class__.__name__,
+            ", ".join(
+                "{}={!r}".format(k, v)
+                for k, v in self.__dict__.items()
+                if type(v) in IMMUTABLE_TYPES
+            ),
+        )
+
+    def __str__(self) -> str:
+        s = ""
+        width = 32
+        for k, v in self.__dict__.items():
+            if type(v) in IMMUTABLE_TYPES:
+                s += f"\t{k.rjust(width,' ')} | {v}\n"
+        return s
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -639,7 +658,7 @@ def weibull(data: np.ndarray) -> np.ndarray:
         pdf: Data from the probability density function
         cdf: Data from the cumulative distribution function
     """
-    c, loc, scale = get_params(data=data, distribution="weibull_min")
+    c, loc, scale = get_params(data=data, distribution="weibull")
 
     name = "Weibull Distribution"
     x_range = np.linspace(min(data), max(data), NUM_POINTS)
@@ -711,7 +730,7 @@ class RVSDistribution:
         data (pd.DataFrame): Data from which distribution parameters are estimated.
     """
 
-    __GENERATORS = {
+    __DISTRIBUTIONS = {
         "beta": beta,
         "normal": normal,
         "chi2": chi2,
@@ -722,7 +741,7 @@ class RVSDistribution:
         "lognorm": lognorm,
         "uniform": uniform,
         "weibull": weibull,
-        "pareto": pareto,
+        # "pareto": pareto,
     }
 
     def __init__(self) -> None:
@@ -736,6 +755,21 @@ class RVSDistribution:
     def data(self) -> np.ndarray:
         return self._data
 
+    @property
+    def rvs(self) -> Distribution:
+        """Returns the random variate"""
+        return self._rvs
+
+    @property
+    def pdf(self) -> Distribution:
+        """Returns the random variate"""
+        return self._pdf
+
+    @property
+    def cdf(self) -> Distribution:
+        """Returns the random variate"""
+        return self._cdf
+
     def __call__(self, data: np.ndarray, distribution: str) -> np.ndarray:
         """Returns random values of the designated distribution
 
@@ -747,13 +781,15 @@ class RVSDistribution:
         self._distribution = distribution
 
         try:
-            self._rvs, self._pdf, self._cdf = self.__GENERATORS[distribution](data=data)
-        except KeyError:  # pragma: no cover
-            msg = f"{distribution} is not supported."
+            self._logger.debug(f"\nDistribution: {distribution}")
+            self._logger.debug(f"\nAvailable Distributions:\n{self.__DISTRIBUTIONS.keys()}")
+            self._rvs, self._pdf, self._cdf = self.__DISTRIBUTIONS[distribution](data=data)
+        except KeyError as e:  # pragma: no cover
+            msg = f"{distribution} is not supported.\n{e}"
             self._logger.debug(msg)
             raise NotImplementedError(msg)
 
-    def histplot(self, ax: plt.Axes = None) -> plt.Axes:
+    def histplot(self, ax: plt.Axes = None) -> plt.Axes:  # pragma: no cover
         """Plots the distribution of the data as a histogram
 
         Args:
@@ -772,7 +808,7 @@ class RVSDistribution:
         ax.set_title("Empirical Data Distribution", fontsize=canvas.fontsize_title)
         return ax
 
-    def pdf(self, ax: plt.Axes = None) -> plt.Axes:
+    def pdfplot(self, ax: plt.Axes = None) -> plt.Axes:  # pragma: no cover
         """Plots the distributioni probability density function
 
         Args:
@@ -788,7 +824,7 @@ class RVSDistribution:
         ax.set_title(title, fontsize=canvas.fontsize_title)
         return ax
 
-    def cdf(self, ax: plt.Axes = None) -> plt.Axes:
+    def cdfplot(self, ax: plt.Axes = None) -> plt.Axes:  # pragma: no cover
         """Plots the cumulative distribution function.
 
         Args:
@@ -802,7 +838,7 @@ class RVSDistribution:
         ax.set_title(title, fontsize=canvas.fontsize_title)
         return ax
 
-    def pdfcdf(self) -> plt.figure:
+    def pdfcdfplot(self) -> plt.figure:  # pragma: no cover
         """Plots the probability distribution function vis-a-vis the cumulative distribution function"""
         canvas = Canvas()
         ax1 = canvas.ax
@@ -831,7 +867,7 @@ class RVSDistribution:
         fig.tight_layout()
         return fig
 
-    def ecdf(self, ax: plt.Axes = None) -> plt.Axes:
+    def ecdfplot(self, ax: plt.Axes = None) -> plt.Axes:  # pragma: no cover
         """Plots the empirical CDF vis-a-vis the theoretical CDF.
 
         Args:
@@ -848,7 +884,7 @@ class RVSDistribution:
 
         return ax
 
-    def histpdf(self) -> plt.figure:
+    def histpdfplot(self) -> plt.figure:  # pragma: no cover
         """Plots the empirical histogram vis-a-vis the probability density function"""
         canvas = Canvas()
         ax1 = canvas.ax

@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Tuesday June 6th 2023 05:58:03 am                                                   #
+# Modified   : Wednesday June 7th 2023 05:14:10 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -20,9 +20,6 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 import logging
 from dataclasses import dataclass, fields
-from typing import Tuple, Union
-
-import numpy as np
 
 from explorer.service.io import IOService
 from explorer import IMMUTABLE_TYPES
@@ -84,9 +81,9 @@ class StatTestProfile(ABC):
 @dataclass
 class StatTestResult(ABC):
     test: str
+    hypothesis: str
     H0: str
     statistic: str
-    hypothesis: str
     value: float
     pvalue: float
     inference: str
@@ -122,11 +119,6 @@ class StatisticalTest(ABC):
     @abstractmethod
     def profile(self) -> StatTestProfile:
         """Returns the statistical test profile."""
-
-    @property
-    @abstractmethod
-    def data(self) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
-        """Returns the data tested"""
 
     @property
     @abstractmethod
