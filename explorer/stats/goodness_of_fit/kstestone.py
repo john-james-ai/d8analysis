@@ -4,14 +4,14 @@
 # Project    : Enter Project Name in Workspace Settings                                            #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /explorer/stats/goodness_of_fit/kstest.py                                           #
+# Filename   : /explorer/stats/goodness_of_fit/kstestone.py                                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Tuesday June 6th 2023 02:24:12 am                                                   #
+# Modified   : Tuesday June 6th 2023 05:59:53 am                                                   #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -38,7 +38,6 @@ class KSTestOneResult(StatTestResult):
     statistic_location: float = None
     statistic_sign: int = None
     reference_distribution: str = None
-    reference_data: Union[pd.DataFrame, np.ndarray, pd.Series] = None
     data: Union[pd.DataFrame, np.ndarray, pd.Series] = None
 
     def plot(self, ax: plt.Axes = None) -> plt.Axes:  # pragma: no cover
@@ -96,30 +95,24 @@ class KSTestOne(StatisticalTest):
         self._data = data
 
         # Conduct the two-sided ks test
-        statistic, pvalue, location, sign = stats.kstest(
-            rvs=data, cdf=reference_distribution, alternative="two-sided", method="auto"
-        )
+        if reference_distribution == "norm":
+            statistic, pvalue = stats.kstest(
+                rvs=data, cdf=reference_distribution, alternative="two-sided", method="auto"
+            )
+            location = None
+            sign = None
+        else:
+            statistic, pvalue, location, sign = stats.kstest(
+                rvs=data, cdf=reference_distribution, alternative="two-sided", method="auto"
+            )
 
-        # Generate a sample from the reference distribution
-
-        # Extract observed frequencies sorted by category in lexical order
-        observed = data.value_counts(sort=True, ascending=False).to_frame().sort_index().values
-        # Extract expected frequencies (if provided) similarly
-        if expected is not None:
-            expected = pd.DataFrame.from_dict(data=expected, orient="index").sort_index().values
-
-        dof = len(observed) - 1
-
-        statistic, pvalue = stats.chisquare(f_obs=observed, f_exp=expected, axis=None)
+        self._logger.debug(f"\n\nPvalue: {pvalue}\nStatistic{statistic}")
         if pvalue > self._alpha:
             gtlt = ">"
-            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {self._alpha}; therefore, the null hypothesis is not rejected. The data have the expected frequencies."
+            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {self._alpha}; therefore, the null hypothesis is not rejected. The data were drawn from the reference distribution."
         else:
             gtlt = "<"
-            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {self._alpha}; therefore, the null hypothesis is rejected. The data do not have the expected frequencies."
-
-        if expected is None:  # Add an explainable value to the result object, rather than None.
-            expected = ("Equal Frequencies among Groups",)
+            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {self._alpha}; therefore, the null hypothesis is rejected. The data were not drawn from the reference distribution."
 
         # Create the result object.
         self._result = KSTestOneResult(
@@ -127,13 +120,13 @@ class KSTestOne(StatisticalTest):
             H0=self._profile.H0,
             statistic=self._profile.statistic,
             hypothesis=self._profile.hypothesis,
-            dof=dof,
             value=statistic,
             pvalue=pvalue,
-            result=f"X\u00b2({dof}, N={len(data)})={round(statistic,2)}, p{gtlt}{self._alpha}",
+            result=f"Kolmogorov-Smirnov Goodness of Fit, (N={len(data)})={round(statistic,2)}, p{gtlt}{self._alpha}",
             data=data,
-            observed=observed,
-            expected=expected,
+            statistic_location=location,
+            statistic_sign=sign,
+            reference_distribution=reference_distribution,
             inference=inference,
             alpha=self._alpha,
         )

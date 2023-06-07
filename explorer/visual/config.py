@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
-# Filename   : /explorer/visual.py                                                                 #
+# Filename   : /explorer/visual/config.py                                                          #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Sunday May 28th 2023 12:03:44 pm                                                    #
+# Modified   : Tuesday June 6th 2023 09:41:54 pm                                                   #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -47,7 +47,9 @@ class Palette:
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
 class Colors:
-    blue: str = "#69d"
+    dark_blue: str = "#002B5B"
+    blue: str = "#1F4690"
+    orange: str = "#E8AA42"
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -58,12 +60,13 @@ class Colors:
 @dataclass
 class Canvas:
     style = "whitegrid"
-    figsize: tuple = (12, 3)
+    figsize: tuple = (12, 4)
     nrows: int = 1
     ncols: int = 1
-    color: str = Colors.blue
+    colors: str = Colors()
     palette: str = Palette.blues_r
     saturation: float = 0.5
+    fontsize_title: int = 10
     fig: plt.figure = None
     ax: plt.axes = None
     axs: List = field(default_factory=lambda: [plt.axes])

@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday May 27th 2023 08:56:02 pm                                                  #
-# Modified   : Tuesday June 6th 2023 04:56:32 am                                                   #
+# Modified   : Tuesday June 6th 2023 11:01:39 pm                                                   #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -19,16 +19,21 @@
 """Statistics Module"""
 from __future__ import annotations
 import logging
+from dataclasses import dataclass
 
 from scipy import stats
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
 from explorer.visual.config import Canvas
 
 logger = logging.getLogger(__name__)
+# ------------------------------------------------------------------------------------------------ #
+NUM_POINTS = 5000
+# ------------------------------------------------------------------------------------------------ #
+sns.set_style(Canvas.style)
+
 # ------------------------------------------------------------------------------------------------ #
 #                                    SCIPY DISTRIBUTIONS                                           #
 # ------------------------------------------------------------------------------------------------ #
@@ -48,7 +53,20 @@ DISTRIBUTIONS = {
 
 
 # ------------------------------------------------------------------------------------------------ #
-#                              RANDOM DATA GENERATORS                                              #
+#                                DISTRIBUTION DATACLASSES                                          #
+# ------------------------------------------------------------------------------------------------ #
+@dataclass
+class Distribution:
+    name: str
+    label: str
+    formula: str
+    params: str
+    x: np.ndarray
+    y: np.ndarray
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                                   DATA GENERATORS                                                #
 # ------------------------------------------------------------------------------------------------ #
 def beta(data: np.ndarray) -> np.ndarray:
     """Generates random variates for the beta distribution
@@ -59,18 +77,62 @@ def beta(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
+    # Estimate parameters
     a, b, loc, scale = get_params(data=data, distribution="beta")
-    rvs = stats.beta.rvs(a, b, loc=loc, scale=scale, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.beta.ppf(0.01, a, b, loc, scale),
-            stats.beta.ppf(0.99, a, b, loc, scale),
-            num=len(data),
-        ),
-        stats.beta.pdf(x=data, a=a, b=b, loc=loc, scale=scale),
+
+    name = "Beta Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = (
+        r"$\alpha=$"
+        + str(round(a, 2))
+        + r", $\beta=$"
+        + str(round(b, 2))
+        + "\nloc = "
+        + str(round(loc, 2))
+        + ", scale = "
+        + str(round(scale, 2))
     )
-    return rvs, pdf
+    formula = (
+        r"$ f(x, \alpha, \beta) = \frac{\Gamma(\alpha+\beta) x^{\alpha-1} (1-x)^{\beta-1}} {\Gamma(\alpha) \Gamma(\beta)}$"
+        + "\n"
+        + r"where $\Gamma$ is the gamma function"
+        + "\n"
+        + "0 <= x <= 1"
+        + "\n"
+        + r"$\alpha$ > 0, $\beta$ > 0 are shape parameters"
+    )
+
+    # Random variate
+    rvs = stats.beta.rvs(a, b, loc=loc, scale=scale, size=len(data))
+    rvs = Distribution(
+        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
+    )
+
+    # Probability density function
+    pdf = stats.beta.pdf(x=x_range, a=a, b=b, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.beta.cdf(x=x_range, a=a, b=b, loc=loc, scale=scale)
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def normal(data: np.ndarray) -> np.ndarray:
@@ -82,16 +144,45 @@ def normal(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
+    # Estimate parameters
     loc, scale = get_params(data=data, distribution="normal")
+
+    name = "Normal Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = "loc = " + str(round(loc, 2)) + ", scale = " + str(round(scale, 2))
+    formula = r"$ f(x) = \frac{\exp(-x^2/2)}{\sqrt{2\pi}}$" + "\n" + r"For real number x"
+
+    # Random variate
     rvs = stats.norm.rvs(loc=loc, scale=scale, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.norm.ppf(0.01, loc, scale), stats.norm.ppf(0.99, loc, scale), num=len(data)
-        ),
-        stats.norm.pdf(x=data, loc=loc, scale=scale),
+    rvs = Distribution(
+        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
-    return rvs, pdf
+
+    # Probability density function
+    pdf = stats.norm.pdf(x=x_range, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.norm.cdf(x=x_range, loc=loc, scale=scale)
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def chi2(data: np.ndarray) -> np.ndarray:
@@ -103,20 +194,53 @@ def chi2(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
-    a, loc, scale = get_params(data=data, distribution="chi2")
-    df = 2 * a
-    rvs = stats.chi2.rvs(df=df, loc=loc, scale=scale, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.chi2.ppf(0.01, df, loc, scale),
-            stats.chi2.ppf(0.99, df, loc, scale),
-            num=len(data),
-        ),
-        stats.chi2.pdf(x=data, df=df, loc=loc, scale=scale),
+    _, loc, scale = get_params(data=data, distribution="chi2")
+    df = len(data) - 1
+    name = r"$\chi^2$ Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = "loc = " + str(round(loc, 2)) + ", scale = " + str(round(scale, 2))
+    formula = (
+        r"$ f(x, k) = \frac{1}{2^{k/2} \Gamma \left( k/2 \right)} x^{k/2-1} \exp \left( -x/2 \right)$"
+        + "\n"
+        + "for x>0 and k>0 (degrees of freedom)"
     )
 
-    return rvs, pdf
+    # Random variate
+    rvs = stats.chi2.rvs(df=df, loc=loc, scale=scale, size=len(data))
+    rvs = Distribution(
+        name=name,
+        label=r"$\chi^2$ Random Variate",
+        x=x_range,
+        y=rvs,
+        params=params,
+        formula=formula,
+    )
+
+    # Probability density function
+    pdf = stats.chi2.pdf(x=x_range, df=df, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.chi2.cdf(x=x_range, df=df, loc=loc, scale=scale)
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def exponential(data: np.ndarray) -> np.ndarray:
@@ -128,18 +252,44 @@ def exponential(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
     loc, scale = get_params(data=data, distribution="exponential")
     rvs = stats.expon.rvs(loc=loc, scale=scale, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.expon.ppf(0.01, loc, scale),
-            stats.expon.ppf(0.99, loc, scale),
-            num=len(data),
-        ),
-        stats.expon.pdf(x=data, loc=loc, scale=scale),
+    name = "Exponential Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = "\nloc = " + str(round(loc, 2)) + ", scale = " + str(round(scale, 2))
+    formula = r"$f(x) = \exp(-x)$" + "\n" + r"for x >= 0"
+
+    # Random variate
+    rvs = stats.expon.rvs(loc=loc, scale=scale, size=len(data))
+    rvs = Distribution(
+        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
-    return rvs, pdf
+
+    # Probability density function
+    pdf = stats.expon.pdf(x=x_range, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.expon.cdf(x=x_range, loc=loc, scale=scale)
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def f(data: np.ndarray) -> np.ndarray:
@@ -151,18 +301,62 @@ def f(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
     dfn, dfd, loc, scale = get_params(data=data, distribution="f")
-    rvs = stats.f.rvs(dfn=dfn, dfd=dfd, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.f.ppf(0.01, dfn, dfd, loc, scale),
-            stats.f.ppf(0.99, dfn, dfd, loc, scale),
-            num=len(data),
-        ),
-        stats.f.pdf(x=data, dfn=dfn, dfd=dfd, loc=loc, scale=scale),
+    name = "F Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = (
+        r"$df_1=$"
+        + str(round(dfn, 2))
+        + r", $df_2$"
+        + str(round(dfd, 2))
+        + "\nloc = "
+        + str(round(loc, 2))
+        + ", scale = "
+        + str(round(scale, 2))
     )
-    return rvs, pdf
+    formula = (
+        r"$f(x, df_1, df_2) = \frac{df_2^{df_2/2} df_1^{df_1/2} x^{df_1 / 2-1}}{(df_2+df_1 x)^{(df_1+df_2)/2}B(df_1/2, df_2/2)}$"
+        + "\n"
+        + r"For x > 0 and parameters $df_1$, $df_2$ > 0"
+    )
+
+    # Random variate
+    rvs = stats.f.rvs(dfn=dfn, dfd=dfd, loc=loc, scale=scale, size=len(data))
+    rvs = Distribution(
+        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
+    )
+
+    # Probability density function
+    pdf = stats.f.pdf(x=x_range, dfn=dfn, dfd=dfd, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.f.cdf(
+        x=x_range,
+        dfn=dfn,
+        dfd=dfd,
+        loc=loc,
+        scale=scale,
+    )
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def gamma(data: np.ndarray) -> np.ndarray:
@@ -174,18 +368,54 @@ def gamma(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
     a, loc, scale = get_params(data=data, distribution="gamma")
-    rvs = stats.gamma.rvs(a=a, loc=loc, scale=scale, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.gamma.ppf(0.01, a, loc, scale),
-            stats.gamma.ppf(0.99, a, loc, scale),
-            num=len(data),
-        ),
-        stats.gamma.pdf(x=data, a=a, loc=loc, scale=scale),
+    name = "Gamma Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = (
+        "a ="
+        + str(round(a, 2))
+        + "\nloc = "
+        + str(round(loc, 2))
+        + ", scale = "
+        + str(round(scale, 2))
     )
-    return rvs, pdf
+    formula = (
+        r"$f(x, a) = \frac{x^{a-1} e^{-x}}{\Gamma(a)}$"
+        + "\n"
+        + r"For x >= 0, a > 0, and $\Gamma$ is the gamma function"
+    )
+
+    # Random variate
+    rvs = stats.gamma.rvs(a, loc=loc, scale=scale, size=len(data))
+    rvs = Distribution(
+        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
+    )
+
+    # Probability density function
+    pdf = stats.gamma.pdf(x=x_range, a=a, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.gamma.cdf(x=x_range, a=a, loc=loc, scale=scale)
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def logistic(data: np.ndarray) -> np.ndarray:
@@ -197,18 +427,43 @@ def logistic(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
     loc, scale = get_params(data=data, distribution="logistic")
+    name = "Logistic Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = "loc = " + str(round(loc, 2)) + ", scale = " + str(round(scale, 2))
+    formula = r"$ f(x) = \frac{\exp(-x)}{(1+\exp(-x))^2}$"
+
+    # Random variate
     rvs = stats.logistic.rvs(loc=loc, scale=scale, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.logistic.ppf(0.01, loc, scale),
-            stats.logistic.ppf(0.99, loc, scale),
-            num=len(data),
-        ),
-        stats.logistic.pdf(x=data, loc=loc, scale=scale),
+    rvs = Distribution(
+        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
-    return rvs, pdf
+
+    # Probability density function
+    pdf = stats.logistic.pdf(x=x_range, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.logistic.cdf(x=x_range, loc=loc, scale=scale)
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def lognorm(data: np.ndarray) -> np.ndarray:
@@ -220,18 +475,54 @@ def lognorm(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
     s, loc, scale = get_params(data=data, distribution="lognorm")
-    rvs = stats.lognorm.rvs(s=s, loc=loc, scale=scale, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.lognorm.ppf(0.01, s, loc, scale),
-            stats.lognorm.ppf(0.99, s, loc, scale),
-            num=len(data),
-        ),
-        stats.lognorm.pdf(x=data, s=s, loc=loc, scale=scale),
+    name = "Lognorm Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = (
+        "s ="
+        + str(round(s, 2))
+        + "\nloc = "
+        + str(round(loc, 2))
+        + ", scale = "
+        + str(round(scale, 2))
     )
-    return rvs, pdf
+    formula = (
+        r"$f(x, s) = \frac{1}{s x \sqrt{2\pi}}\exp\left(-\frac{\log^2(x)}{2s^2}\right)$"
+        + "\n"
+        + r"For x > 0, s > 0."
+    )
+
+    # Random variate
+    rvs = stats.lognorm.rvs(s, loc=loc, scale=scale, size=len(data))
+    rvs = Distribution(
+        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
+    )
+
+    # Probability density function
+    pdf = stats.lognorm.pdf(x=x_range, s=s, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.lognorm.cdf(x=x_range, s=s, loc=loc, scale=scale)
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def pareto(data: np.ndarray) -> np.ndarray:
@@ -243,18 +534,50 @@ def pareto(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
     b, loc, scale = get_params(data=data, distribution="pareto")
-    rvs = stats.pareto.rvs(b=b, loc=loc, scale=scale, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.pareto.ppf(0.01, b, loc, scale),
-            stats.pareto.ppf(0.99, b, loc, scale),
-            num=len(data),
-        ),
-        stats.pareto.pdf(x=data, b=b, loc=loc, scale=scale),
+    name = "Pareto Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = (
+        "b ="
+        + str(round(b, 2))
+        + "\nloc = "
+        + str(round(loc, 2))
+        + ", scale = "
+        + str(round(scale, 2))
     )
-    return rvs, pdf
+    formula = r"$f(x, b) = \frac{b}{x^{b+1}}$" + "\n" + r"For x >= 1, b > 0"
+
+    # Random variate
+    rvs = stats.pareto.rvs(b, loc=loc, scale=scale, size=len(data))
+    rvs = Distribution(
+        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
+    )
+
+    # Probability density function
+    pdf = stats.pareto.pdf(x=x_range, b=b, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.pareto.cdf(x=x_range, b=b, loc=loc, scale=scale)
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def uniform(data: np.ndarray) -> np.ndarray:
@@ -266,18 +589,43 @@ def uniform(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
     loc, scale = get_params(data=data, distribution="uniform")
+    name = "Uniform Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = "loc = " + str(round(loc, 2)) + ", scale = " + str(round(scale, 2))
+    formula = r"$ f(x) = \frac{1}{(b-a)}$" + "for a <= x <= b"
+
+    # Random variate
     rvs = stats.uniform.rvs(loc=loc, scale=scale, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.uniform.ppf(0.01, loc, scale),
-            stats.uniform.ppf(0.99, loc, scale),
-            num=len(data),
-        ),
-        stats.uniform.pdf(x=data, loc=loc, scale=scale),
+    rvs = Distribution(
+        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
-    return rvs, pdf
+
+    # Probability density function
+    pdf = stats.uniform.pdf(x=x_range, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.uniform.cdf(x=x_range, loc=loc, scale=scale)
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def weibull(data: np.ndarray) -> np.ndarray:
@@ -289,19 +637,51 @@ def weibull(data: np.ndarray) -> np.ndarray:
     Returns:
         rvs: Random variate of the distribution
         pdf: Data from the probability density function
+        cdf: Data from the cumulative distribution function
     """
     c, loc, scale = get_params(data=data, distribution="weibull_min")
 
-    rvs = stats.weibull_min.rvs(c=c, loc=loc, scale=scale, size=len(data))
-    pdf = (
-        np.linspace(
-            stats.weibull_min.ppf(0.01, c, loc, scale),
-            stats.weibull_min.ppf(0.99, c, loc, scale),
-            num=len(data),
-        ),
-        stats.weibull_min.pdf(x=data, c=c, loc=loc, scale=scale),
+    name = "Weibull Distribution"
+    x_range = np.linspace(min(data), max(data), NUM_POINTS)
+    params = (
+        "c ="
+        + str(round(c, 2))
+        + "\nloc = "
+        + str(round(loc, 2))
+        + ", scale = "
+        + str(round(scale, 2))
     )
-    return rvs, pdf
+    formula = r"$f(x, c) = c x^{c-1} \exp(-x^c)$" + "\n" + r"For x > 0, c > 0."
+
+    # Random variate
+    rvs = stats.weibull_min.rvs(c, loc=loc, scale=scale, size=len(data))
+    rvs = Distribution(
+        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
+    )
+
+    # Probability density function
+    pdf = stats.weibull_min.pdf(x=x_range, c=c, loc=loc, scale=scale)
+    pdf = Distribution(
+        name=name,
+        label="Probability Density Function",
+        formula=formula,
+        params=params,
+        x=x_range,
+        y=pdf,
+    )
+
+    # Cumulative density function
+    cdf = stats.weibull_min.cdf(x=x_range, c=c, loc=loc, scale=scale)
+    cdf = Distribution(
+        name=name,
+        label="Cumulative Density Function",
+        params=params,
+        formula=formula,
+        x=x_range,
+        y=cdf,
+    )
+
+    return rvs, pdf, cdf
 
 
 def get_params(data: np.ndarray, distribution: str) -> tuple:
@@ -341,7 +721,7 @@ class RVSDistribution:
         "logistic": logistic,
         "lognorm": lognorm,
         "uniform": uniform,
-        "weibull_min": weibull,
+        "weibull": weibull,
         "pareto": pareto,
     }
 
@@ -349,6 +729,7 @@ class RVSDistribution:
         self._logger = logging.getLogger(f"{self.__class__.__name__}")
         self._rvs = None
         self._pdf = None
+        self._cdf = None
         self._distribution = None
 
     @property
@@ -366,30 +747,134 @@ class RVSDistribution:
         self._distribution = distribution
 
         try:
-            self._rvs, self._pdf = self.__GENERATORS[distribution](data=data)
+            self._rvs, self._pdf, self._cdf = self.__GENERATORS[distribution](data=data)
         except KeyError:  # pragma: no cover
             msg = f"{distribution} is not supported."
             self._logger.debug(msg)
             raise NotImplementedError(msg)
 
-    def plot(self, ax: plt.Axes = None) -> plt.Axes:
-        """Plots the data, a random sample, and the probability density function."""
+    def histplot(self, ax: plt.Axes = None) -> plt.Axes:
+        """Plots the distribution of the data as a histogram
 
-        ax = ax or Canvas().ax
-        # Combine the data and random sample into a single dataframe
-        data = {"Source": "Data", "Values": self._data}
-        sample = {"Source": "Random Variate", "Values": self._rvs}
-        # pdf = {"Source": "Probability Density Function", "Values": self._pdf[1]}
-        df1 = pd.DataFrame(data=data)
-        df2 = pd.DataFrame(data=sample)
-        # df3 = pd.DataFrame(data=pdf)
-        df4 = pd.concat([df1, df2], axis=0)
-        # Plot data and random sample
-        ax = sns.kdeplot(data=df4, x="Values", hue="Source", palette=Canvas.palette, ax=ax)
-        # Plot pdf
-        # ax = sns.lineplot(x=self._pdf[0], y=self._pdf[1], palette=Canvas.palette, ax=ax)
-
-        title = f"{self._distribution.capitalize()} Distribution\nData, Random Variate & Probability Density Function"
-
-        ax.set_title(title)
+        Args:
+            as (plt.Axes): Optional matplotlib Axes object.
+        """
+        canvas = Canvas()
+        ax = ax or canvas.ax
+        ax = sns.histplot(
+            x=self._data,
+            stat="density",
+            element="bars",
+            fill=True,
+            color=canvas.colors.dark_blue,
+            ax=ax,
+        )
+        ax.set_title("Empirical Data Distribution", fontsize=canvas.fontsize_title)
         return ax
+
+    def pdf(self, ax: plt.Axes = None) -> plt.Axes:
+        """Plots the distributioni probability density function
+
+        Args:
+            as (plt.Axes): Optional matplotlib Axes object.
+        """
+        canvas = Canvas()
+        ax = ax or canvas.ax
+        ax = sns.lineplot(x=self._pdf.x, y=self._pdf.y, ax=ax, color=canvas.colors.dark_blue)
+        ax.text(
+            x=0.75, y=0.55, s=self._pdf.formula, fontsize=12, va="bottom", transform=ax.transAxes
+        )
+        title = f"{self._pdf.name}\n{self._pdf.label}\n{self._pdf.params}"
+        ax.set_title(title, fontsize=canvas.fontsize_title)
+        return ax
+
+    def cdf(self, ax: plt.Axes = None) -> plt.Axes:
+        """Plots the cumulative distribution function.
+
+        Args:
+            as (plt.Axes): Optional matplotlib Axes object.
+        """
+        canvas = Canvas()
+        ax = ax or canvas.ax
+
+        ax = sns.lineplot(x=self._cdf.x, y=self._cdf.y, ax=ax, color=canvas.colors.dark_blue)
+        title = f"{self._cdf.name}\n{self._cdf.label}\n{self._cdf.params}"
+        ax.set_title(title, fontsize=canvas.fontsize_title)
+        return ax
+
+    def pdfcdf(self) -> plt.figure:
+        """Plots the probability distribution function vis-a-vis the cumulative distribution function"""
+        canvas = Canvas()
+        ax1 = canvas.ax
+        fig = canvas.fig
+
+        ax1 = sns.lineplot(
+            x=self._cdf.x,
+            y=self._cdf.y,
+            ax=ax1,
+            color=canvas.colors.dark_blue,
+            label="Cumulative Distribution Function",
+        )
+        ax2 = ax1.twinx()
+        ax2 = sns.lineplot(
+            x=self._pdf.x,
+            y=self._pdf.y,
+            ax=ax2,
+            color=canvas.colors.orange,
+            label="Probability Distribution Function",
+        )
+        title = f"{self._cdf.name}\n{self._cdf.label}-{self._pdf.label}\n{self._pdf.params}"
+        ax1.get_legend().remove()
+        ax2.get_legend().remove()
+        fig.legend()
+        fig.suptitle(title, fontsize=canvas.fontsize_title)
+        fig.tight_layout()
+        return fig
+
+    def ecdf(self, ax: plt.Axes = None) -> plt.Axes:
+        """Plots the empirical CDF vis-a-vis the theoretical CDF.
+
+        Args:
+            as (plt.Axes): Optional matplotlib Axes object.
+        """
+        canvas = Canvas()
+        ax = ax or canvas.ax
+        ax = sns.lineplot(x=self._cdf.x, y=self._cdf.y, ax=ax, label="Theoretical CDF")
+        ax = sns.ecdfplot(x=self._data, ax=ax, legend=True, label="Empirical CDF")
+
+        title = f"{self._cdf.name}\nTheoretical and Empirical CDF\n{self._cdf.params}"
+        ax.set_title(title, fontsize=canvas.fontsize_title)
+        ax.legend()
+
+        return ax
+
+    def histpdf(self) -> plt.figure:
+        """Plots the empirical histogram vis-a-vis the probability density function"""
+        canvas = Canvas()
+        ax1 = canvas.ax
+        fig = canvas.fig
+
+        ax1 = sns.histplot(
+            x=self._data,
+            stat="density",
+            element="bars",
+            fill=True,
+            color=canvas.colors.dark_blue,
+            ax=ax1,
+            label="Empirical Distribution",
+            legend=True,
+        )
+        ax2 = ax1.twinx()
+        ax2 = sns.lineplot(
+            x=self._pdf.x,
+            y=self._pdf.y,
+            ax=ax2,
+            color=canvas.colors.orange,
+            label="Probability Distribution Function",
+        )
+        title = f"{self._pdf.name}\nEmpirical Distribution vis-a-vis Probability Density Function\n{self._pdf.params}"
+        ax2.get_legend().remove()
+        fig.legend()
+        fig.suptitle(title, fontsize=canvas.fontsize_title)
+        fig.tight_layout()
+        return fig

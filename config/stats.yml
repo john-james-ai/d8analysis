@@ -112,9 +112,9 @@ fisher:
   use_when: Small Sample Sizes, or expected cell size < 5
   x_variable_type: nominal
   y_variable_type: nominal
-ks:
+ks1:
   '#': 3
-  H0: Data drawn from stated distribution family
+  H0: Data drawn from the reference distribution
   Version: 1
   analysis: univariate
   assumes_homoscedasticity: false
@@ -142,7 +142,47 @@ ks:
   function: scipy.stats.kstest
   hypothesis: Goodness of Fit
   link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html#scipy.stats.kstest
-  min_sample_size: 2000
+  min_sample_size: 50
+  name: Kolmogorov-Smirnov Test
+  package: Scipy
+  parametric: false
+  small_sample_sizes: false
+  statistic: KS
+  status: Pending
+  use_when: Large samples sizes > 50
+  x_variable_type: continuous
+  y_variable_type: .nan
+ks2:
+  '#': 3
+  H0: Data drawn from the same distribution
+  Version: 1
+  analysis: univariate
+  assumes_homoscedasticity: false
+  assumes_normality: false
+  assumptions: '
+
+    1. The two samples are mutually independent.
+
+    2. The scale of measurement is at least ordinal.
+
+    3. The test is only exact for continuous variables.
+
+
+    '
+  description: 'Performs the (one-sample or two-sample) Kolmogorov-Smirnov test for
+    goodness of fit.
+
+
+    The one-sample test compares the underlying distribution F(x) of a sample against
+    a given distribution G(x). The two-sample test compares the underlying distributions
+    of two independent samples. Both tests are valid only for continuous distributions.
+
+
+    '
+  function: scipy.stats.kstest
+  hypothesis: Goodness of Fit
+  link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.kstest.html#scipy.stats.kstest
+  min_sample_size: 50
   name: Kolmogorov-Smirnov Test
   package: Scipy
   parametric: false
@@ -419,7 +459,7 @@ x2gof:
   parametric: false
   small_sample_sizes: false
   statistic: X2
-  status: Pending
+  status: Done
   use_when: Expected frequency for all cells is > 5
   x_variable_type: nominal
   y_variable_type: .nan

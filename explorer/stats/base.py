@@ -11,13 +11,14 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Tuesday June 6th 2023 03:30:34 am                                                   #
+# Modified   : Tuesday June 6th 2023 05:58:03 am                                                   #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from __future__ import annotations
 from abc import ABC, abstractmethod
+import logging
 from dataclasses import dataclass, fields
 from typing import Tuple, Union
 
@@ -115,6 +116,7 @@ class StatTestResult(ABC):
 class StatisticalTest(ABC):
     def __init__(self, io: IOService = IOService) -> None:
         self._io = io
+        self._logger = logging.getLogger(f"{self.__class__.__name__}")
 
     @property
     @abstractmethod
