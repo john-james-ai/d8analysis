@@ -12,6 +12,10 @@ __pycache__/
 # Admin
 /admin
 
+# Logs
+/log
+log/
+
 # Distribution / packaging
 .Python
 build/
