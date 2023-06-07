@@ -1,7 +1,7 @@
 ad:
   '#': 13
   H0: Data drawn from stated distribution family
-  Version: 1
+  Version: 2
   analysis: univariate
   assumes_homoscedasticity: false
   assumes_normality: false
@@ -146,7 +146,7 @@ ks1:
   parametric: false
   small_sample_sizes: false
   statistic: "Kolmogorov\u2013Smirnov "
-  status: Pending
+  status: Done
   use_when: Large samples sizes > 50
   x_variable_type: continuous
   y_variable_type: .nan
@@ -186,7 +186,7 @@ ks2:
   parametric: false
   small_sample_sizes: false
   statistic: "Kolmogorov\u2013Smirnov "
-  status: Pending
+  status: Done
   use_when: Large samples sizes > 50
   x_variable_type: continuous
   y_variable_type: continuous
@@ -461,7 +461,7 @@ x2gof:
   use_when: Expected frequency for all cells is > 5
   x_variable_type: nominal
   y_variable_type: .nan
-x2i:
+x2ind:
   '#': 4
   H0: Two or more categorical variables are independent
   Version: 2

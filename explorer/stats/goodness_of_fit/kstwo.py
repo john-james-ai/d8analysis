@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Wednesday June 7th 2023 05:06:40 am                                                 #
+# Modified   : Wednesday June 7th 2023 02:06:26 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -35,7 +35,6 @@ from explorer.visual.config import Canvas
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
 class KSTwoTestResult(StatTestResult):
-    reference_distribution: str = None
     sample1: Union[pd.DataFrame, np.ndarray, pd.Series] = None
     sample2: Union[pd.DataFrame, np.ndarray, pd.Series] = None
 
@@ -56,17 +55,9 @@ class KSTwoTestResult(StatTestResult):
         ax = sns.lineplot(
             x=x, y=y, markers=False, dashes=False, sort=True, ax=ax, color=canvas.colors.dark_blue
         )
-        line = ax.lines[0]
-        xdata = line.get_xydata()[:, 0]
-        ydata = line.get_xydata()[:, 1]
-        # Get index of first value greater than the statistic.
-        try:
-            idx = np.where(xdata > self.value)[0][0]
-            fill_x = xdata[idx:]
-            fill_y2 = ydata[idx:]
-            ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color=canvas.colors.orange)
-        except IndexError:
-            pass
+
+        ax = self._fill_curve(ax)
+
         ax.set_title(
             f"Goodness of Fit\nDistributions of {self.sample1.name.capitalize()} of {self.sample2.name.capitalize()}\n{self.result}",
             fontsize=canvas.fontsize_title,
@@ -100,6 +91,8 @@ class KSTwoTestResult(StatTestResult):
             ax=ax,
         )
 
+        ax.set(xlabel=None)
+
         title = f"Goodness of Fit\nDistributions of {self.sample1.name.capitalize()} of {self.sample2.name.capitalize()}"
         ax.set_title(title, fontsize=canvas.fontsize_title)
         ax.legend()
@@ -120,6 +113,14 @@ class KSTwoTest(StatisticalTest):
         self._sample2 = None
         self._profile = StatTestProfileTwo.create(self.__id)
         self._result = None
+
+    @property
+    def sample1(self) -> pd.Series:
+        return self._sample1
+
+    @property
+    def sample2(self) -> pd.Series:
+        return self._sample2
 
     @property
     def profile(self) -> StatTestProfile:
@@ -162,7 +163,7 @@ class KSTwoTest(StatisticalTest):
             hypothesis=self._profile.hypothesis,
             value=result.statistic,
             pvalue=result.pvalue,
-            result=f"(KS={round(result.statistic,2)}, p{gtlt}{self._alpha}",
+            result=f"(KS={round(result.statistic,2)}), p{gtlt}{self._alpha}",
             sample1=sample1,
             sample2=sample2,
             inference=inference,

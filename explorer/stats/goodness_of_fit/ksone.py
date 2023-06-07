@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Wednesday June 7th 2023 03:59:06 am                                                 #
+# Modified   : Wednesday June 7th 2023 02:06:42 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -60,17 +60,9 @@ class KSOneTestResult(StatTestResult):
         ax = sns.lineplot(
             x=x, y=y, markers=False, dashes=False, sort=True, ax=ax, color=canvas.colors.dark_blue
         )
-        line = ax.lines[0]
-        xdata = line.get_xydata()[:, 0]
-        ydata = line.get_xydata()[:, 1]
-        # Get index of first value greater than the statistic.
-        try:
-            idx = np.where(xdata > self.value)[0][0]
-            fill_x = xdata[idx:]
-            fill_y2 = ydata[idx:]
-            ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color=canvas.colors.orange)
-        except IndexError:
-            pass
+
+        ax = self._fill_curve(ax)
+
         ax.set_title(
             f"Goodness of Fit\n{self.reference_distribution.capitalize()} Distribution\n{self.result}",
             fontsize=canvas.fontsize_title,

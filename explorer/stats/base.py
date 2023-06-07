@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Wednesday June 7th 2023 05:14:10 am                                                 #
+# Modified   : Wednesday June 7th 2023 05:02:53 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,8 +21,12 @@ from abc import ABC, abstractmethod
 import logging
 from dataclasses import dataclass, fields
 
+import matplotlib.pyplot as plt
+import numpy as np
+
 from explorer.service.io import IOService
 from explorer import IMMUTABLE_TYPES
+from explorer.visual.config import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
 ANALYSIS_TYPES = {
@@ -107,6 +111,23 @@ class StatTestResult(ABC):
             if type(v) in IMMUTABLE_TYPES:
                 s += f"\t{k.rjust(width,' ')} | {v}\n"
         return s
+
+    def _fill_curve(self, ax: plt.Axes) -> plt.Axes:
+        """Fills the area under the curve at the value of the hypothesis test statistic."""
+
+        # Obtain the lines for the x y values from the axes object.
+        line = ax.lines[0]
+        xdata = line.get_xydata()[:, 0]
+        ydata = line.get_xydata()[:, 1]
+        # Get index of first value greater than the statistic.
+        try:
+            idx = np.where(xdata > self.value)[0][0]
+            fill_x = xdata[idx:]
+            fill_y2 = ydata[idx:]
+            ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color=Canvas.colors.orange)
+        except IndexError:
+            pass
+        return ax
 
 
 # ------------------------------------------------------------------------------------------------ #
