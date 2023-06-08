@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Wednesday June 7th 2023 02:06:26 pm                                                 #
+# Modified   : Wednesday June 7th 2023 09:25:19 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -28,6 +28,9 @@ from scipy import stats
 from explorer.stats.profile import StatTestProfileTwo
 from explorer.stats.base import StatTestResult, StatisticalTest, StatTestProfile
 from explorer.visual.config import Canvas
+
+# ------------------------------------------------------------------------------------------------ #
+sns.set_style(Canvas.style)
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -149,11 +152,9 @@ class KSTwoTest(StatisticalTest):
         )
 
         if result.pvalue > self._alpha:
-            gtlt = ">"
-            inference = f"The pvalue {round(result.pvalue,2)} is greater than level of significance {self._alpha}; therefore, the null hypothesis is not rejected. The distributions are not significantly different."
+            inference = f"The pvalue {round(result.pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The distributions are not significantly different."
         else:
-            gtlt = "<"
-            inference = f"The pvalue {round(result.pvalue,2)} is less than level of significance {self._alpha}; therefore, the null hypothesis is rejected. The distributions are significantly different."
+            inference = f"The pvalue {round(result.pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The distributions are significantly different."
 
         # Create the result object.
         self._result = KSTwoTestResult(
@@ -163,7 +164,7 @@ class KSTwoTest(StatisticalTest):
             hypothesis=self._profile.hypothesis,
             value=result.statistic,
             pvalue=result.pvalue,
-            result=f"(KS={round(result.statistic,2)}), p{gtlt}{self._alpha}",
+            result=f"(KS={round(result.statistic,2)}), {self._report_pvalue(result.pvalue)} {self._report_alpha()}",
             sample1=sample1,
             sample2=sample2,
             inference=inference,

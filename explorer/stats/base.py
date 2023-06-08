@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Wednesday June 7th 2023 05:02:53 pm                                                 #
+# Modified   : Wednesday June 7th 2023 09:05:09 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -20,12 +20,14 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 import logging
 from dataclasses import dataclass, fields
+from typing import Union
 
+import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 
 from explorer.service.io import IOService
-from explorer import IMMUTABLE_TYPES
+from explorer import IMMUTABLE_TYPES, SEQUENCE_TYPES
 from explorer.visual.config import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
@@ -149,3 +151,63 @@ class StatisticalTest(ABC):
     @abstractmethod
     def __call__(self, *args, **kwargs) -> None:
         """Performs the statistical test and creates a result object."""
+
+    def _report_pvalue(self, pvalue: float) -> str:
+        """Rounds the pvalue in accordance with the APA Style Guide 7th Edition"""
+        if pvalue < 0.001:
+            return "p<.001"
+        else:
+            return "P=" + str(round(pvalue, 3))
+
+    def _report_alpha(self) -> str:
+        a = int(self._alpha * 100)
+        return f"significant at {a}%."
+
+
+# ------------------------------------------------------------------------------------------------ #
+class StatisticalTestTwo(StatisticalTest):
+    """Abstract base class for bivariate statistial tests."""
+
+    def _parse_arguments(
+        self, data: pd.DataFrame, x: Union[np.ndarray, str], y: Union[np.ndarray, str]
+    ) -> None:
+        """Parses arguments into a 2 column DataFrame and x,y column names"""
+        msg = ""
+        if isinstance(data, pd.DataFrame):
+            if data.shape[1] == 2:
+                x, y = data.columns
+                return data, x, y
+            elif data.shape[1] > 2:
+                if self._is_column(data, x) and self._is_column(data, y) and x != y:
+                    return data, x, y
+                else:
+                    msg += "Arguments are ambiguous. If data contains more than two columns, x and y must reference columns in data."
+
+        elif data is None:
+            if self._is_iterable(x) and self._is_iterable(y):
+                return self._make_df(x, y)
+            else:
+                msg += "Arguments are ambiguous. Data must be a dataframe and x,y column names, or x and y must be array-like."
+        else:
+            msg += "Arguments are ambiguous. Data must be a dataframe and x,y column names, or x and y must be array-like."
+
+        if len(msg) > 0:
+            self._logger.error(msg)
+            raise ValueError(msg)
+
+    def _make_df(self, x: np.ndarray, y: np.ndarray) -> pd.DataFrame:
+        """Converts two arrays to a DataFrame"""
+        d = {"Sample 1": x, "Sample 2": y}
+        df = pd.DataFrame(data=d)
+        x = "Sample 1"
+        y = "Sample 2"
+        return df, x, y
+
+    def _is_iterable(self, a) -> bool:
+        return type(a) in SEQUENCE_TYPES or isinstance(a, pd.Series)
+
+    def _is_column(self, data: pd.DataFrame, a: str) -> bool:
+        if not isinstance(a, str):
+            return False
+        else:
+            return a in data.columns

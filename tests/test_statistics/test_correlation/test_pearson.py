@@ -4,14 +4,14 @@
 # Project    : Enter Project Name in Workspace Settings                                            #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /tests/test_statistics/test_independence/test_chisq_ind.py                          #
+# Filename   : /tests/test_statistics/test_correlation/test_pearson.py                             #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Monday June 5th 2023 09:32:36 pm                                                    #
-# Modified   : Wednesday June 7th 2023 07:49:19 pm                                                 #
+# Created    : Wednesday June 7th 2023 09:15:17 pm                                                 #
+# Modified   : Wednesday June 7th 2023 09:20:04 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,8 +22,8 @@ import pytest
 import logging
 import pandas as pd
 
-from explorer.stats.independence.chisquare import ChiSquareIndependenceTest
-from explorer.stats.base import StatTestProfile
+from explorer.stats.correlation.pearson import PearsonCorrelationTest
+from explorer.stats.profile import StatTestProfileTwo
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -34,11 +34,11 @@ single_line = f"\n{100 * '-'}"
 
 
 @pytest.mark.stats
-@pytest.mark.ind
-@pytest.mark.x2ind
-class TestX2Independence:  # pragma: no cover
+@pytest.mark.corr
+@pytest.mark.pearson
+class TestPearson:  # pragma: no cover
     # ============================================================================================ #
-    def test_x2(self, dataset, caplog):
+    def test_pearson(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -50,20 +50,15 @@ class TestX2Independence:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        test = ChiSquareIndependenceTest()
-        test(data=dataset[["Education", "Marital Status"]])
-        assert "Chi" in test.result.test
+        test = PearsonCorrelationTest()
+        test(data=dataset, x="Income", y="Age")
+        assert "Pearson" in test.result.test
         assert isinstance(test.result.H0, str)
         assert isinstance(test.result.pvalue, float)
         assert test.result.alpha == 0.05
         assert isinstance(test.result.data, pd.DataFrame)
-        assert isinstance(test.profile, StatTestProfile)
+        assert isinstance(test.profile, StatTestProfileTwo)
         logging.debug(test.result)
-
-        # Test Result
-        dfc = test.result._combine_contingency_tables()
-        assert isinstance(dfc, pd.DataFrame)
-        logger.debug(dfc)
 
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()
@@ -93,18 +88,18 @@ class TestX2Independence:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        test = ChiSquareIndependenceTest()
+        test = PearsonCorrelationTest()
         # Test two arrays no dataframe
-        x = dataset["Education"]
-        y = dataset["Marital Status"]
+        x = dataset["Income"]
+        y = dataset["Age"]
         test(x=x, y=y)
-        assert "Chi" in test.result.test
+        assert "Pearson" in test.result.test
         assert isinstance(test.result.x, str)
         assert isinstance(test.result.y, str)
         assert test.result.x == "Sample 1"
         assert test.result.y == "Sample 2"
 
-        test(data=dataset, x="Education", y="Income")
+        test(data=dataset, x="Income", y="Age")
 
         with pytest.raises(ValueError):
             test()

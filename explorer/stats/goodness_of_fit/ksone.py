@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Wednesday June 7th 2023 02:06:42 pm                                                 #
+# Modified   : Wednesday June 7th 2023 09:25:15 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -33,6 +33,8 @@ from explorer.stats.distribution import RVSDistribution
 
 # ------------------------------------------------------------------------------------------------ #
 MC_SAMPLES = 100
+# ------------------------------------------------------------------------------------------------ #
+sns.set_style(Canvas.style)
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -150,10 +152,10 @@ class KSOneTest(StatisticalTest):
 
         if result.pvalue > self._alpha:
             gtlt = ">"
-            inference = f"The pvalue {round(result.pvalue,2)} is greater than level of significance {self._alpha}; therefore, the null hypothesis is not rejected. The data were drawn from the reference distribution."
+            inference = f"The pvalue {round(result.pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The data were drawn from the reference distribution."
         else:
             gtlt = "<"
-            inference = f"The pvalue {round(result.pvalue,2)} is less than level of significance {self._alpha}; therefore, the null hypothesis is rejected. The data were not drawn from the reference distribution."
+            inference = f"The pvalue {round(result.pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The data were not drawn from the reference distribution."
 
         # Create the result object.
         self._result = KSOneTestResult(

@@ -11,13 +11,13 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday May 29th 2023 03:00:39 am                                                    #
-# Modified   : Wednesday June 7th 2023 05:03:06 pm                                                 #
+# Modified   : Wednesday June 7th 2023 09:31:38 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from dataclasses import dataclass
-from typing import Union, Tuple
+from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -26,8 +26,11 @@ import seaborn as sns
 from scipy import stats
 
 from explorer.stats.profile import StatTestProfileTwo
-from explorer.stats.base import StatTestResult, StatisticalTest, StatTestProfile
+from explorer.stats.base import StatTestResult, StatisticalTestTwo, StatTestProfile
 from explorer.visual.config import Canvas
+
+# ------------------------------------------------------------------------------------------------ #
+sns.set_style(Canvas.style)
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -36,9 +39,11 @@ from explorer.visual.config import Canvas
 @dataclass
 class ChiSquareIndependenceResult(StatTestResult):
     dof: int = None
-    data: Union[pd.DataFrame, np.ndarray, pd.Series] = None
-    observed: Union[pd.DataFrame, np.ndarray, pd.Series] = None
-    expected: Union[pd.DataFrame, np.ndarray, pd.Series] = None
+    data: pd.DataFrame = None
+    x: str = None
+    y: str = None
+    observed: stats.contingency.crosstab = None
+    expected: np.ndarray = None
 
     def plot(self, varname: str = None, ax: plt.Axes = None) -> plt.Axes:  # pragma: no cover
         canvas = Canvas()
@@ -147,7 +152,7 @@ class ChiSquareIndependenceResult(StatTestResult):
 # ------------------------------------------------------------------------------------------------ #
 #                                          TEST                                                    #
 # ------------------------------------------------------------------------------------------------ #
-class ChiSquareIndependenceTest(StatisticalTest):
+class ChiSquareIndependenceTest(StatisticalTestTwo):
     __id = "x2ind"
 
     def __init__(self, alpha: float = 0.05) -> None:
@@ -162,35 +167,37 @@ class ChiSquareIndependenceTest(StatisticalTest):
         return self._profile
 
     @property
-    def data(self) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
-        """Returns the data tested"""
-        return self._data
-
-    @property
     def result(self) -> StatTestResult:
         """Returns a Statistical Test Result object."""
         return self._result
 
-    def __call__(self, data: pd.DataFrame) -> None:
+    def __call__(
+        self,
+        data: pd.DataFrame = None,
+        x: Union[np.ndarray, str] = None,
+        y: Union[np.ndarray, str] = None,
+    ) -> None:
         """Performs the statistical test and creates a result object.
+
+        Internally, the data is converted into a DataFrame and x and y are strings referencing columns in data.
 
         Args:
             data (pd.DataFrame) A pandas dataframe containing the two nominal/categorical
-                variable columns to be tested.
+                variable columns to be tested. Optional.
+            x: (Union[np.ndarray,str]): An array or string key referencing a column data, if data is provided.
+            y: (Union[np.ndarray,str]): An array or string key referencing a column data, if data is provided.
 
         """
-        self._data = data
-        s1 = data.iloc[:, 0]
-        s2 = data.iloc[:, 1]
-        obs = stats.contingency.crosstab(s1, s2)
+        data, x, y = self._parse_arguments(data=data, x=x, y=y)
+
+        obs = stats.contingency.crosstab(data[x], data[y])
+
         statistic, pvalue, dof, exp = stats.chi2_contingency(obs.count)
 
         if pvalue > self._alpha:  # pragma: no cover
-            gtlt = ">"
-            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {self._alpha}; therefore, the null hypothesis is not rejected. The data have the expected frequencies."
+            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The relationship between between {x} and {y} is not significant."
         else:
-            gtlt = "<"
-            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {self._alpha}; therefore, the null hypothesis is rejected. The data do not have the expected frequencies."
+            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The relationship between {x} and {y} is significant."
 
         # Create the result object.
         self._result = ChiSquareIndependenceResult(
@@ -201,8 +208,10 @@ class ChiSquareIndependenceTest(StatisticalTest):
             dof=dof,
             value=statistic,
             pvalue=pvalue,
-            result=f"X\u00b2({dof}, N={len(data)})={round(statistic,2)}, p{gtlt}{self._alpha}",
+            result=f"X\u00b2({dof}, N={len(data)})={round(statistic,2)}, {self._report_pvalue(pvalue)} {self._report_alpha()}",
             data=data,
+            x=x,
+            y=y,
             observed=obs,
             expected=exp,
             inference=inference,

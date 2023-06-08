@@ -11,12 +11,13 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Wednesday June 7th 2023 01:53:42 am                                                 #
+# Modified   : Wednesday June 7th 2023 06:43:27 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 import numpy as np
+import pandas as pd
 
 IMMUTABLE_TYPES: tuple = (
     str,
@@ -33,7 +34,10 @@ IMMUTABLE_TYPES: tuple = (
     np.float64,
     np.float128,
 )
-SEQUENCE_TYPES: tuple = (list, tuple)
+SEQUENCE_TYPES: tuple = (
+    list,
+    tuple,
+)
 # ------------------------------------------------------------------------------------------------ #
 NUMERICS = [
     "int16",
