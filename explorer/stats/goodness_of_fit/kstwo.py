@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Wednesday June 7th 2023 09:25:19 pm                                                 #
+# Modified   : Thursday June 8th 2023 05:35:46 am                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -53,13 +53,18 @@ class KSTwoTestResult(StatTestResult):
         # Get the callable for the statistic.
         n = len(self.sample1)
 
-        x = np.linspace(stats.kstwo.ppf(0.01, n), stats.ksone.ppf(0.999, n), 100)
+        x = np.linspace(stats.kstwo.ppf(0.01, n), stats.ksone.ppf(0.999, n), 500)
         y = stats.kstwo.pdf(x, n)
         ax = sns.lineplot(
             x=x, y=y, markers=False, dashes=False, sort=True, ax=ax, color=canvas.colors.dark_blue
         )
 
-        ax = self._fill_curve(ax)
+        # Compute reject region
+        upper_alpha = 1 - (self.alpha)
+        upper = stats.kstwo.ppf(upper_alpha, n)
+
+        # Fill reject region at critical points
+        self._fill_curve(ax, upper=upper)
 
         ax.set_title(
             f"Goodness of Fit\nDistributions of {self.sample1.name.capitalize()} of {self.sample2.name.capitalize()}\n{self.result}",
@@ -152,9 +157,9 @@ class KSTwoTest(StatisticalTest):
         )
 
         if result.pvalue > self._alpha:
-            inference = f"The pvalue {round(result.pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The distributions are not significantly different."
+            inference = f"The pvalue {round(result.pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence against a common distribution is not significantly."
         else:
-            inference = f"The pvalue {round(result.pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The distributions are significantly different."
+            inference = f"The pvalue {round(result.pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against a common distribution is significantly different."
 
         # Create the result object.
         self._result = KSTwoTestResult(

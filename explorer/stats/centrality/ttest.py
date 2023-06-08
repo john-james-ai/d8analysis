@@ -3,31 +3,30 @@
 # ================================================================================================ #
 # Project    : Enter Project Name in Workspace Settings                                            #
 # Version    : 0.1.19                                                                              #
-# Python     : 3.10.11                                                                             #
-# Filename   : /explorer/stats/goodness_of_fit/chisquare.py                                        #
+# Python     : 3.10.10                                                                             #
+# Filename   : /explorer/stats/centrality/ttest.py                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Monday May 29th 2023 03:00:39 am                                                    #
-# Modified   : Thursday June 8th 2023 05:38:35 am                                                  #
+# Created    : Wednesday June 7th 2023 11:41:00 pm                                                 #
+# Modified   : Thursday June 8th 2023 05:09:28 am                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from dataclasses import dataclass
-from typing import Union, Tuple
 
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
 from explorer.stats.profile import StatTestProfileTwo
-from explorer.stats.base import StatTestResult, StatisticalTest, StatTestProfile
+from explorer.stats.base import StatTestResult, StatisticalTestTwo, StatTestProfile
 from explorer.visual.config import Canvas
+from explorer.stats.descriptive import QuantStats
 
 # ------------------------------------------------------------------------------------------------ #
 sns.set_style(Canvas.style)
@@ -37,38 +36,46 @@ sns.set_style(Canvas.style)
 #                                     TEST RESULT                                                  #
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
-class ChiSquareGOFResult(StatTestResult):
+class TTestResult(StatTestResult):
     dof: int = None
-    data: Union[pd.DataFrame, np.ndarray, pd.Series] = None
-    observed: Union[pd.DataFrame, np.ndarray, pd.Series] = None
-    expected: Union[pd.DataFrame, np.ndarray, pd.Series] = None
+    homoscedastic: bool = None
+    x: str = None
+    y: str = None
+    x_stats: QuantStats = None
+    y_stats: QuantStats = None
 
     def plot(self, varname: str = None, ax: plt.Axes = None) -> plt.Axes:  # pragma: no cover
         canvas = Canvas()
         ax = ax or canvas.ax
-        x = np.linspace(stats.chi2.ppf(0.01, self.dof), stats.chi2.ppf(0.99, self.dof), 100)
-        y = stats.chi2.pdf(x, self.dof)
+        x = np.linspace(stats.t.ppf(0.001, self.dof), stats.t.ppf(0.999, self.dof), 500)
+        y = stats.t.pdf(x, self.dof)
         ax = sns.lineplot(x=x, y=y, markers=False, dashes=False, sort=True, ax=ax)
 
         # Compute reject region
+        lower_alpha = self.alpha / 2
         upper_alpha = 1 - (self.alpha / 2)
-        upper = stats.chi2.ppf(upper_alpha, self.dof)
-        ax = self._fill_curve(ax, upper=upper)
+        lower = stats.t.ppf(lower_alpha, self.dof)
+        upper = stats.t.ppf(upper_alpha, self.dof)
+
+        # Fill reject region at critical points
+        self._fill_curve(ax, lower, upper)
 
         ax.set_title(
-            f"X\u00b2 Goodness of Fit\nTest Result\n{self.result}", fontsize=canvas.fontsize_title
+            f"{self.result}",
+            fontsize=canvas.fontsize_title,
         )
 
         ax.set_xlabel(r"$X^2$")
         ax.set_ylabel("Probability Density")
+        plt.tight_layout()
         return ax
 
 
 # ------------------------------------------------------------------------------------------------ #
 #                                          TEST                                                    #
 # ------------------------------------------------------------------------------------------------ #
-class ChiSquareGOFTest(StatisticalTest):
-    __id = "x2gof"
+class TTest(StatisticalTestTwo):
+    __id = "t2"
 
     def __init__(self, alpha: float = 0.05) -> None:
         super().__init__()
@@ -82,57 +89,60 @@ class ChiSquareGOFTest(StatisticalTest):
         return self._profile
 
     @property
-    def data(self) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
-        """Returns the data tested"""
-        return self._data
-
-    @property
     def result(self) -> StatTestResult:
         """Returns a Statistical Test Result object."""
         return self._result
 
-    def __call__(self, data: Union[pd.Series, pd.DataFrame], expected: dict = None) -> None:
+    def __call__(
+        self,
+        x: np.ndarray,
+        y: np.ndarray,
+        homoscedastic: bool = False,
+    ) -> None:
         """Performs the statistical test and creates a result object.
 
+        Internally, the data is converted into a DataFrame and x and y are strings referencing columns in data.
+
         Args:
-            data (Union[pd.Series,np.ndarray]) A pandas series or a one-column dataframe containing the
-                nominal / categorical data to be tested.
-            expected (dict): Dictionary in which the keys are categories and the values
-                are the expected frequencies.
+            x: (np.ndarray): An array containing the first of two independent samples.
+            y: (np.ndarray): An array containing the second of two independent samples.
+            homoscedastic (bool): If True, perform a standard independent 2 sample test that assumes equal
+                population variances. If False, perform Welch’s t-test, which does not assume equal
+                population variance.
 
         """
-        self._data = data
 
-        # Extract observed frequencies sorted by category in lexical order
-        observed = data.value_counts(sort=True, ascending=False).to_frame().sort_index().values
-        # Extract expected frequencies (if provided) similarly
-        if expected is not None:
-            expected = pd.DataFrame.from_dict(data=expected, orient="index").sort_index().values
+        statistic, pvalue = stats.ttest_ind(a=x, b=y, equal_var=homoscedastic)
 
-        dof = len(observed) - 1
+        x_stats = QuantStats.compute(x)
+        y_stats = QuantStats.compute(y)
+        dof = x_stats.length + y_stats.length - 2
 
-        statistic, pvalue = stats.chisquare(f_obs=observed, f_exp=expected, axis=None)
-        if pvalue > self._alpha:
-            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence against a common distribution was not significant."
+        result = self._report_results(x_stats, y_stats, dof, statistic, pvalue)
+
+        if pvalue > self._alpha:  # pragma: no cover
+            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence against identical centers for x and y is not significant."
         else:
-            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against a common distribution is significant."
-
-        if expected is None:  # Add an explainable value to the result object, rather than None.
-            expected = ("Equal Frequencies among Groups",)
+            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against identical centers for x and y is significant."
 
         # Create the result object.
-        self._result = ChiSquareGOFResult(
+        self._result = TTestResult(
             test=self._profile.name,
             H0=self._profile.H0,
-            statistic="X\u00b2",
+            statistic=self._profile.statistic,
             hypothesis=self._profile.hypothesis,
+            homoscedastic=homoscedastic,
             dof=dof,
-            value=statistic,
+            value=np.abs(statistic),
             pvalue=pvalue,
-            result=f"X\u00b2({dof}, N={len(data)})={round(statistic,2)}, {self._report_pvalue(pvalue)} {self._report_alpha()}",
-            data=data,
-            observed=observed,
-            expected=expected,
+            result=result,
+            x=x,
+            y=y,
+            x_stats=x_stats,
+            y_stats=y_stats,
             inference=inference,
             alpha=self._alpha,
         )
+
+    def _report_results(self, x_stats, y_stats, dof, statistic, pvalue) -> str:
+        return f"Independent Samples t Test\nX: (N = {x_stats.count}, M = {round(x_stats.mean,2)}, SD = {round(x_stats.std,2)})\nY: (N = {y_stats.count}, M = {round(y_stats.mean,2)}, SD = {round(y_stats.std,2)})\nt({dof}) = {round(statistic,2)}, {self._report_pvalue(pvalue)} {self._report_alpha()}"

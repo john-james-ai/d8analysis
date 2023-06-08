@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday May 29th 2023 03:00:39 am                                                    #
-# Modified   : Wednesday June 7th 2023 09:31:38 pm                                                 #
+# Modified   : Thursday June 8th 2023 05:43:47 am                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -52,7 +52,12 @@ class ChiSquareIndependenceResult(StatTestResult):
         y = stats.chi2.pdf(x, self.dof)
         ax = sns.lineplot(x=x, y=y, markers=False, dashes=False, sort=True, ax=ax)
 
-        self._fill_curve(ax)
+        # Compute reject region
+        upper_alpha = 1 - (self.alpha)
+        upper = stats.chi2.ppf(upper_alpha, self.dof)
+
+        # Fill reject region at critical points
+        self._fill_curve(ax, upper=upper)
 
         ax.set_title(
             f"X\u00b2 Test of Independence\n{self.result}",
@@ -195,9 +200,9 @@ class ChiSquareIndependenceTest(StatisticalTestTwo):
         statistic, pvalue, dof, exp = stats.chi2_contingency(obs.count)
 
         if pvalue > self._alpha:  # pragma: no cover
-            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The relationship between between {x} and {y} is not significant."
+            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence against independence of {x} and {y} is not significant."
         else:
-            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The relationship between {x} and {y} is significant."
+            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against independence of {x} and {y} is significant."
 
         # Create the result object.
         self._result = ChiSquareIndependenceResult(

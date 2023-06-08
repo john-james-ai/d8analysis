@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Wednesday June 7th 2023 09:25:15 pm                                                 #
+# Modified   : Thursday June 8th 2023 05:42:59 am                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -57,13 +57,18 @@ class KSOneTestResult(StatTestResult):
         # Get the callable for the statistic.
         n = len(self.data)
 
-        x = np.linspace(stats.ksone.ppf(0.01, n), stats.ksone.ppf(0.999, n), 100)
+        x = np.linspace(stats.ksone.ppf(0.01, n), stats.ksone.ppf(0.999, n), 500)
         y = stats.ksone.pdf(x, n)
         ax = sns.lineplot(
             x=x, y=y, markers=False, dashes=False, sort=True, ax=ax, color=canvas.colors.dark_blue
         )
 
-        ax = self._fill_curve(ax)
+        # Compute reject region
+        upper_alpha = 1 - (self.alpha)
+        upper = stats.ksone.ppf(upper_alpha, n)
+
+        # Fill reject region at critical points
+        self._fill_curve(ax, upper=upper)
 
         ax.set_title(
             f"Goodness of Fit\n{self.reference_distribution.capitalize()} Distribution\n{self.result}",
@@ -151,11 +156,15 @@ class KSOneTest(StatisticalTest):
         )
 
         if result.pvalue > self._alpha:
-            gtlt = ">"
-            inference = f"The pvalue {round(result.pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The data were drawn from the reference distribution."
+            inference = f"The pvalue {round(result.pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence against the data being drawn from the {reference_distribution} distribution is not significant."
         else:
-            gtlt = "<"
-            inference = f"The pvalue {round(result.pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The data were not drawn from the reference distribution."
+            inference = f"The pvalue {round(result.pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against the data being drawn from the {reference_distribution} distribution is significant."
+
+        interpretation = None
+        if len(data) < 50:
+            interpretation = "Note: The Kolmogorov-Smirnov Test requires a sample size N > 50. For smaller sample sizes, the Shapiro-Wilk test should be considered."
+        if len(data) > 1000:
+            interpretation = "Note: The Kolmogorov-Smirnov Test on large sample sizes may lead to rejections of the null hypothesis that are statistically significant, yet practically insignificant."
 
         # Create the result object.
         self._result = KSOneTestResult(
@@ -165,9 +174,10 @@ class KSOneTest(StatisticalTest):
             hypothesis=self._profile.hypothesis,
             value=result.statistic,
             pvalue=result.pvalue,
-            result=f"(N={len(data)})={round(result.statistic,2)}, p{gtlt}{self._alpha}",
+            result=f"(N={len(data)})={round(result.statistic,2)}, {self._report_pvalue(result.pvalue)} {self._report_alpha()}",
             data=data,
             reference_distribution=reference_distribution,
             inference=inference,
+            interpretation=interpretation,
             alpha=self._alpha,
         )

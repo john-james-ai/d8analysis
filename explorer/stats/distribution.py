@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday May 27th 2023 08:56:02 pm                                                  #
-# Modified   : Wednesday June 7th 2023 03:35:44 am                                                 #
+# Modified   : Thursday June 8th 2023 03:35:11 am                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -41,7 +41,7 @@ sns.set_style(Canvas.style)
 DISTRIBUTIONS = {
     "beta": stats.beta,
     "normal": stats.norm,
-    "chi2": stats.chi2,
+    "X2": stats.chi2,
     "exponential": stats.expon,
     "f": stats.f,
     "gamma": stats.gamma,
@@ -733,7 +733,7 @@ class RVSDistribution:
     __DISTRIBUTIONS = {
         "beta": beta,
         "normal": normal,
-        "chi2": chi2,
+        "X2": chi2,
         "exponential": exponential,
         "f": f,
         "gamma": gamma,

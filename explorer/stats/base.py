@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Wednesday June 7th 2023 09:05:09 pm                                                 #
+# Modified   : Thursday June 8th 2023 05:34:08 am                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -25,11 +25,14 @@ from typing import Union
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import seaborn as sns
 
 from explorer.service.io import IOService
 from explorer import IMMUTABLE_TYPES, SEQUENCE_TYPES
 from explorer.visual.config import Canvas
 
+# ------------------------------------------------------------------------------------------------ #
+sns.set_style(Canvas.style)
 # ------------------------------------------------------------------------------------------------ #
 ANALYSIS_TYPES = {
     "univariate": "Univariate",
@@ -37,6 +40,16 @@ ANALYSIS_TYPES = {
     "multivariate": "Multivariate",
 }
 STAT_CONFIG = "config/stats.yml"
+
+
+# ------------------------------------------------------------------------------------------------ #
+@dataclass
+class Description(ABC):
+    """Descriptive statistics for distributions"""
+
+    count: int  # Non-Nulls only
+    length: int  # Total length of iterable.
+    size: int
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -95,6 +108,7 @@ class StatTestResult(ABC):
     inference: str
     alpha: float = 0.05
     result: str = None
+    interpretation: str = None
 
     def __repr__(self) -> str:
         return "{}({})".format(
@@ -114,21 +128,44 @@ class StatTestResult(ABC):
                 s += f"\t{k.rjust(width,' ')} | {v}\n"
         return s
 
-    def _fill_curve(self, ax: plt.Axes) -> plt.Axes:
+    def _fill_curve(self, ax: plt.Axes, upper: float, lower: float = None) -> plt.Axes:
         """Fills the area under the curve at the value of the hypothesis test statistic."""
 
-        # Obtain the lines for the x y values from the axes object.
         line = ax.lines[0]
         xdata = line.get_xydata()[:, 0]
         ydata = line.get_xydata()[:, 1]
-        # Get index of first value greater than the statistic.
+
+        # Fill lower tail
+        if lower is not None:
+            idx_lower = np.where(xdata > lower)[0][0]
+            fill_x = xdata[:idx_lower]
+            fill_y2 = ydata[:idx_lower]
+            ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color=Canvas.colors.orange)
+
+        # Fill upper tail
+        idx_upper = np.where(xdata < upper)[0][-1]
+        fill_x = xdata[idx_upper:]
+        fill_y2 = ydata[idx_upper:]
+        ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color=Canvas.colors.orange)
+
+        # Plot statistic
         try:
             idx = np.where(xdata > self.value)[0][0]
-            fill_x = xdata[idx:]
-            fill_y2 = ydata[idx:]
-            ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color=Canvas.colors.orange)
+            x = xdata[idx]
+            y = ydata[idx]
+            ax = sns.regplot(
+                x=np.array([x]),
+                y=np.array([y]),
+                scatter=True,
+                fit_reg=False,
+                marker="o",
+                scatter_kws={"s": 100},
+                ax=ax,
+                color=Canvas.colors.dark_blue,
+            )
         except IndexError:
             pass
+
         return ax
 
 

@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Wednesday June 7th 2023 05:06:21 pm                                                 #
+# Modified   : Wednesday June 7th 2023 10:28:14 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -67,6 +67,7 @@ class Canvas:
     colors: str = Colors()
     palette: str = Palette.blues_r
     saturation: float = 0.5
+    fontsize: int = 10
     fontsize_title: int = 10
     fig: plt.figure = None
     ax: plt.axes = None

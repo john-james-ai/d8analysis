@@ -310,8 +310,8 @@ pearson:
   package: Scipy
   parametric: true
   small_sample_sizes: true
-  statistic: 'Pearson correlation coefficient (r) '
-  status: Pending
+  statistic: Pearson product-moment correlation coefficient
+  status: Done
   use_when: Variables are normally distributed and linearly related.
   x_variable_type: continuous
   y_variable_type: continuous
@@ -354,7 +354,7 @@ spearman:
   parametric: false
   small_sample_sizes: true
   statistic: "Spearman\u2019s rho (S)"
-  status: Pending
+  status: Done
   use_when: Assumptions of Pearson's Correlation are not met or data are ordinal.
   x_variable_type: continuous
   y_variable_type: continuous
@@ -380,13 +380,14 @@ sw:
   parametric: false
   small_sample_sizes: true
   statistic: Shapiro-Wilk W
-  status: Pending
+  status: Done
   use_when: Sample sizes < 50
   x_variable_type: continuous
   y_variable_type: .nan
 t2:
   '#': 6
-  H0: Means are the same
+  H0: The means of two independent samples, drawn from a normal distribution, with
+    equal variances, are identical.
   Version: 1
   analysis: univariate
   assumes_homoscedasticity: false
@@ -412,12 +413,12 @@ t2:
   hypothesis: Centrality
   link: https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.ttest_ind.html#scipy.stats.ttest_ind
   min_sample_size: 30
-  name: T-Test (2-Sample)
+  name: T-test - Independent Samples
   package: Scipy
   parametric: true
   small_sample_sizes: true
   statistic: T
-  status: Pending
+  status: Done
   use_when: Data are normally distributed
   x_variable_type: continuous
   y_variable_type: continuous
@@ -500,7 +501,7 @@ x2ind:
   parametric: false
   small_sample_sizes: false
   statistic: X2
-  status: Pending
+  status: Done
   use_when: Two groups with dichotomous dependent variable.
   x_variable_type: nominal
   y_variable_type: nominal
