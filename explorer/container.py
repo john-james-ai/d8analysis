@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday March 27th 2023 07:02:56 pm                                                  #
-# Modified   : Monday June 5th 2023 05:41:30 pm                                                    #
+# Modified   : Friday June 16th 2023 08:00:06 pm                                                   #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -43,7 +43,7 @@ class ExplorerContainer(containers.DeclarativeContainer):
     logs = providers.Container(LoggingContainer, config=config.logging)
 
 
-if __name__ == "__main__":
-    container = ExplorerContainer()
-    container.init_resources()
-    container.wire(modules=[__name__])
+# if __name__ == "__main__":
+#     container = ExplorerContainer()
+#     container.init_resources()
+#     container.wire(modules=[__name__])

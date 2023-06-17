@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday May 27th 2023 08:56:02 pm                                                  #
-# Modified   : Thursday June 8th 2023 03:35:11 am                                                  #
+# Modified   : Wednesday June 14th 2023 08:39:03 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -215,7 +215,7 @@ def chi2(data: np.ndarray) -> np.ndarray:
         pdf: Data from the probability density function
         cdf: Data from the cumulative distribution function
     """
-    _, loc, scale = get_params(data=data, distribution="chi2")
+    _, loc, scale = get_params(data=data, distribution="X2")
     df = len(data) - 1
     name = r"$\chi^2$ Distribution"
     x_range = np.linspace(min(data), max(data), NUM_POINTS)

@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 06:13:21 pm                                                    #
-# Modified   : Monday June 5th 2023 07:13:36 pm                                                    #
+# Modified   : Tuesday June 13th 2023 08:15:59 pm                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -57,7 +57,7 @@ class TestStatProfile:  # pragma: no cover
         assert profile.statistic == p["statistic"]
         assert profile.analysis == p["analysis"]
         assert profile.hypothesis == p["hypothesis"]
-        assert profile.h0 == p["h0"]
+        assert profile.H0 == p["H0"]
         assert profile.parametric == p["parametric"]
         assert profile.min_sample_size == p["min_sample_size"]
         assert profile.assumptions == p["assumptions"]
