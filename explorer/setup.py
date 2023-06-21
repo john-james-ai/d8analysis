@@ -11,43 +11,43 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 04:58:20 pm                                                    #
-# Modified   : Tuesday June 6th 2023 01:10:10 am                                                   #
+# Modified   : Saturday June 17th 2023 08:48:01 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
-import logging
+import logging  # pragma: no cover
 
-import pandas as pd
+import pandas as pd  # pragma: no cover
 
-from explorer.service.io import IOService
+from explorer.service.io import IOService  # pragma: no cover
 
 # ------------------------------------------------------------------------------------------------ #
-SOURCE = "notes/Statistical Tests.xlsx"
-DEST = "config/stats.yml"
+SOURCE = "notes/Statistical Tests.xlsx"  # pragma: no cover
+DEST = "config/stats.yml"  # pragma: no cover
 # ------------------------------------------------------------------------------------------------ #
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)  # pragma: no cover
 
 
-def get_stat_tests(source: str) -> pd.DataFrame:
+def get_stat_tests(source: str) -> pd.DataFrame:  # pragma: no cover
     return pd.read_excel(source, sheet_name="stats", index_col="id")
 
 
-def save_as_yaml(df: pd.DataFrame, destination: str) -> None:
+def save_as_yaml(df: pd.DataFrame, destination: str) -> None:  # pragma: no cover
     d = df.to_dict(orient="index")
     IOService.write(filepath=destination, data=d)
 
 
-def report(df: pd.DataFrame) -> None:
+def report(df: pd.DataFrame) -> None:  # pragma: no cover
     report = df[["name", "analysis", "hypothesis", "H0"]]
     print(f"Statistical Tests Loaded\n{report}")
 
 
-def main():
+def main():  # pragma: no cover
     df = get_stat_tests(source=SOURCE)
     save_as_yaml(df=df, destination=DEST)
     report(df=df)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     main()

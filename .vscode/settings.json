@@ -3,5 +3,13 @@
         "tests"
     ],
     "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
+    "python.testing.pytestEnabled": true,
+    "psi-header.variables": [
+
+        ["projectCreationYear", "2023"],
+        ["url", "https://github.com/john-james-ai/explorer"],
+        ["projectname", "Data Exploration Framework"],
+        ["version", "0.1.0"],
+        ["pythonversion","3.10.11"]
+    ],
 }

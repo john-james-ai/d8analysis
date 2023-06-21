@@ -1,88 +1,35 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
-# Version    : 0.1.19                                                                              #
+# Project    : Explorer                                                                            #
+# Version    : 0.1.0                                                                               #
 # Python     : 3.10.11                                                                             #
 # Filename   : /explorer/visual/config.py                                                          #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/explorer                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Wednesday June 7th 2023 10:28:14 pm                                                 #
+# Modified   : Wednesday June 21st 2023 02:06:12 am                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
+from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List
+import logging
 
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 from explorer import IMMUTABLE_TYPES, SEQUENCE_TYPES
 
 # ------------------------------------------------------------------------------------------------ #
 plt.rcParams["font.size"] = "10"
-# ------------------------------------------------------------------------------------------------ #
-#                                            PALETTE                                               #
-# ------------------------------------------------------------------------------------------------ #
-
-
-@dataclass
-class Palette:
-    blues: str = "Blues"
-    blues_r: str = "Blues_r"
-    dark_blue: str = "dark:b"
-    dark_blue_reversed: str = "dark:b_r"
-    mako: str = "mako"
-    bluegreen: str = "crest"
-    link: str = "https://colorhunt.co/palette/002b5b2b4865256d858fe3cf"
-
-
-# ------------------------------------------------------------------------------------------------ #
-#                                           COLORS                                                 #
-# ------------------------------------------------------------------------------------------------ #
-@dataclass
-class Colors:
-    dark_blue: str = "#002B5B"
-    blue: str = "#1F4690"
-    orange: str = "#E8AA42"
-
-
-# ------------------------------------------------------------------------------------------------ #
-#                                            CANVAS                                                #
-# ------------------------------------------------------------------------------------------------ #
-
-
-@dataclass
-class Canvas:
-    style = "whitegrid"
-    figsize: tuple = (12, 4)
-    nrows: int = 1
-    ncols: int = 1
-    colors: str = Colors()
-    palette: str = Palette.blues_r
-    saturation: float = 0.5
-    fontsize: int = 10
-    fontsize_title: int = 10
-    fig: plt.figure = None
-    ax: plt.axes = None
-    axs: List = field(default_factory=lambda: [plt.axes])
-
-    def __post_init__(self) -> None:
-        if self.nrows > 1 or self.ncols > 1:
-            figsize = []
-            figsize.append(self.figsize[0] * self.ncols)
-            figsize.append(self.figsize[1] * self.nrows)
-            self.fig, self.axs = plt.subplots(nrows=self.nrows, ncols=self.ncols, figsize=figsize)
-        else:
-            self.fig, self.ax = plt.subplots(
-                nrows=self.nrows, ncols=self.ncols, figsize=self.figsize
-            )
 
 
 # ================================================================================================ #
@@ -111,7 +58,98 @@ class PlotConfig(ABC):
         elif hasattr(v, "as_dict"):
             return v.as_dict()
         else:
-            """Else nothing. What do you want?"""
+            return v
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                                           COLORS                                                 #
+# ------------------------------------------------------------------------------------------------ #
+@dataclass
+class Colors(PlotConfig):
+    cool_black: str = "#002B5B"
+    police_blue: str = "#2B4865"
+    teal_blue: str = "#256D85"
+    pale_robin_egg_blue: str = "#8FE3CF"
+    russian_violet: str = "#231955"
+    dark_cornflower_blue: str = "#1F4690"
+    meat_brown: str = "#E8AA42"
+    peach: str = "#FFE5B4"
+
+    def __post_init__(self) -> None:
+        return
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                                            Palettes                                              #
+# ------------------------------------------------------------------------------------------------ #
+PALETTES = {
+    "blues": "Blues",
+    "blues_r": "Blues_r",
+    "darkblue": sns.dark_palette("#69d", reverse=False, as_cmap=False),
+    "darkblue_r": sns.dark_palette("#69d", reverse=True, as_cmap=True),
+    "mako": "mako",
+    "bluegreen": "crest",
+    "paired": "Paired",
+    "dark": "dark",
+    "colorblind": "colorblind",
+    "winter_blue": sns.color_palette(
+        [Colors.cool_black, Colors.police_blue, Colors.teal_blue, Colors.pale_robin_egg_blue],
+        as_cmap=True,
+    ),
+    "blue_orange": sns.color_palette(
+        [Colors.russian_violet, Colors.dark_cornflower_blue, Colors.meat_brown, Colors.peach],
+        as_cmap=True,
+    ),
+}
+
+# ------------------------------------------------------------------------------------------------ #
+#                                            CANVAS                                                #
+# ------------------------------------------------------------------------------------------------ #
+
+
+@dataclass
+class Canvas(PlotConfig):
+    """Canvas class encapsulating the figure and axes objects."""
+
+    style: str = "whitegrid"
+    figsize: tuple = (12, 4)
+    nrows: int = 1
+    ncols: int = 1
+    fig: plt.figure = None
+    axs: List = field(default_factory=lambda: [plt.axes])
+
+    def __post_init__(self) -> None:
+        width = int(self.figsize[0] / self.nrows)
+        height = int(self.figsize[1] / self.ncols)
+        figsize = []
+        figsize.append(width * self.ncols)
+        figsize.append(height * self.nrows)
+        self.fig, self.axs = plt.subplots(nrows=self.nrows, ncols=self.ncols, figsize=figsize)
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                                            STYLE                                                 #
+# ------------------------------------------------------------------------------------------------ #
+@dataclass
+class Styling(PlotConfig):
+    """Style configuration"""
+
+    style: str = "whitegrid"
+    saturation: float = 1
+    fontsize: int = 8
+    title_fontsize: int = 10
+    palette: str = "blues_r"
+
+    def __post_init__(self) -> None:
+        """Sets the palette."""
+
+        try:
+            sns.set_palette(palette=PALETTES[self.palette])
+            return PALETTES[self.palette]
+        except Exception as e:
+            msg = f"{self.palette} is not a supported palette name"
+            logging.error(msg)
+            raise e
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -121,7 +159,7 @@ class PlotConfig(ABC):
 class LegendConfig(PlotConfig):
     loc: str = "best"
     ncols: int = 1
-    fontsize: int = 4
+    fontsize: int = 8
     markerfirst: bool = True
     reverse: bool = False
     frameon: bool = False
@@ -129,7 +167,7 @@ class LegendConfig(PlotConfig):
     framealpha: float = 0.3
     mode: str = None
     title: str = None
-    title_fontsize: int = 4
+    title_fontsize: int = 8
     alignment: str = "left"
 
 
@@ -145,7 +183,6 @@ class HistplotConfig(PlotConfig):
     element: str = "bars"  # Also use 'step'
     fill: bool = False
     kde: bool = True
-    palette: str = Canvas.palette
     legend: bool = True
 
 
@@ -157,7 +194,6 @@ class KdeplotConfig(PlotConfig):
     cumulative: bool = False
     multiple: str = "layer"  # Valid values ['layer','dodge','stack','fill']
     fill: bool = None
-    palette: str = Canvas.palette
     legend: bool = True
 
 
@@ -167,7 +203,6 @@ class KdeplotConfig(PlotConfig):
 @dataclass
 class BarplotConfig(PlotConfig):
     estimator: str = "sum"  # ['mean','sum']
-    palette: str = Canvas.palette
     saturation: float = 0.7
     dodge: bool = False
 
@@ -177,7 +212,6 @@ class BarplotConfig(PlotConfig):
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
 class CountplotConfig(PlotConfig):
-    palette: str = Canvas.palette
     saturation: float = 0.7
     dodge: bool = False
 
@@ -188,10 +222,12 @@ class CountplotConfig(PlotConfig):
 @dataclass
 class PointplotConfig(PlotConfig):
     estimator: str = "mean"
-    palette: str = None
     dodge: bool = False
     linestyles: str = "-"
     join: bool = True
+
+    def __post_init__(self) -> None:
+        return
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -200,7 +236,6 @@ class PointplotConfig(PlotConfig):
 @dataclass
 class BoxplotConfig(PlotConfig):
     saturation: float = 0.7
-    palette: str = Canvas.palette
     dodge: bool = True
 
 
@@ -213,7 +248,6 @@ class ScatterplotConfig(PlotConfig):
     style: str = None
     markers: bool = True
     legend: str = "auto"  # Valid values: ['auto','brief','full',False]
-    palette: str = Canvas.palette
     dodge: bool = True
 
 
@@ -229,7 +263,6 @@ class LineplotConfig(PlotConfig):
     markers: bool = None
     sort: bool = True
     legend: str = "auto"  # Valid values: ['auto','brief','full',False]
-    palette: str = Canvas.palette
     dodge: bool = True
 
 

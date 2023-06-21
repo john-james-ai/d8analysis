@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
-# Version    : 0.1.19                                                                              #
+# Project    : Data Exploration Framework                                                          #
+# Version    : 0.1.0                                                                               #
 # Python     : 3.10.10                                                                             #
 # Filename   : /config/logging.yml                                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/explorer                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday April 20th 2023 01:19:19 pm                                                #
-# Modified   : Wednesday June 7th 2023 12:49:30 am                                                 #
+# Modified   : Tuesday June 20th 2023 05:03:38 pm                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -31,7 +31,7 @@ logging:
   handlers:
     console:
       class: "logging.StreamHandler"
-      level: "DEBUG"
+      level: "INFO"
       formatter: "console"
       stream: "ext://sys.stderr"
     file:

@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
-# Version    : 0.1.19                                                                              #
+# Project    : Explorer                                                                            #
+# Version    : 0.1.0                                                                               #
 # Python     : 3.10.10                                                                             #
 # Filename   : /explorer/visual/base.py                                                            #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/explorer                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 06:23:03 pm                                                    #
-# Modified   : Monday June 5th 2023 05:16:47 pm                                                    #
+# Modified   : Tuesday June 20th 2023 09:53:50 pm                                                  #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,65 +21,25 @@ from abc import ABC, abstractmethod
 from typing import List
 import logging
 
-import pandas as pd
-import seaborn as sns
+# import seaborn as sns
 import matplotlib.pyplot as plt
 
-from explorer.visual.config import Canvas
-
-# ------------------------------------------------------------------------------------------------ #
-sns.set_style(Canvas.style)
-sns.set_palette = sns.dark_palette(Canvas.color, reverse=True, as_cmap=True)
+from .config import Canvas, Styling
 
 
 # ------------------------------------------------------------------------------------------------ #
-class Analysis(ABC):
-    """Abstract base class for variables; types managed by subclasses."""
+class Visual(ABC):
+    """Abstract base class for plot classes."""
 
-    def __init__(self, data: pd.DataFrame) -> None:
-        self._data = data
+    __default_palette = "blues_r"
+
+    def __init__(self) -> None:
+        self.get_set_styling()
         self._logger = logging.getLogger(f"{self.__class__.__name__}")
 
     @abstractmethod
-    def describe(self, *args, **kwargs) -> pd.DataFrame:
-        """Computes descriptive statistics and returns a DataFrame."""
-
-    def _is_categorical(self, name) -> bool:
-        """Checks whether the variable is categorical."""
-        return self._data[name].dtype in (str, object, "category")
-
-    def _is_numeric(self, name) -> bool:
-        """Returns True if the named variable is discrete"""
-        return self._data[name].dtype in (int, float)
-
-    def _is_discrete(self, name) -> bool:
-        """Returns True if the named variable is discrete"""
-        return self._data[name].dtype == int
-
-    def _is_continuous(self, name) -> bool:
-        """Returns True if the named variable is continuous."""
-        return self._data[name].dtype == float
-
-    def _check_name(self, name: str) -> None:
-        """Checks name against variables in data"""
-        if name not in self._data.columns:
-            msg = f"Data has no attribute {name}."
-            self._logger.error(msg)
-            raise KeyError(msg)
-
-    def _check_dtypes(self, dtypes: dict) -> tuple:
-        """Checks data types according to the dtypes mapping."""
-        valid_dtype = {
-            "categorical": self._is_categorical,
-            "numeric": self._is_numeric,
-            "discrete": self._is_discrete,
-            "continuous": self._is_continuous,
-        }
-        for name, dtype in dtypes.items():
-            if not valid_dtype[dtype](name=name):
-                msg = f"Variable {name} must be a {dtype} data type."
-                self._logger.error(msg)
-                raise TypeError(msg)
+    def __call__(self, *args, **kwargs) -> plt.Axes:
+        """Presents the visualization."""
 
     def _wrap_ticklabels(
         self, axis: str, axes: List[plt.Axes], fontsize: int = 8
@@ -100,3 +60,47 @@ class Analysis(ABC):
                 ax.tick_params(axis="y", labelsize=fontsize)
 
         return axes
+
+    def get_canvas(
+        self,
+        nrows: int = 1,
+        ncols: int = 1,
+        figsize: tuple = (12, 4),
+    ) -> Canvas:
+        """Sets the palette and returns a canvas containing figures, axes
+
+        Args:
+            nrows (int): Optional number or rows in the canvas. Defaults to 1.
+            ncols (int): Optional number or columns in the canvas. Defaults to 1.
+            figsize (tuple): Figure size. Defaults to (12,4)
+            style (str): The seaborn style. Defaults to 'whitegrid'
+            saturation (float): The level of color saturation. Defaults to 1.
+            fontsize (int): The size of fonts for legends, axis labels, and text.
+            title_fontsize (int): The size of fonts for title.
+        """
+
+        return Canvas(
+            nrows=nrows,
+            ncols=ncols,
+            figsize=figsize,
+        )
+
+    def get_set_styling(self, style: str = "whitegrid", palette: str = "blues_r") -> Styling:
+        """Sets the palette and returns a canvas containing figures, axes
+
+        Args:
+            style (str): The seaborn style. Defaults to 'whitegrid'
+            saturation (float): The level of color saturation. Defaults to 1.
+            fontsize (int): The size of fonts for legends, axis labels, and text.
+            title_fontsize (int): The size of fonts for title.
+        """
+        return Styling(style=style, palette=palette)
+
+    def get_or_create_ax(self, ax: plt.Axes = None) -> plt.Axes:
+        """Returns a valid matplotlib axes object
+
+        Args:
+            ax (plt.Axes): Optional matplotlib axes object.
+        """
+        ax = ax or Canvas().ax
+        return ax
