@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 11:41:00 pm                                                 #
-# Modified   : Thursday July 27th 2023 12:27:56 pm                                                 #
+# Modified   : Thursday July 27th 2023 01:03:50 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -55,16 +55,19 @@ class TTestResult(StatTestResult):
         self._logger = logging.getLogger(f"{self.__class__.__name__}")
 
         # Compute reject region
+        lower = x[0]
+        upper = x[-1]
         lower_alpha = self.alpha / 2
         upper_alpha = 1 - (self.alpha / 2)
-        lower = stats.t.ppf(lower_alpha, self.dof)
-        upper = stats.t.ppf(upper_alpha, self.dof)
+        lower_critical = stats.t.ppf(lower_alpha, self.dof)
+        upper_critical = stats.t.ppf(upper_alpha, self.dof)
 
         self._logger.info(f"Lower={lower}")
         self._logger.info(f"Upper={upper}")
 
         # Fill reject region at critical points
-        self._fill_curve(ax, lower, upper)
+        # self._fill_curve(ax, lower, upper)
+        self._fill_reject_region(ax, lower, upper, lower_critical, upper_critical, self.dof)
 
         ax.set_title(
             f"{self.result}",

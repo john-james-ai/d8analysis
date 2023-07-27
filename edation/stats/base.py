@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Thursday July 27th 2023 12:43:07 pm                                                 #
+# Modified   : Thursday July 27th 2023 01:05:12 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -129,33 +129,29 @@ class StatTestResult(ABC):
                 s += f"\t{k.rjust(width,' ')} | {v}\n"
         return s
 
-    def _fill_curve(self, ax: plt.Axes, upper: float, lower: float = None) -> plt.Axes:
+    def _fill_reject_region(
+        self,
+        ax: plt.Axes,
+        lower: float,
+        upper: float,
+        lower_critical: float,
+        upper_critical: float,
+        dof: int,
+    ) -> plt.Axes:
         """Fills the area under the curve at the value of the hypothesis test statistic."""
 
-        self._logger = logging.getLogger(f"{self.__class__.__name__}")
+        # Fill lower tail
+        xlower = np.arange(lower, lower_critical, 0.001)
+        ax.fill_between(x=xlower, y1=0, y2=stats.t.pdf(xlower, dof), color=Canvas.colors.orange)
 
+        # Fill Upper Tail
+        xupper = np.arange(upper_critical, upper, 0.001)
+        ax.fill_between(x=xupper, y1=0, y2=stats.t.pdf(xupper, dof), color=Canvas.colors.orange)
+
+        # Plot the statistic
         line = ax.lines[0]
         xdata = line.get_xydata()[:, 0]
         ydata = line.get_xydata()[:, 1]
-
-        # Fill lower tail
-        if lower is not None:
-            idx_lower = next(idx for idx, x in enumerate(xdata) if x > lower)
-            fill_x = xdata[:idx_lower]
-            fill_y2 = ydata[:idx_lower]
-            ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color=Canvas.colors.orange)
-            self._logger.info(f"IDX Lower{idx_lower}")
-            self._logger.info(f"Lower Point{xdata[idx_lower]}")
-
-        # Fill upper tail
-        idx_upper = next(idx for idx, x in enumerate(xdata) if x > upper)
-        fill_x = xdata[idx_upper:]
-        fill_y2 = ydata[idx_upper:]
-        ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color=Canvas.colors.orange)
-        self._logger.info(f"IDX Upper{idx_upper}")
-        self._logger.info(f"Upper Point{xdata[idx_upper]}")
-
-        # Plot statistic
         try:
             idx = np.where(xdata > self.value)[0][0]
             x = xdata[idx]
