@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 06:23:03 pm                                                    #
-# Modified   : Thursday July 27th 2023 08:50:52 am                                                 #
+# Modified   : Thursday July 27th 2023 02:21:38 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -34,7 +34,7 @@ class Visual(ABC):
     __default_palette = "blues_r"
 
     def __init__(self) -> None:
-        self.get_set_styling()
+        # self.get_set_styling()
         self._logger = logging.getLogger(f"{self.__class__.__name__}")
 
     @abstractmethod
