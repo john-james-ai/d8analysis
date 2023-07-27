@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday June 18th 2023 01:41:15 am                                                   #
-# Modified   : Thursday July 27th 2023 10:26:55 am                                                 #
+# Modified   : Thursday July 27th 2023 03:43:10 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -23,6 +23,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 from .base import Visual
+from .config import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
 #                                       HISTOGRAM                                                  #
@@ -31,9 +32,6 @@ from .base import Visual
 
 class Histogram(Visual):  # pragma: no cover
     """Plot univariate or bivariate histograms to show distributions of datasets."""
-
-    def __init__(self) -> None:
-        super().__init__()
 
     def __call__(
         self,
@@ -65,9 +63,7 @@ class Histogram(Visual):  # pragma: no cover
                 See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
                 complete list of parameters.
         """
-
-        ax = self.get_or_create_ax(ax)
-        style = self.get_set_styling(style=style, palette=palette)
+        ax = ax or Canvas().ax
 
         ax = sns.histplot(
             data=data,
@@ -84,6 +80,7 @@ class Histogram(Visual):  # pragma: no cover
         if title:
             ax.set_title(title)
 
+
 # ------------------------------------------------------------------------------------------------ #
 #                                       KDE PLOT                                                   #
 # ------------------------------------------------------------------------------------------------ #
@@ -91,9 +88,6 @@ class Histogram(Visual):  # pragma: no cover
 
 class KDEPlot(Visual):  # pragma: no cover
     """Plot univariate or bivariate histograms to show distributions of datasets."""
-
-    def __init__(self) -> None:
-        super().__init__()
 
     def __call__(
         self,
@@ -126,9 +120,7 @@ class KDEPlot(Visual):  # pragma: no cover
                 See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
                 complete list of parameters.
         """
-
-        ax = self.get_or_create_ax(ax)
-        style = self.get_set_styling(style=style, palette=palette)
+        ax = ax or Canvas().ax
 
         ax = sns.kdeplot(
             data=data,
@@ -152,9 +144,6 @@ class KDEPlot(Visual):  # pragma: no cover
 class BoxPlot(Visual):  # pragma: no cover
     """Draw a box plot to show distributions with respect to categories or groups."""
 
-    def __init__(self) -> None:
-        super().__init__()
-
     def __call__(
         self,
         data: pd.DataFrame,
@@ -182,8 +171,7 @@ class BoxPlot(Visual):  # pragma: no cover
                 complete list of parameters.
         """
 
-        ax = self.get_or_create_ax(ax)
-        style = self.get_set_styling(style=style, palette=palette)
+        ax = ax or Canvas().ax
 
         ax = sns.boxplot(
             data=data,
@@ -204,9 +192,6 @@ class BoxPlot(Visual):  # pragma: no cover
 
 class ViolinPlot(Visual):  # pragma: no cover
     """Draw a combination of boxplot and kernel density estimate."""
-
-    def __init__(self) -> None:
-        super().__init__()
 
     def __call__(
         self,
@@ -236,9 +221,7 @@ class ViolinPlot(Visual):  # pragma: no cover
                 See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
                 complete list of parameters.
         """
-
-        ax = self.get_or_create_ax(ax)
-        style = self.get_set_styling(style=style, palette=palette)
+        ax = ax or Canvas().ax
 
         ax = sns.violinplot(
             data=data,
@@ -261,9 +244,6 @@ class ViolinPlot(Visual):  # pragma: no cover
 class ECDFPlot(Visual):  # pragma: no cover
     """Draw a combination of boxplot and kernel density estimate."""
 
-    def __init__(self) -> None:
-        super().__init__()
-
     def __call__(
         self,
         data: pd.DataFrame,
@@ -293,8 +273,7 @@ class ECDFPlot(Visual):  # pragma: no cover
                 complete list of parameters.
         """
 
-        ax = self.get_or_create_ax(ax)
-        style = self.get_set_styling(style=style, palette=palette)
+        ax = ax or Canvas().ax
 
         ax = sns.ecdfplot(
             data=data,

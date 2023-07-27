@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Thursday July 27th 2023 11:26:02 am                                                 #
+# Modified   : Thursday July 27th 2023 03:36:09 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,7 +21,6 @@ from abc import ABC
 from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List
-import logging
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -105,6 +104,7 @@ PALETTES = {
     ),
 }
 
+
 # ------------------------------------------------------------------------------------------------ #
 #                                            CANVAS                                                #
 # ------------------------------------------------------------------------------------------------ #
@@ -124,15 +124,7 @@ class Canvas(PlotConfig):
     fig: plt.figure = None
     ax: plt.axes = None
     axs: List = field(default_factory=lambda: [plt.axes])
-    colors: Colors = Colors()
-
-    # def __post_init__(self) -> None:
-    #     width = int(self.figsize[0] / self.nrows)
-    #     height = int(self.figsize[1] / self.ncols)
-    #     figsize = []
-    #     figsize.append(width * self.ncols)
-    #     figsize.append(height * self.nrows)
-    #     self.fig, self.axs = plt.subplots(nrows=self.nrows, ncols=self.ncols, figsize=figsize)
+    palette: str = "Blues_r"
 
     def __post_init__(self) -> None:
         if self.nrows > 1 or self.ncols > 1:
@@ -144,31 +136,6 @@ class Canvas(PlotConfig):
             self.fig, self.ax = plt.subplots(
                 nrows=self.nrows, ncols=self.ncols, figsize=self.figsize
             )
-
-
-# ------------------------------------------------------------------------------------------------ #
-#                                            STYLE                                                 #
-# ------------------------------------------------------------------------------------------------ #
-@dataclass
-class Styling(PlotConfig):
-    """Style configuration"""
-
-    style: str = "whitegrid"
-    saturation: float = 1
-    fontsize: int = 8
-    title_fontsize: int = 10
-    palette: str = "blues_r"
-
-    def __post_init__(self) -> None:
-        """Sets the palette."""
-
-        try:
-            sns.set_palette(palette=PALETTES[self.palette])
-            return PALETTES[self.palette]
-        except Exception as e:
-            msg = f"{self.palette} is not a supported palette name"
-            logging.error(msg)
-            raise e
 
 
 # ------------------------------------------------------------------------------------------------ #

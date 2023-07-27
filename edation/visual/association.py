@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 20th 2023 07:57:56 pm                                                  #
-# Modified   : Thursday July 27th 2023 08:50:52 am                                                 #
+# Modified   : Thursday July 27th 2023 03:44:42 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -23,6 +23,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 from .base import Visual
+from .config import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
 #                                        SCATTERPLOT                                               #
@@ -31,9 +32,6 @@ from .base import Visual
 
 class ScatterPlot(Visual):  # pragma: no cover
     """Draw a scatter plot with possibility of several semantic groupings."""
-
-    def __init__(self) -> None:
-        super().__init__()
 
     def __call__(
         self,
@@ -64,8 +62,7 @@ class ScatterPlot(Visual):  # pragma: no cover
                 complete list of parameters.
         """
 
-        ax = self.get_or_create_ax(ax)
-        style = self.get_set_styling(style=style, palette=palette)
+        ax = ax or Canvas().ax
 
         ax = sns.scatterplot(
             data=data,
@@ -88,9 +85,6 @@ class ScatterPlot(Visual):  # pragma: no cover
 class LinePlot(Visual):  # pragma: no cover
     """Draw a scatter plot with possibility of several semantic groupings."""
 
-    def __init__(self) -> None:
-        super().__init__()
-
     def __call__(
         self,
         data: pd.DataFrame,
@@ -120,8 +114,7 @@ class LinePlot(Visual):  # pragma: no cover
                 complete list of parameters.
         """
 
-        ax = self.get_or_create_ax(ax)
-        style = self.get_set_styling(style=style, palette=palette)
+        ax = ax or Canvas().ax
 
         ax = sns.lineplot(
             data=data,
@@ -143,9 +136,6 @@ class LinePlot(Visual):  # pragma: no cover
 
 class PairPlot(Visual):  # pragma: no cover
     """Plot pairwise relationships in a dataset. This is a figure level plot showing a grid of axes."""
-
-    def __init__(self) -> None:
-        super().__init__()
 
     def __call__(
         self,
@@ -176,8 +166,6 @@ class PairPlot(Visual):  # pragma: no cover
                 complete list of parameters.
         """
 
-        style = self.get_set_styling(style=style, palette=palette)
-
         g = sns.pairplot(
             data=data,
             hue=hue,
@@ -199,9 +187,6 @@ class PairPlot(Visual):  # pragma: no cover
 
 class JointPlot(Visual):  # pragma: no cover
     """Draw a plot of two variables with bivariate and univariate graphs."""
-
-    def __init__(self) -> None:
-        super().__init__()
 
     def __call__(
         self,
@@ -231,8 +216,6 @@ class JointPlot(Visual):  # pragma: no cover
                 See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
                 complete list of parameters.
         """
-
-        style = self.get_set_styling(style=style, palette=palette)
 
         g = sns.jointplot(
             data=data,
