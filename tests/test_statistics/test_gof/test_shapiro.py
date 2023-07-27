@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 09:15:17 pm                                                 #
-# Modified   : Wednesday June 7th 2023 10:38:31 pm                                                 #
+# Modified   : Thursday July 27th 2023 08:48:23 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,8 +22,8 @@ import pytest
 import logging
 import pandas as pd
 import numpy as np
-from explorer.stats.goodness_of_fit.shapiro import ShapiroWilkTest
-from explorer.stats.profile import StatTestProfileOne
+from edation.stats.goodness_of_fit.shapiro import ShapiroWilkTest
+from edation.stats.profile import StatTestProfileOne
 
 
 # ------------------------------------------------------------------------------------------------ #

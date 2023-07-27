@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 09:32:36 pm                                                    #
-# Modified   : Wednesday June 7th 2023 04:38:05 pm                                                 #
+# Modified   : Thursday July 27th 2023 08:48:25 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,8 +22,8 @@ import pytest
 import logging
 import pandas as pd
 
-from explorer.stats.goodness_of_fit.ksone import KSOneTest
-from explorer.stats.base import StatTestProfile
+from edation.stats.goodness_of_fit.ksone import KSOneTest
+from edation.stats.base import StatTestProfile
 
 
 # ------------------------------------------------------------------------------------------------ #

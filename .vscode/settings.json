@@ -7,7 +7,7 @@
     "psi-header.variables": [
 
         ["projectCreationYear", "2023"],
-        ["url", "https://github.com/john-james-ai/explorer"],
+        ["url", "https://github.com/john-james-ai/edation"],
         ["projectname", "Data Exploration Framework"],
         ["version", "0.1.0"],
         ["pythonversion","3.10.11"]

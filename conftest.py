@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /conftest.py                                                                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Wednesday June 21st 2023 10:29:38 pm                                                #
+# Modified   : Thursday July 27th 2023 08:51:35 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,7 +22,7 @@ import pandas as pd
 import subprocess
 import dotenv
 
-from explorer.container import ExplorerContainer
+from edation.container import EdationContainer
 
 # ------------------------------------------------------------------------------------------------ #
 DATAFILE = "data/Credit Score Classification Dataset.csv"
@@ -62,8 +62,8 @@ def dataset():
 # ------------------------------------------------------------------------------------------------ #
 @pytest.fixture(scope="module", autouse=True)
 def container():
-    container = ExplorerContainer()
+    container = EdationContainer()
     container.init_resources()
-    container.wire(packages=["explorer.service"])
+    container.wire(packages=["edation.service"])
 
     return container

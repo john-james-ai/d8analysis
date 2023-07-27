@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday June 8th 2023 03:48:00 am                                                  #
-# Modified   : Thursday June 8th 2023 03:57:13 am                                                  #
+# Modified   : Thursday July 27th 2023 08:48:28 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,9 +22,9 @@ import pytest
 import logging
 import pandas as pd
 
-from explorer.stats.descriptive import QuantStats
-from explorer.stats.centrality.ttest import TTest
-from explorer.stats.profile import StatTestProfileTwo
+from edation.stats.descriptive import QuantStats
+from edation.stats.centrality.ttest import TTest
+from edation.stats.profile import StatTestProfileTwo
 
 
 # ------------------------------------------------------------------------------------------------ #

@@ -1,16 +1,16 @@
-# Explorer - An Exploratory Data Analysis Framework
+# EDAtion - An Exploratory Data Analysis Framework
 
-[![PyPI](https://img.shields.io/pypi/v/explorer?style=flat-square)](https://pypi.python.org/pypi/explorer/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/explorer?style=flat-square)](https://pypi.python.org/pypi/explorer/)
-[![PyPI - License](https://img.shields.io/pypi/l/explorer?style=flat-square)](https://pypi.python.org/pypi/explorer/)
+[![PyPI](https://img.shields.io/pypi/v/edation?style=flat-square)](https://pypi.python.org/pypi/edation/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/edation?style=flat-square)](https://pypi.python.org/pypi/edation/)
+[![PyPI - License](https://img.shields.io/pypi/l/edation?style=flat-square)](https://pypi.python.org/pypi/edation/)
 
 ---
 
-**Documentation**: [https://john-james-ai.github.io/explorer](https://john-james-ai.github.io/explorer)
+**Documentation**: [https://john-james-ai.github.io/edation](https://john-james-ai.github.io/edation)
 
-**Source Code**: [https://github.com/john-james-ai/explorer](https://github.com/john-james-ai/explorer)
+**Source Code**: [https://github.com/john-james-ai/edation](https://github.com/john-james-ai/edation)
 
-**PyPI**: [https://pypi.org/project/explorer/](https://pypi.org/project/explorer/)
+**PyPI**: [https://pypi.org/project/edation/](https://pypi.org/project/edation/)
 
 ---
 
@@ -19,7 +19,7 @@ Exploratory Data Analysis Framework
 ## Installation
 
 ```sh
-pip install explorer
+pip install edation
 ```
 
 ## Development
@@ -54,12 +54,12 @@ The documentation is automatically generated from the content of the [docs direc
 
 ### Releasing
 
-Trigger the [Draft release workflow](https://github.com/john-james-ai/explorer/actions/workflows/draft_release.yml)
+Trigger the [Draft release workflow](https://github.com/john-james-ai/edation/actions/workflows/draft_release.yml)
 (press _Run workflow_). This will update the changelog & version and create a GitHub release which is in _Draft_ state.
 
 Find the draft release from the
-[GitHub releases](https://github.com/john-james-ai/explorer/releases) and publish it. When
- a release is published, it'll trigger [release](https://github.com/john-james-ai/explorer/blob/master/.github/workflows/release.yml) workflow which creates PyPI
+[GitHub releases](https://github.com/john-james-ai/edation/releases) and publish it. When
+ a release is published, it'll trigger [release](https://github.com/john-james-ai/edation/blob/master/.github/workflows/release.yml) workflow which creates PyPI
  release and deploys updated documentation.
 
 ### Pre-commit

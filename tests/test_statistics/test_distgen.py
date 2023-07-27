@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /tests/test_statistics/test_distgen.py                                              #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 12:41:00 am                                                    #
-# Modified   : Tuesday June 20th 2023 06:45:53 pm                                                  #
+# Modified   : Thursday July 27th 2023 08:48:31 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -23,7 +23,7 @@ import logging
 
 import numpy as np
 
-from explorer.statistical_analytics import DistGen, DISTRIBUTIONS
+from edation.statistical_analytics import DistGen, DISTRIBUTIONS
 
 
 # ------------------------------------------------------------------------------------------------ #

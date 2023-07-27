@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "d8a-explorer"
-version = "0.0.1"
+name = "edation"
+version = "0.0.3"
 description = "Exploratory Data Analysis Framework"
 authors = [
     "John James <john.james.ai.studio@gmail.com>",
@@ -8,9 +8,9 @@ authors = [
 license = "MIT"
 readme = "README.md"
 
-documentation = "https://john-james-ai.github.io/explorer"
-homepage = "https://john-james-ai.github.io/explorer"
-repository = "https://github.com/john-james-ai/explorer"
+documentation = "https://john-james-ai.github.io/edation"
+homepage = "https://john-james-ai.github.io/edation"
+repository = "https://github.com/john-james-ai/edation"
 
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -26,7 +26,7 @@ classifiers = [
 ]
 
 packages = [
-{ include="explorer"}]
+{ include="edation"}]
 
 [tool.poetry.dependencies]
 python = ">=3.7.1, <4.0"
@@ -61,7 +61,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 profile = "black"
-src_paths = ["explorer", "tests"]
+src_paths = ["edation", "tests"]
 
 [tool.black]
 target-version = ["py37", "py38", "py39"]
@@ -71,7 +71,7 @@ include = '\.pyi?$'
 log_cli = "true"
 log_level = "NOTSET"
 addopts = """\
-    --cov explorer \
+    --cov edation \
     --cov tests \
     --cov-report term-missing \
     --no-cov-on-fail \

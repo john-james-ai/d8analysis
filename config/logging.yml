@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Explorer                                                                            #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /config/logging.yml                                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/explorer                                           #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday April 20th 2023 01:19:19 pm                                                #
-# Modified   : Wednesday June 21st 2023 10:27:13 pm                                                #
+# Modified   : Thursday July 27th 2023 08:50:50 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -41,7 +41,7 @@ logging:
       interval: 1
       backupCount: 0
       level: "DEBUG"
-      filename: log/explorer.log
+      filename: log/edation.log
   root:
     level: "DEBUG"
     handlers: ["console", "file"]

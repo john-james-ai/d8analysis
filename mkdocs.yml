@@ -1,5 +1,5 @@
-site_name: "Explorer"
-repo_url: https://github.com/john-james-ai/explorer
+site_name: "Edation"
+repo_url: https://github.com/john-james-ai/edation
 
 theme:
   name: material
@@ -33,4 +33,4 @@ plugins:
             show_source: true
             show_submodules: true
       watch:
-        - src/explorer
+        - src/edation

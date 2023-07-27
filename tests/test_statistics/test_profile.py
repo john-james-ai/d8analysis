@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 06:13:21 pm                                                    #
-# Modified   : Tuesday June 13th 2023 08:15:59 pm                                                  #
+# Modified   : Thursday July 27th 2023 08:48:30 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,8 +21,8 @@ from datetime import datetime
 import pytest
 import logging
 
-from explorer.stats.profile import StatTestProfileOne
-from explorer.service.io import IOService
+from edation.stats.profile import StatTestProfileOne
+from edation.service.io import IOService
 
 ID = "x2gof"
 PROFILES = "config/stats.yml"

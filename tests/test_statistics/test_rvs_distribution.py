@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 12:41:00 am                                                    #
-# Modified   : Wednesday June 7th 2023 12:32:23 am                                                 #
+# Modified   : Thursday July 27th 2023 08:48:29 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -23,7 +23,7 @@ import logging
 
 import numpy as np
 
-from explorer.stats.distribution import RVSDistribution, DISTRIBUTIONS, Distribution
+from edation.stats.distribution import RVSDistribution, DISTRIBUTIONS, Distribution
 
 
 # ------------------------------------------------------------------------------------------------ #

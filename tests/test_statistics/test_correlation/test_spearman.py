@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 09:15:17 pm                                                 #
-# Modified   : Wednesday June 7th 2023 09:36:34 pm                                                 #
+# Modified   : Thursday July 27th 2023 08:48:27 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,8 +22,8 @@ import pytest
 import logging
 import pandas as pd
 
-from explorer.stats.correlation.spearman import SpearmanCorrelationTest
-from explorer.stats.profile import StatTestProfileTwo
+from edation.stats.correlation.spearman import SpearmanCorrelationTest
+from edation.stats.profile import StatTestProfileTwo
 
 
 # ------------------------------------------------------------------------------------------------ #

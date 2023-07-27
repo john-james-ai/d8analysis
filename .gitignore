@@ -16,7 +16,7 @@ __pycache__/
 /logs
 logs/
 /log
-/logs/explorer.log
+/logs/edation.log
 
 # Distribution / packaging
 .Python
