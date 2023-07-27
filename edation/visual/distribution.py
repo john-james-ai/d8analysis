@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday June 18th 2023 01:41:15 am                                                   #
-# Modified   : Thursday July 27th 2023 08:50:52 am                                                 #
+# Modified   : Thursday July 27th 2023 10:26:55 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -41,6 +41,7 @@ class Histogram(Visual):  # pragma: no cover
         x: str,
         y: str = None,
         hue: str = None,
+        kde: bool = True,
         ax: plt.Axes = None,
         title: str = None,
         style: str = "whitegrid",
@@ -73,6 +74,7 @@ class Histogram(Visual):  # pragma: no cover
             x=x,
             y=y,
             hue=hue,
+            kde=kde,
             ax=ax,
             legend=True,
             pmax=style.saturation,
@@ -81,10 +83,6 @@ class Histogram(Visual):  # pragma: no cover
         )
         if title:
             ax.set_title(title)
-
-        for container in ax.containers:
-            ax.bar_label(container)
-
 
 # ------------------------------------------------------------------------------------------------ #
 #                                       KDE PLOT                                                   #

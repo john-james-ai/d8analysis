@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Thursday July 27th 2023 08:48:00 am                                                 #
+# Modified   : Thursday July 27th 2023 11:26:02 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -74,6 +74,9 @@ class Colors(PlotConfig):
     dark_cornflower_blue: str = "#1F4690"
     meat_brown: str = "#E8AA42"
     peach: str = "#FFE5B4"
+    dark_blue: str = "#002B5B"
+    blue: str = "#1F4690"
+    orange: str = "#E8AA42"
 
     def __post_init__(self) -> None:
         return
@@ -115,16 +118,32 @@ class Canvas(PlotConfig):
     figsize: tuple = (12, 4)
     nrows: int = 1
     ncols: int = 1
+    saturation: float = 0.5
+    fontsize: int = 10
+    fontsize_title: int = 10
     fig: plt.figure = None
+    ax: plt.axes = None
     axs: List = field(default_factory=lambda: [plt.axes])
+    colors: Colors = Colors()
+
+    # def __post_init__(self) -> None:
+    #     width = int(self.figsize[0] / self.nrows)
+    #     height = int(self.figsize[1] / self.ncols)
+    #     figsize = []
+    #     figsize.append(width * self.ncols)
+    #     figsize.append(height * self.nrows)
+    #     self.fig, self.axs = plt.subplots(nrows=self.nrows, ncols=self.ncols, figsize=figsize)
 
     def __post_init__(self) -> None:
-        width = int(self.figsize[0] / self.nrows)
-        height = int(self.figsize[1] / self.ncols)
-        figsize = []
-        figsize.append(width * self.ncols)
-        figsize.append(height * self.nrows)
-        self.fig, self.axs = plt.subplots(nrows=self.nrows, ncols=self.ncols, figsize=figsize)
+        if self.nrows > 1 or self.ncols > 1:
+            figsize = []
+            figsize.append(self.figsize[0] * self.ncols)
+            figsize.append(self.figsize[1] * self.nrows)
+            self.fig, self.axs = plt.subplots(nrows=self.nrows, ncols=self.ncols, figsize=figsize)
+        else:
+            self.fig, self.ax = plt.subplots(
+                nrows=self.nrows, ncols=self.ncols, figsize=self.figsize
+            )
 
 
 # ------------------------------------------------------------------------------------------------ #

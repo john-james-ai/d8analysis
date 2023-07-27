@@ -11,12 +11,13 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 11:41:00 pm                                                 #
-# Modified   : Thursday July 27th 2023 08:48:09 am                                                 #
+# Modified   : Thursday July 27th 2023 12:27:56 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from dataclasses import dataclass
+import logging
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -51,11 +52,16 @@ class TTestResult(StatTestResult):
         y = stats.t.pdf(x, self.dof)
         ax = sns.lineplot(x=x, y=y, markers=False, dashes=False, sort=True, ax=ax)
 
+        self._logger = logging.getLogger(f"{self.__class__.__name__}")
+
         # Compute reject region
         lower_alpha = self.alpha / 2
         upper_alpha = 1 - (self.alpha / 2)
         lower = stats.t.ppf(lower_alpha, self.dof)
         upper = stats.t.ppf(upper_alpha, self.dof)
+
+        self._logger.info(f"Lower={lower}")
+        self._logger.info(f"Upper={upper}")
 
         # Fill reject region at critical points
         self._fill_curve(ax, lower, upper)
@@ -65,7 +71,7 @@ class TTestResult(StatTestResult):
             fontsize=canvas.fontsize_title,
         )
 
-        ax.set_xlabel(r"$X^2$")
+        # ax.set_xlabel(r"$X^2$")
         ax.set_ylabel("Probability Density")
         plt.tight_layout()
         return ax

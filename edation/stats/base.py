@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Thursday July 27th 2023 08:48:12 am                                                 #
+# Modified   : Thursday July 27th 2023 12:43:07 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -26,6 +26,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+from scipy import stats
 
 from edation.service.io import IOService
 from edation import IMMUTABLE_TYPES, SEQUENCE_TYPES
@@ -131,22 +132,28 @@ class StatTestResult(ABC):
     def _fill_curve(self, ax: plt.Axes, upper: float, lower: float = None) -> plt.Axes:
         """Fills the area under the curve at the value of the hypothesis test statistic."""
 
+        self._logger = logging.getLogger(f"{self.__class__.__name__}")
+
         line = ax.lines[0]
         xdata = line.get_xydata()[:, 0]
         ydata = line.get_xydata()[:, 1]
 
         # Fill lower tail
         if lower is not None:
-            idx_lower = np.where(xdata > lower)[0][0]
+            idx_lower = next(idx for idx, x in enumerate(xdata) if x > lower)
             fill_x = xdata[:idx_lower]
             fill_y2 = ydata[:idx_lower]
             ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color=Canvas.colors.orange)
+            self._logger.info(f"IDX Lower{idx_lower}")
+            self._logger.info(f"Lower Point{xdata[idx_lower]}")
 
         # Fill upper tail
-        idx_upper = np.where(xdata < upper)[0][-1]
+        idx_upper = next(idx for idx, x in enumerate(xdata) if x > upper)
         fill_x = xdata[idx_upper:]
         fill_y2 = ydata[idx_upper:]
         ax.fill_between(x=fill_x, y1=0, y2=fill_y2, color=Canvas.colors.orange)
+        self._logger.info(f"IDX Upper{idx_upper}")
+        self._logger.info(f"Upper Point{xdata[idx_upper]}")
 
         # Plot statistic
         try:
