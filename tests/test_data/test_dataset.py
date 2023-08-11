@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:42:57 pm                                               #
-# Modified   : Friday August 11th 2023 03:44:40 am                                                 #
+# Modified   : Friday August 11th 2023 04:03:08 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -75,6 +75,9 @@ class TestDataset:  # pragma: no cover
         logger.debug(df)
         df = ds.describe(exclude=["object"])
         logger.debug(df)
+        df = ds.unique(columns=["Gender", "Education"])
+        assert isinstance(df, pd.DataFrame)
+        assert df.shape[0] == 10
 
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()

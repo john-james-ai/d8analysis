@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:29:08 pm                                               #
-# Modified   : Friday August 11th 2023 03:43:33 am                                                 #
+# Modified   : Friday August 11th 2023 03:59:47 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -67,6 +67,7 @@ class Dataset(ABC):
         """Returns the size of the Dataset in memory in bytes."""
         return self._df.memory_usage(deep=True).sum()
 
+    # ------------------------------------------------------------------------------------------- #
     def info(self) -> pd.DataFrame:
         """Returns a DataFrame with basic dataset quality statistics"""
 
@@ -81,6 +82,7 @@ class Dataset(ABC):
         info = round(info, 2)
         return info
 
+    # ------------------------------------------------------------------------------------------- #
     def overview(self) -> pd.DataFrame:
         """Returns an overview of the dataset in terms of its shape and size."""
 
@@ -98,10 +100,12 @@ class Dataset(ABC):
         overview.columns = ["Characteristic", "Total"]
         return overview
 
+    # ------------------------------------------------------------------------------------------- #
     def as_df(self) -> pd.DataFrame:
         """Returns the dataset as a pandas DataFrame"""
         return self._df
 
+    # ------------------------------------------------------------------------------------------- #
     def sample(
         self, n: int = 5, frac: float = None, replace: bool = False, random_state: int = None
     ) -> pd.DataFrame:
@@ -115,6 +119,7 @@ class Dataset(ABC):
         """
         return self._df.sample(n=n, frac=frac, replace=replace, random_state=random_state)
 
+    # ------------------------------------------------------------------------------------------- #
     def select(self, include: list = None, exclude: list = None) -> pd.DataFrame:
         """Selects columns of the data to be included or excluded.
 
@@ -134,6 +139,7 @@ class Dataset(ABC):
             cols = self._df.columns
         return self._df[cols]
 
+    # ------------------------------------------------------------------------------------------- #
     def subset(self, condition: Callable) -> pd.DataFrame:
         """Subsets the data according to the stated condition.
 
@@ -149,9 +155,11 @@ class Dataset(ABC):
             self._logger.exception(msg)
             raise
 
+    # ------------------------------------------------------------------------------------------- #
     def head(self, n: int = 5) -> pd.DataFrame:
         return self._df.head(n)
 
+    # ------------------------------------------------------------------------------------------- #
     def describe(
         self,
         include: list[str] = None,
@@ -170,3 +178,15 @@ class Dataset(ABC):
             return self._df.describe(include=include, exclude=exclude).T
         else:
             return self._df.groupby(by=groupby).describe(include=include, exclude=exclude).T
+
+    # ------------------------------------------------------------------------------------------- #
+    def unique(self, columns: list = None) -> pd.DataFrame:
+        """Returns a DataFrame containing the unique values for all or the designated columns.
+
+        Args:
+            columns (list): List of columns for which unique values are to be returned.
+        """
+        if columns is not None:
+            return self._df[columns].drop_duplicates().reset_index(drop=True)
+        else:
+            return self._df.drop_duplicates().reset_index(drop=True)
