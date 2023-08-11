@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:29:08 pm                                               #
-# Modified   : Friday August 11th 2023 03:59:47 am                                                 #
+# Modified   : Friday August 11th 2023 04:25:58 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -68,21 +68,7 @@ class Dataset(ABC):
         return self._df.memory_usage(deep=True).sum()
 
     # ------------------------------------------------------------------------------------------- #
-    def info(self) -> pd.DataFrame:
-        """Returns a DataFrame with basic dataset quality statistics"""
-
-        info = self._df.dtypes.to_frame().reset_index()
-        info.columns = ["Column", "DataType"]
-        info["Valid"] = self._df.count().values
-        info["Null"] = self._df.isna().sum().values
-        info["Validity"] = info["Valid"] / self._df.shape[0]
-        info["Cardinality"] = self._df.nunique().values
-        info["Percent Unique"] = self._df.nunique().values / self._df.shape[0]
-        info["Size"] = self._df.memory_usage(deep=True, index=False).to_frame().reset_index()[0]
-        info = round(info, 2)
-        return info
-
-    # ------------------------------------------------------------------------------------------- #
+    @property
     def overview(self) -> pd.DataFrame:
         """Returns an overview of the dataset in terms of its shape and size."""
 
@@ -99,6 +85,22 @@ class Dataset(ABC):
         overview = pd.DataFrame.from_dict(data=d, orient="index").reset_index()
         overview.columns = ["Characteristic", "Total"]
         return overview
+
+    # ------------------------------------------------------------------------------------------- #
+    @property
+    def info(self) -> pd.DataFrame:
+        """Returns a DataFrame with basic dataset quality statistics"""
+
+        info = self._df.dtypes.to_frame().reset_index()
+        info.columns = ["Column", "DataType"]
+        info["Valid"] = self._df.count().values
+        info["Null"] = self._df.isna().sum().values
+        info["Validity"] = info["Valid"] / self._df.shape[0]
+        info["Cardinality"] = self._df.nunique().values
+        info["Percent Unique"] = self._df.nunique().values / self._df.shape[0]
+        info["Size"] = self._df.memory_usage(deep=True, index=False).to_frame().reset_index()[0]
+        info = round(info, 2)
+        return info
 
     # ------------------------------------------------------------------------------------------- #
     def as_df(self) -> pd.DataFrame:

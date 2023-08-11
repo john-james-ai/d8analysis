@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:42:57 pm                                               #
-# Modified   : Friday August 11th 2023 04:03:08 am                                                 #
+# Modified   : Friday August 11th 2023 04:29:21 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -50,31 +50,45 @@ class TestDataset:  # pragma: no cover
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
         ds = CreditScoreDataset(df=dataset)
+        # Length
         assert (len(ds)) == 164
+        # Get item
         assert isinstance(ds[10], pd.Series)
+        # Summmary
         logger.debug(ds.summary)
+        # Columns
         assert len(ds.columns) == 8
+        # Size
         assert isinstance(ds.size, np.int64)
-        logger.debug(ds.info())
-        logger.debug(ds.overview())
+        # Info
+        assert isinstance(ds.info, pd.DataFrame)
+        logger.debug(ds.info)
+        # Overview
+        logger.debug(ds.overview)
+        # Sample
         assert len(ds.sample()) == 5
+        # Dtypes
         dt = ds.dtypes
         assert isinstance(dt, pd.DataFrame)
         logger.debug(dt)
+        # Select
         df = ds.select(include=["Gender", "Education"])
         assert df.shape[1] == 2
         df = ds.select(exclude=["Gender"])
         assert df.shape[1] == dataset.shape[1] - 1
+        # Subset
         condition = lambda df: df["Gender"] == "Male"  # noqa
         df = ds.subset(condition=condition)
         assert df.shape[0] < dataset.shape[0]
+        # Head
         df = ds.head()
         assert len(df) == 5
-        logger.debug(ds.summary())
-        df = ds.describe(include=["category", "object", np.number])
+        # Describe
+        df = ds.describe(include=["category", "object"])
         logger.debug(df)
         df = ds.describe(exclude=["object"])
         logger.debug(df)
+        # Unique
         df = ds.unique(columns=["Gender", "Education"])
         assert isinstance(df, pd.DataFrame)
         assert df.shape[0] == 10
