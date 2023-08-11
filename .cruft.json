@@ -7,9 +7,9 @@
       "author_name": "John James",
       "author_email": "john.james.ai.studio@gmail.com",
       "github_username": "john-james-ai",
-      "project_name": "Edation",
-      "project_slug": "edation",
-      "package_name": "edation",
+      "project_name": "d8analysis",
+      "project_slug": "d8analysis",
+      "package_name": "d8analysis",
       "project_short_description": "Exploratory Data Analysis Framework",
       "_template": "https://github.com/woltapp/wolt-python-package-cookiecutter"
     }

@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Data Exploration Framework                                                          #
-# Version    : 0.1.0                                                                               #
+# Project    : Exploratory Data Analysis Framework                                                 #
+# Version    : 0.0.9                                                                               #
 # Python     : 3.10.11                                                                             #
 # Filename   : /tests/test_data/test_dataset.py                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/edation                                            #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:42:57 pm                                               #
-# Modified   : Thursday August 10th 2023 10:11:42 pm                                               #
+# Modified   : Thursday August 10th 2023 10:27:35 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,7 +24,7 @@ import logging
 import pandas as pd
 import numpy as np
 
-from edation.data.credit_score import CreditScoreDataset
+from d8analysis.data.credit_score import CreditScoreDataset
 
 
 # ------------------------------------------------------------------------------------------------ #

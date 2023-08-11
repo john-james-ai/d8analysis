@@ -11,7 +11,7 @@
 # URL      : https://github.com/john-james-ai/DeepCTR                                              #
 # ------------------------------------------------------------------------------------------------ #
 # Created  : Thursday, April 21st 2022, 9:02:53 am                                                 #
-# Modified   : Thursday July 27th 2023 08:50:50 am                                                 #
+# Modified   : Thursday August 10th 2023 10:32:24 pm                                               #
 # Modifier : John James (john.james.ai.studio@gmail.com)                                           #
 # ------------------------------------------------------------------------------------------------ #
 # License  : BSD 3-clause "New" or "Revised" License                                               #
@@ -25,7 +25,7 @@
 
 
 echo $'\nBuilding Databases...'
-sudo mysql -u root -p --database mysql < /home/john/projects/edation/scripts/database/setup/build.sql
+sudo mysql -u root -p --database mysql < /home/john/projects/d8analysis/scripts/database/setup/build.sql
 
 # echo $'\nStopping MySQL...'
 # sudo /etc/init.d/mysql stop

@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Data Exploration Framework                                                          #
-# Version    : 0.1.0                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /conftest.py                                                                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/edation                                            #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Thursday August 10th 2023 08:44:34 pm                                               #
+# Modified   : Thursday August 10th 2023 10:32:18 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,7 +22,7 @@ import pandas as pd
 import subprocess
 import dotenv
 
-from edation.container import EdationContainer
+from d8analysis.container import d8analysisContainer
 
 # ------------------------------------------------------------------------------------------------ #
 DATAFILE = "data/Credit Score Classification Dataset.csv"
@@ -62,8 +62,8 @@ def dataset():
 # ------------------------------------------------------------------------------------------------ #
 @pytest.fixture(scope="module", autouse=True)
 def container():
-    container = EdationContainer()
+    container = d8analysisContainer()
     container.init_resources()
-    container.wire(packages=["edation.service"])
+    container.wire(packages=["d8analysis.service"])
 
     return container

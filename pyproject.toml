@@ -1,6 +1,15 @@
+/*
+ * Filename: /home/john/projects/d8analysis/pyproject.toml
+ * Path: /home/john/projects/d8analysis
+ * Created Date: Friday, May 26th 2023, 8:51:21 pm
+ * Author: John James
+ *
+ * Copyright (c) 2023 John James
+ */
+
 [tool.poetry]
-name = "edation"
-version = "0.0.8"
+name = "d8analysis"
+version = "0.1.0"
 description = "Exploratory Data Analysis Framework"
 authors = [
     "John James <john.james.ai.studio@gmail.com>",
@@ -8,9 +17,9 @@ authors = [
 license = "MIT"
 readme = "README.md"
 
-documentation = "https://john-james-ai.github.io/edation"
-homepage = "https://john-james-ai.github.io/edation"
-repository = "https://github.com/john-james-ai/edation"
+documentation = "https://john-james-ai.github.io/d8analysis"
+homepage = "https://john-james-ai.github.io/d8analysis"
+repository = "https://github.com/john-james-ai/d8analysis"
 
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -26,7 +35,7 @@ classifiers = [
 ]
 
 packages = [
-{ include="edation"}]
+{ include="d8analysis"}]
 
 [tool.poetry.dependencies]
 python = ">=3.7.1, <4.0"
@@ -61,7 +70,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.isort]
 profile = "black"
-src_paths = ["edation", "tests"]
+src_paths = ["d8analysis", "tests"]
 
 [tool.black]
 target-version = ["py37", "py38", "py39"]
@@ -71,7 +80,7 @@ include = '\.pyi?$'
 log_cli = "true"
 log_level = "NOTSET"
 addopts = """\
-    --cov edation \
+    --cov d8analysis \
     --cov tests \
     --cov-report term-missing \
     --no-cov-on-fail \

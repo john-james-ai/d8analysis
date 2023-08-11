@@ -16,7 +16,7 @@ __pycache__/
 /logs
 logs/
 /log
-/logs/edation.log
+/logs/d8analysis.log
 
 # Distribution / packaging
 .Python

@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
-# Version    : 0.1.19                                                                              #
+# Project    : Exploratory Data Analysis Framework                                                 #
+# Version    : 0.0.9                                                                               #
 # Python     : 3.10.10                                                                             #
 # Filename   : /tests/test_statistics/test_gof/test_shapiro.py                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 09:15:17 pm                                                 #
-# Modified   : Thursday July 27th 2023 08:48:23 am                                                 #
+# Modified   : Thursday August 10th 2023 10:27:37 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,8 +22,8 @@ import pytest
 import logging
 import pandas as pd
 import numpy as np
-from edation.stats.goodness_of_fit.shapiro import ShapiroWilkTest
-from edation.stats.profile import StatTestProfileOne
+from d8analysis.stats.goodness_of_fit.shapiro import ShapiroWilkTest
+from d8analysis.stats.profile import StatTestProfileOne
 
 
 # ------------------------------------------------------------------------------------------------ #

@@ -1,16 +1,16 @@
-# EDAtion - An Exploratory Data Analysis Framework
+# d8analysis - An Exploratory Data Analysis Framework
 
-[![PyPI](https://img.shields.io/pypi/v/edation?style=flat-square)](https://pypi.python.org/pypi/edation/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/edation?style=flat-square)](https://pypi.python.org/pypi/edation/)
-[![PyPI - License](https://img.shields.io/pypi/l/edation?style=flat-square)](https://pypi.python.org/pypi/edation/)
+[![PyPI](https://img.shields.io/pypi/v/d8analysis?style=flat-square)](https://pypi.python.org/pypi/d8analysis/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/d8analysis?style=flat-square)](https://pypi.python.org/pypi/d8analysis/)
+[![PyPI - License](https://img.shields.io/pypi/l/d8analysis?style=flat-square)](https://pypi.python.org/pypi/d8analysis/)
 
 ---
 
-**Documentation**: [https://john-james-ai.github.io/edation](https://john-james-ai.github.io/edation)
+**Documentation**: [https://john-james-ai.github.io/d8analysis](https://john-james-ai.github.io/d8analysis)
 
-**Source Code**: [https://github.com/john-james-ai/edation](https://github.com/john-james-ai/edation)
+**Source Code**: [https://github.com/john-james-ai/d8analysis](https://github.com/john-james-ai/d8analysis)
 
-**PyPI**: [https://pypi.org/project/edation/](https://pypi.org/project/edation/)
+**PyPI**: [https://pypi.org/project/d8analysis/](https://pypi.org/project/d8analysis/)
 
 ---
 
@@ -19,7 +19,7 @@ Exploratory Data Analysis Framework
 ## Installation
 
 ```sh
-pip install edation
+pip install d8analysis
 ```
 
 ## Development
@@ -54,12 +54,12 @@ The documentation is automatically generated from the content of the [docs direc
 
 ### Releasing
 
-Trigger the [Draft release workflow](https://github.com/john-james-ai/edation/actions/workflows/draft_release.yml)
+Trigger the [Draft release workflow](https://github.com/john-james-ai/d8analysis/actions/workflows/draft_release.yml)
 (press _Run workflow_). This will update the changelog & version and create a GitHub release which is in _Draft_ state.
 
 Find the draft release from the
-[GitHub releases](https://github.com/john-james-ai/edation/releases) and publish it. When
- a release is published, it'll trigger [release](https://github.com/john-james-ai/edation/blob/master/.github/workflows/release.yml) workflow which creates PyPI
+[GitHub releases](https://github.com/john-james-ai/d8analysis/releases) and publish it. When
+ a release is published, it'll trigger [release](https://github.com/john-james-ai/d8analysis/blob/master/.github/workflows/release.yml) workflow which creates PyPI
  release and deploys updated documentation.
 
 ### Pre-commit

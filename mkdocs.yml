@@ -1,5 +1,5 @@
-site_name: "Edation"
-repo_url: https://github.com/john-james-ai/edation
+site_name: "d8analysis"
+repo_url: https://github.com/john-james-ai/d8analysis
 
 theme:
   name: material
@@ -33,4 +33,4 @@ plugins:
             show_source: true
             show_submodules: true
       watch:
-        - src/edation
+        - src/d8analysis

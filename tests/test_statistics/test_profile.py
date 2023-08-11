@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
-# Version    : 0.1.19                                                                              #
+# Project    : Exploratory Data Analysis Framework                                                 #
+# Version    : 0.0.9                                                                               #
 # Python     : 3.10.10                                                                             #
 # Filename   : /tests/test_statistics/test_profile.py                                              #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 06:13:21 pm                                                    #
-# Modified   : Thursday July 27th 2023 08:48:30 am                                                 #
+# Modified   : Thursday August 10th 2023 10:27:44 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,8 +21,8 @@ from datetime import datetime
 import pytest
 import logging
 
-from edation.stats.profile import StatTestProfileOne
-from edation.service.io import IOService
+from d8analysis.stats.profile import StatTestProfileOne
+from d8analysis.service.io import IOService
 
 ID = "x2gof"
 PROFILES = "config/stats.yml"
