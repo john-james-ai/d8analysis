@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /d8analysis/stats/base.py                                                           #
+# Filename   : /d8analysis/analysis/base.py                                                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/d8analysis                                         #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Thursday August 10th 2023 10:27:32 pm                                               #
+# Modified   : Friday August 11th 2023 03:03:01 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -51,6 +51,17 @@ class Description(ABC):
     count: int  # Non-Nulls only
     length: int  # Total length of iterable.
     size: int
+
+
+# ------------------------------------------------------------------------------------------------ #
+
+
+class Analysis(ABC):
+    """Defines the blueprint for classes that perform exploratory data analyses."""
+
+    @property
+    def result(self) -> Result:
+        """Returns teh result of the analysis."""
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -95,6 +106,19 @@ class StatTestProfile(ABC):
         filtered_dict = {k: v for k, v in profile.items() if k in fieldlist}
         filtered_dict["id"] = id
         return cls(**filtered_dict)
+
+
+# ------------------------------------------------------------------------------------------------ #
+@dataclass
+class StatTestProfileOne(StatTestProfile):
+    X_variable_type: str = None
+
+
+# ------------------------------------------------------------------------------------------------ #
+@dataclass
+class StatTestProfileTwo(StatTestProfile):
+    X_variable_type: str = None
+    Y_variable_type: str = None
 
 
 # ------------------------------------------------------------------------------------------------ #

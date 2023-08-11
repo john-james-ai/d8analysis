@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /tests/test_statistics/test_centrality.py/test_t.py                                 #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/d8analysis                                         #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday June 8th 2023 03:48:00 am                                                  #
-# Modified   : Thursday August 10th 2023 10:27:42 pm                                               #
+# Modified   : Friday August 11th 2023 03:03:20 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,9 +22,9 @@ import pytest
 import logging
 import pandas as pd
 
-from d8analysis.stats.descriptive import QuantStats
+from d8analysis.quantitative.descriptive.summary import QuantStats
 from d8analysis.stats.centrality.ttest import TTest
-from d8analysis.stats.profile import StatTestProfileTwo
+from d8analysis.analysis.base import StatTestProfileTwo
 
 
 # ------------------------------------------------------------------------------------------------ #

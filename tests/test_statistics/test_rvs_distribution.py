@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /tests/test_statistics/test_rvs_distribution.py                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/d8analysis                                         #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 12:41:00 am                                                    #
-# Modified   : Thursday August 10th 2023 10:27:43 pm                                               #
+# Modified   : Friday August 11th 2023 03:03:02 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -23,7 +23,7 @@ import logging
 
 import numpy as np
 
-from d8analysis.stats.distribution import RVSDistribution, DISTRIBUTIONS, Distribution
+from d8analysis.data.generation import RVSDistribution, DISTRIBUTIONS, Distribution
 
 
 # ------------------------------------------------------------------------------------------------ #

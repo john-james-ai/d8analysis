@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /d8analysis/stats/correlation/pearson.py                                            #
+# Filename   : /d8analysis/quantitative/statistical/relational/spearman.py                         #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/d8analysis                                         #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Thursday August 10th 2023 10:27:27 pm                                               #
+# Modified   : Friday August 11th 2023 03:03:14 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -25,8 +25,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
-from d8analysis.stats.profile import StatTestProfileTwo
-from d8analysis.stats.base import StatTestResult, StatisticalTestTwo, StatTestProfile
+from d8analysis.analysis.base import StatTestProfileTwo
+from d8analysis.analysis.base import StatTestResult, StatisticalTestTwo, StatTestProfile
 from d8analysis.visual.config import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
@@ -37,7 +37,7 @@ sns.set_style(Canvas.style)
 #                                     TEST RESULT                                                  #
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
-class PearsonCorrelationResult(StatTestResult):
+class SpearmanCorrelationResult(StatTestResult):
     data: pd.DataFrame = None
     x: str = None
     y: str = None
@@ -48,7 +48,7 @@ class PearsonCorrelationResult(StatTestResult):
         ax = sns.scatterplot(data=self.data, x=self.x, y=self.y, ax=ax)
 
         ax.set_title(
-            f"Pearson's Test for Correlation\n{self.result}",
+            f"Spearman's Test for Correlation\n{self.result}",
             fontsize=canvas.fontsize_title,
         )
 
@@ -61,8 +61,8 @@ class PearsonCorrelationResult(StatTestResult):
 # ------------------------------------------------------------------------------------------------ #
 #                                          TEST                                                    #
 # ------------------------------------------------------------------------------------------------ #
-class PearsonCorrelationTest(StatisticalTestTwo):
-    __id = "pearson"
+class SpearmanCorrelationTest(StatisticalTestTwo):
+    __id = "spearman"
 
     def __init__(self, alpha: float = 0.05) -> None:
         super().__init__()
@@ -99,7 +99,7 @@ class PearsonCorrelationTest(StatisticalTestTwo):
         """
         data, x, y = self._parse_arguments(data=data, x=x, y=y)
 
-        r, pvalue = stats.pearsonr(data[x], data[y])
+        r, pvalue = stats.spearmanr(data[x], data[y])
 
         if pvalue > self._alpha:  # pragma: no cover
             inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. Correlation between {x} and {y} is not significant."
@@ -107,10 +107,10 @@ class PearsonCorrelationTest(StatisticalTestTwo):
             inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. Correlation between {x} and {y} is significant."
 
         # Create the result object.
-        self._result = PearsonCorrelationResult(
+        self._result = SpearmanCorrelationResult(
             test=self._profile.name,
             H0=self._profile.H0,
-            statistic=self._profile.statistic,
+            statistic="Spearman correlation coefficient",
             hypothesis=self._profile.hypothesis,
             value=r,
             pvalue=pvalue,

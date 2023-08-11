@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
+# Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
-# Python     : 3.10.11                                                                             #
-# Filename   : /d8analysis/stats/independence/__init__.py                                          #
+# Python     : 3.10.12                                                                             #
+# Filename   : /d8analysis/analysis/__init__.py                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Sunday May 28th 2023 01:21:49 pm                                                    #
-# Modified   : Thursday August 10th 2023 10:32:01 pm                                               #
+# Created    : Friday August 11th 2023 10:52:28 am                                                 #
+# Modified   : Friday August 11th 2023 03:08:03 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #

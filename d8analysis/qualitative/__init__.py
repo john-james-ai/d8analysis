@@ -2,33 +2,17 @@
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
-# Python     : 3.10.11                                                                             #
-# Filename   : /d8analysis/stats/profile.py                                                        #
+# Version    : 0.1.19                                                                              #
+# Python     : 3.10.12                                                                             #
+# Filename   : /d8analysis/analysis/__init__.py                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Sunday May 28th 2023 06:24:28 pm                                                    #
-# Modified   : Thursday August 10th 2023 10:27:29 pm                                               #
+# Created    : Friday August 11th 2023 10:52:28 am                                                 #
+# Modified   : Friday August 11th 2023 03:08:03 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
-"""Profile Module for the Statistical Analytics Package"""
-from dataclasses import dataclass
-from d8analysis.stats.base import StatTestProfile
-
-
-# ------------------------------------------------------------------------------------------------ #
-@dataclass
-class StatTestProfileOne(StatTestProfile):
-    X_variable_type: str = None
-
-
-# ------------------------------------------------------------------------------------------------ #
-@dataclass
-class StatTestProfileTwo(StatTestProfile):
-    X_variable_type: str = None
-    Y_variable_type: str = None

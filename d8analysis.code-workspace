@@ -4,5 +4,14 @@
 			"path": "."
 		}
     ],
-    "settings": {}
+    "settings": {
+        "psi-header.variables": [
+
+            ["projectCreationYear", "2023"],
+            ["url", "https://github.com/john-james-ai/d8analysis"],
+            ["projectname", "Exploratory Data Analysis Framework"],
+            ["version", "0.1.19"],
+            ["pythonversion","3.10.12"]
+        ],
+    }
 }

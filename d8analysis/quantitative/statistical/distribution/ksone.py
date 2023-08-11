@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /d8analysis/stats/goodness_of_fit/ksone.py                                          #
+# Filename   : /d8analysis/quantitative/statistical/distribution/ksone.py                          #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/d8analysis                                         #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Thursday August 10th 2023 10:27:24 pm                                               #
+# Modified   : Friday August 11th 2023 03:03:11 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -25,11 +25,11 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
-from d8analysis.stats.profile import StatTestProfileOne
-from d8analysis.stats.base import StatTestResult, StatisticalTest, StatTestProfile
+from d8analysis.analysis.base import StatTestProfileOne
+from d8analysis.analysis.base import StatTestResult, StatisticalTest, StatTestProfile
 from d8analysis.visual.config import Canvas
-from d8analysis.stats.distribution import DISTRIBUTIONS
-from d8analysis.stats.distribution import RVSDistribution
+from d8analysis.data.generation import DISTRIBUTIONS
+from d8analysis.data.generation import RVSDistribution
 
 # ------------------------------------------------------------------------------------------------ #
 MC_SAMPLES = 100

@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /d8analysis/stats/centrality/ttest.py                                               #
+# Filename   : /d8analysis/quantitative/statistical/centrality/ttest.py                            #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/d8analysis                                         #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 11:41:00 pm                                                 #
-# Modified   : Thursday August 10th 2023 10:27:28 pm                                               #
+# Modified   : Friday August 11th 2023 03:03:15 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,10 +24,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
-from d8analysis.stats.profile import StatTestProfileTwo
-from d8analysis.stats.base import StatTestResult, StatisticalTestTwo, StatTestProfile
+from d8analysis.analysis.base import StatTestProfileTwo
+from d8analysis.analysis.base import StatTestResult, StatisticalTestTwo, StatTestProfile
 from d8analysis.visual.config import Canvas
-from d8analysis.stats.descriptive import QuantStats
+from d8analysis.quantitative.descriptive.summary import QuantStats
 
 # ------------------------------------------------------------------------------------------------ #
 sns.set_style(Canvas.style)
