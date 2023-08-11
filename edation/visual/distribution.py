@@ -1,95 +1,54 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
-# Version    : 0.1.19                                                                              #
+# Project    : Data Exploration Framework                                                          #
+# Version    : 0.1.0                                                                               #
 # Python     : 3.10.11                                                                             #
 # Filename   : /edation/visual/distribution.py                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/edation                                            #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday June 18th 2023 01:41:15 am                                                   #
-# Modified   : Thursday July 27th 2023 03:43:10 pm                                                 #
+# Modified   : Thursday August 10th 2023 06:08:56 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
-"""Visualizations Revealing the Distribution of Data"""
+"""Plotizations Revealing the Distribution of Data"""
 import pandas as pd
 
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from .base import Visual
-from .config import Canvas
-
-# ------------------------------------------------------------------------------------------------ #
-#                                       HISTOGRAM                                                  #
-# ------------------------------------------------------------------------------------------------ #
-
-
-class Histogram(Visual):  # pragma: no cover
-    """Plot univariate or bivariate histograms to show distributions of datasets."""
-
-    def __call__(
-        self,
-        data: pd.DataFrame,
-        x: str,
-        y: str = None,
-        hue: str = None,
-        kde: bool = True,
-        ax: plt.Axes = None,
-        title: str = None,
-        style: str = "whitegrid",
-        palette: str = "colorblind",
-        *args,
-        **kwargs,
-    ) -> plt.Axes:
-        """Plots the histogram
-
-        Args:
-            data (pd.DataFrame): Input data
-            x (str): The variables that specify positions in the x axis
-            y (str): The variables that specify positions in the y axis
-            hue (str): Variable that determines the colors of plot elements.
-            kde (bool): If True, compute a kernel density estimate to smooth the distribution.
-            ax (plt.Axes): A matplotlib Axes object. Optional.
-            style (str): A string representing a seaborn style. Optional. Defaults to 'whitegrid'
-            palette (str): A string indicating one of the supported palettes. See docstring for
-                Palette class in config module. Defaults to 'winter_blue'.
-            args and kwargs passed to the underlying seaborn histplot method.
-                See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
-                complete list of parameters.
-        """
-        ax = ax or Canvas().ax
-
-        ax = sns.histplot(
-            data=data,
-            x=x,
-            y=y,
-            hue=hue,
-            kde=kde,
-            ax=ax,
-            legend=True,
-            pmax=style.saturation,
-            *args,
-            **kwargs,
-        )
-        if title:
-            ax.set_title(title)
+from edation.visual.base import Plot
+from edation.visual.config import Canvas
 
 
 # ------------------------------------------------------------------------------------------------ #
-#                                       KDE PLOT                                                   #
+#                                     HISTOGRAM                                                    #
 # ------------------------------------------------------------------------------------------------ #
+class Histogram(Plot):  # pragma: no cover
+    """Plot univariate or bivariate histograms to show distributions of datasets.
 
 
-class KDEPlot(Visual):  # pragma: no cover
-    """Plot univariate or bivariate histograms to show distributions of datasets."""
+    Args:
+        data (pd.DataFrame): Input data
+        x (str): The variables that specify positions in the x axis
+        y (str): The variables that specify positions in the y axis
+        hue (str): Variable that determines the colors of plot elements.
+        ax (plt.Axes): A matplotlib Axes object. Optional. If not none, the ax parameter
+            overrides the default set in the base class.
+        title (str): The visualization title. Optional
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional. Default is set in the base class.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
 
-    def __call__(
+    def __init__(
         self,
         data: pd.DataFrame,
         x: str,
@@ -97,103 +56,68 @@ class KDEPlot(Visual):  # pragma: no cover
         hue: str = None,
         ax: plt.Axes = None,
         title: str = None,
-        legend: bool = True,
-        style: str = "whitegrid",
-        palette: str = "colorblind",
+        canvas: Canvas = None,
         *args,
         **kwargs,
-    ) -> plt.Axes:
-        """Plots the histogram
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._data = data
+        self._x = x
+        self._y = y
+        self._hue = hue
+        self._ax = ax
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
 
-        Args:
-            data (pd.DataFrame): Input data
-            x (str): The variables that specify positions in the x axis
-            y (str): The variables that specify positions in the y axis
-            hue (str): Variable that determines the colors of plot elements.
-            ax (plt.Axes): A matplotlib Axes object. Optional.
-            title (str): The title for the plot
-            legend (bool): Whether to show render a legend on the plot.
-            style (str): A string representing a seaborn style. Optional. Defaults to 'whitegrid'
-            palette (str): A string indicating one of the supported palettes. See docstring for
-                Palette class in config module. Defaults to 'winter_blue'.
-            args and kwargs passed to the underlying seaborn histplot method.
-                See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
-                complete list of parameters.
-        """
-        ax = ax or Canvas().ax
+        self._legend_config = None
 
-        ax = sns.kdeplot(
-            data=data,
-            x=x,
-            y=y,
-            hue=hue,
-            legend=legend,
-            ax=ax,
+    def visualize(self) -> None:
+        super().visualize()
+
+        args = self._args
+        kwargs = self._kwargs
+
+        sns.histplot(
+            data=self._data,
+            x=self._x,
+            y=self._y,
+            hue=self._hue,
+            ax=self._ax,
+            palette=self._canvas.palette,
             *args,
             **kwargs,
         )
-        if title:
-            ax.set_title(title)
+        if self._title:
+            self._ax.set_title(self._title)
+
+        if self._legend_config is not None:
+            self.config_legend()
 
 
 # ------------------------------------------------------------------------------------------------ #
-#                                        BOX PLOT                                                  #
+#                            PROBABILITY DENSITY FUNCTION                                          #
 # ------------------------------------------------------------------------------------------------ #
+class PDF(Plot):  # pragma: no cover
+    """Plots a probability density function (pdf)
 
 
-class BoxPlot(Visual):  # pragma: no cover
-    """Draw a box plot to show distributions with respect to categories or groups."""
+    Args:
+        data (pd.DataFrame): Input data
+        x (str): The variables that specify positions in the x axis
+        y (str): The variables that specify positions in the y axis
+        hue (str): Variable that determines the colors of plot elements.
+        ax (plt.Axes): A matplotlib Axes object. Optional. If not none, the ax parameter
+            overrides the default set in the base class.
+        title (str): The visualization title. Optional
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
 
-    def __call__(
-        self,
-        data: pd.DataFrame,
-        x: str,
-        y: str = None,
-        ax: plt.Axes = None,
-        title: str = None,
-        style: str = "whitegrid",
-        palette: str = "colorblind",
-        *args,
-        **kwargs,
-    ) -> plt.Axes:
-        """Plots the histogram
-
-        Args:
-            data (pd.DataFrame): Input data
-            x (str): The variables that specify positions in the x axis
-            y (str): The variables that specify positions in the y axis
-            ax (plt.Axes): A matplotlib Axes object. Optional.
-            style (str): A string representing a seaborn style. Optional. Defaults to 'whitegrid'
-            palette (str): A string indicating one of the supported palettes. See docstring for
-                Palette class in config module. Defaults to 'winter_blue'.
-            args and kwargs passed to the underlying seaborn histplot method.
-                See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
-                complete list of parameters.
-        """
-
-        ax = ax or Canvas().ax
-
-        ax = sns.boxplot(
-            data=data,
-            x=x,
-            y=y,
-            ax=ax,
-            *args,
-            **kwargs,
-        )
-        if title:
-            ax.set_title(title)
-
-
-# ------------------------------------------------------------------------------------------------ #
-#                                     VIOLIN PLOT                                                  #
-# ------------------------------------------------------------------------------------------------ #
-
-
-class ViolinPlot(Visual):  # pragma: no cover
-    """Draw a combination of boxplot and kernel density estimate."""
-
-    def __call__(
+    def __init__(
         self,
         data: pd.DataFrame,
         x: str,
@@ -201,50 +125,68 @@ class ViolinPlot(Visual):  # pragma: no cover
         hue: str = None,
         ax: plt.Axes = None,
         title: str = None,
-        style: str = "whitegrid",
-        palette: str = "colorblind",
+        canvas: Canvas = None,
         *args,
         **kwargs,
-    ) -> plt.Axes:
-        """Plots the histogram
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._data = data
+        self._x = x
+        self._y = y
+        self._hue = hue
+        self._ax = ax
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
 
-        Args:
-            data (pd.DataFrame): Input data
-            x (str): The variables that specify positions in the x axis
-            y (str): The variables that specify positions in the y axis
-            hue (str): Variable that determines the colors of plot elements.
-            ax (plt.Axes): A matplotlib Axes object. Optional.
-            style (str): A string representing a seaborn style. Optional. Defaults to 'whitegrid'
-            palette (str): A string indicating one of the supported palettes. See docstring for
-                Palette class in config module. Defaults to 'winter_blue'.
-            args and kwargs passed to the underlying seaborn histplot method.
-                See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
-                complete list of parameters.
-        """
-        ax = ax or Canvas().ax
+        self._legend_config = None
 
-        ax = sns.violinplot(
-            data=data,
-            x=x,
-            y=y,
-            hue=hue,
-            ax=ax,
+    def visualize(self) -> None:
+        super().visualize()
+
+        args = self._args
+        kwargs = self._kwargs
+
+        sns.kdeplot(
+            data=self._data,
+            x=self._x,
+            y=self._y,
+            hue=self._hue,
+            ax=self._ax,
+            palette=self._canvas.palette,
             *args,
             **kwargs,
         )
-        if title:
-            ax.set_title(title)
+        if self._title:
+            self._ax.set_title(self._title)
+
+        if self._legend_config is not None:
+            self.config_legend()
 
 
 # ------------------------------------------------------------------------------------------------ #
-#                           EMPIRICAL CUMULATIVE DISTRIBUTION PLOT                                 #
+#                            CUMULATIVE DISTRIBUTION FUNCTION                                      #
 # ------------------------------------------------------------------------------------------------ #
+class CDF(Plot):  # pragma: no cover
+    """Plots a cumulative distribution function (cdf)
 
 
-class ECDFPlot(Visual):  # pragma: no cover
-    """Draw a combination of boxplot and kernel density estimate."""
+    Args:
+        data (pd.DataFrame): Input data
+        x (str): The variables that specify positions in the x axis
+        y (str): The variables that specify positions in the y axis
+        hue (str): Variable that determines the colors of plot elements.
+        ax (plt.Axes): A matplotlib Axes object. Optional. If not none, the ax parameter
+            overrides the default set in the base class.
+        title (str): The visualization title. Optional
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
 
-    def __call__(
+    def __init__(
         self,
         data: pd.DataFrame,
         x: str,
@@ -252,37 +194,178 @@ class ECDFPlot(Visual):  # pragma: no cover
         hue: str = None,
         ax: plt.Axes = None,
         title: str = None,
-        style: str = "whitegrid",
-        palette: str = "colorblind",
+        canvas: Canvas = None,
         *args,
         **kwargs,
-    ) -> plt.Axes:
-        """Plots the histogram
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._data = data
+        self._x = x
+        self._y = y
+        self._hue = hue
+        self._ax = ax
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
 
-        Args:
-            data (pd.DataFrame): Input data
-            x (str): The variables that specify positions in the x axis
-            y (str): The variables that specify positions in the y axis
-            hue (str): Variable that determines the colors of plot elements.
-            ax (plt.Axes): A matplotlib Axes object. Optional.
-            style (str): A string representing a seaborn style. Optional. Defaults to 'whitegrid'
-            palette (str): A string indicating one of the supported palettes. See docstring for
-                Palette class in config module. Defaults to 'winter_blue'.
-            args and kwargs passed to the underlying seaborn histplot method.
-                See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
-                complete list of parameters.
-        """
+        self._legend_config = None
 
-        ax = ax or Canvas().ax
+    def visualize(self) -> None:
+        super().visualize()
 
-        ax = sns.ecdfplot(
-            data=data,
-            x=x,
-            y=y,
-            hue=hue,
-            ax=ax,
+        args = self._args
+        kwargs = self._kwargs
+
+        _ = sns.ecdfplot(
+            data=self._data,
+            x=self._x,
+            y=self._y,
+            hue=self._hue,
+            ax=self._ax,
+            palette=self._canvas.palette,
             *args,
             **kwargs,
         )
-        if title:
-            ax.set_title(title)
+        if self._title:
+            self._ax.set_title(self._title)
+
+        if self._legend_config is not None:
+            self.config_legend()
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                                        BOXPLOT                                                   #
+# ------------------------------------------------------------------------------------------------ #
+class BoxPlot(Plot):  # pragma: no cover
+    """Draw a box plot to show distributions with or without respect to categories.
+
+
+    Args:
+        data (pd.DataFrame): Input data
+        x (str): The variables that specify positions in the x axis
+        y (str): The variables that specify positions in the y axis
+        hue (str): Variable that determines the colors of plot elements.
+        ax (plt.Axes): A matplotlib Axes object. Optional. If not none, the ax parameter
+            overrides the default set in the base class.
+        title (str): The visualization title. Optional
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
+
+    def __init__(
+        self,
+        data: pd.DataFrame,
+        x: str,
+        y: str = None,
+        hue: str = None,
+        ax: plt.Axes = None,
+        title: str = None,
+        canvas: Canvas = None,
+        *args,
+        **kwargs,
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._data = data
+        self._x = x
+        self._y = y
+        self._hue = hue
+        self._ax = ax
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
+
+        self._legend_config = None
+
+    def visualize(self) -> None:
+        super().visualize()
+
+        args = self._args
+        kwargs = self._kwargs
+
+        _ = sns.boxplot(
+            data=self._data,
+            x=self._x,
+            y=self._y,
+            hue=self._hue,
+            ax=self._ax,
+            palette=self._canvas.palette,
+            *args,
+            **kwargs,
+        )
+        if self._title:
+            self._ax.set_title(self._title)
+
+        if self._legend_config is not None:
+            self.config_legend()
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                                      VIOLIN PLOT                                                 #
+# ------------------------------------------------------------------------------------------------ #
+class ViolinPlot(Plot):  # pragma: no cover
+    """Draw a violin plot, as a combination of boxplot and kernel density estimate.
+
+
+    Args:
+        data (pd.DataFrame): Input data
+        x (str): The variables that specify positions in the x axis
+        y (str): The variables that specify positions in the y axis
+        hue (str): Variable that determines the colors of plot elements.
+        ax (plt.Axes): A matplotlib Axes object. Optional. If not none, the ax parameter
+            overrides the default set in the base class.
+        title (str): The visualization title. Optional
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
+
+    def __init__(
+        self,
+        data: pd.DataFrame,
+        x: str,
+        y: str = None,
+        hue: str = None,
+        ax: plt.Axes = None,
+        title: str = None,
+        canvas: Canvas = None,
+        *args,
+        **kwargs,
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._data = data
+        self._x = x
+        self._y = y
+        self._hue = hue
+        self._ax = ax
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
+
+        self._legend_config = None
+
+    def visualize(self) -> None:
+        super().visualize()
+
+        args = self._args
+        kwargs = self._kwargs
+
+        _ = sns.violinplot(
+            data=self._data,
+            x=self._x,
+            y=self._y,
+            hue=self._hue,
+            ax=self._ax,
+            palette=self._canvas.palette,
+            *args,
+            **kwargs,
+        )
+        if self._title:
+            self._ax.set_title(self._title)
+
+        if self._legend_config is not None:
+            self.config_legend()

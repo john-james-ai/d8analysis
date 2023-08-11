@@ -1,39 +1,55 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
-# Version    : 0.1.19                                                                              #
+# Project    : Data Exploration Framework                                                          #
+# Version    : 0.1.0                                                                               #
 # Python     : 3.10.11                                                                             #
 # Filename   : /edation/visual/association.py                                                      #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/edation                                            #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 20th 2023 07:57:56 pm                                                  #
-# Modified   : Thursday July 27th 2023 03:44:42 pm                                                 #
+# Modified   : Thursday August 10th 2023 06:09:33 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
-"""Visualizations that Reveal Associations between Variables."""
+"""Plotizations that Reveal Associations between Variables."""
 import pandas as pd
 
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-from .base import Visual
-from .config import Canvas
+from edation.visual.base import Plot, Figure
+from edation.visual.config import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
 #                                        SCATTERPLOT                                               #
 # ------------------------------------------------------------------------------------------------ #
 
 
-class ScatterPlot(Visual):  # pragma: no cover
-    """Draw a scatter plot with possibility of several semantic groupings."""
+class ScatterPlot(Plot):  # pragma: no cover
+    """Draw a scatter plot with possibility of several semantic groupings.
 
-    def __call__(
+
+    Args:
+        data (pd.DataFrame): Input data
+        x (str): The variables that specify positions in the x axis
+        y (str): The variables that specify positions in the y axis
+        hue (str): Variable that determines the colors of plot elements.
+        ax (plt.Axes): A matplotlib Axes object. Optional. If not none, the ax parameter
+            overrides the default set in the base class.
+        title (str): Title for the visualization.
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional. Default is set in the base class.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
+
+    def __init__(
         self,
         data: pd.DataFrame,
         x: str,
@@ -41,40 +57,43 @@ class ScatterPlot(Visual):  # pragma: no cover
         hue: str = None,
         ax: plt.Axes = None,
         title: str = None,
-        style: str = "whitegrid",
-        palette: str = "colorblind",
+        canvas: Canvas = None,
         *args,
         **kwargs,
-    ) -> plt.Axes:
-        """Plots the histogram
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._data = data
+        self._x = x
+        self._y = y
+        self._hue = hue
+        self._ax = ax
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
 
-        Args:
-            data (pd.DataFrame): Input data
-            x (str): The variables that specify positions in the x axis
-            y (str): The variables that specify positions in the y axis
-            hue (str): Variable that determines the colors of plot elements.
-            ax (plt.Axes): A matplotlib Axes object. Optional.
-            style (str): A string representing a seaborn style. Optional. Defaults to 'whitegrid'
-            palette (str): A string indicating one of the supported palettes. See docstring for
-                Palette class in config module. Defaults to 'winter_blue'.
-            args and kwargs passed to the underlying seaborn histplot method.
-                See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
-                complete list of parameters.
-        """
+        self._legend_config = None
 
-        ax = ax or Canvas().ax
+    def visualize(self) -> None:
+        super().visualize()
 
-        ax = sns.scatterplot(
-            data=data,
-            x=x,
-            y=y,
-            hue=hue,
-            ax=ax,
+        args = self._args
+        kwargs = self._kwargs
+
+        sns.scatterplot(
+            data=self._data,
+            x=self._x,
+            y=self._y,
+            hue=self._hue,
+            ax=self._ax,
+            palette=self._canvas.palette,
             *args,
             **kwargs,
         )
-        if title:
-            ax.set_title(title)
+        if self._title:
+            self._ax.set_title(self._title)
+
+        if self._legend_config is not None:
+            self.config_legend()
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -82,10 +101,25 @@ class ScatterPlot(Visual):  # pragma: no cover
 # ------------------------------------------------------------------------------------------------ #
 
 
-class LinePlot(Visual):  # pragma: no cover
-    """Draw a scatter plot with possibility of several semantic groupings."""
+class LinePlot(Plot):  # pragma: no cover
+    """Renders a lineplot
 
-    def __call__(
+    Args:
+        data (pd.DataFrame): Input data
+        x (str): The variables that specify positions in the x axis
+        y (str): The variables that specify positions in the y axis
+        hue (str): Variable that determines the colors of plot elements.
+        ax (plt.Axes): A matplotlib Axes object. Optional. If not none, the ax parameter
+            overrides the default set in the base class.
+        title (str): Title for the visualization.
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional. Default is set in the base class.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
+
+    def __init__(
         self,
         data: pd.DataFrame,
         x: str,
@@ -93,40 +127,43 @@ class LinePlot(Visual):  # pragma: no cover
         hue: str = None,
         ax: plt.Axes = None,
         title: str = None,
-        style: str = "whitegrid",
-        palette: str = "colorblind",
+        canvas: Canvas = None,
         *args,
         **kwargs,
-    ) -> plt.Axes:
-        """Plots the histogram
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._data = data
+        self._x = x
+        self._y = y
+        self._hue = hue
+        self._ax = ax
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
 
-        Args:
-            data (pd.DataFrame): Input data
-            x (str): The variables that specify positions in the x axis
-            y (str): The variables that specify positions in the y axis
-            hue (str): Variable that determines the colors of plot elements.
-            ax (plt.Axes): A matplotlib Axes object. Optional.
-            style (str): A string representing a seaborn style. Optional. Defaults to 'whitegrid'
-            palette (str): A string indicating one of the supported palettes. See docstring for
-                Palette class in config module. Defaults to 'winter_blue'.
-            args and kwargs passed to the underlying seaborn histplot method.
-                See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
-                complete list of parameters.
-        """
+        self._legend_config = None
 
-        ax = ax or Canvas().ax
+    def visualize(self) -> None:
+        super().visualize()
 
-        ax = sns.lineplot(
-            data=data,
-            x=x,
-            y=y,
-            hue=hue,
-            ax=ax,
+        args = self._args
+        kwargs = self._kwargs
+
+        sns.lineplot(
+            data=self._data,
+            x=self._x,
+            y=self._y,
+            hue=self._hue,
+            ax=self._ax,
+            palette=self._canvas.palette,
             *args,
             **kwargs,
         )
-        if title is not None:
-            ax.set_title(title)
+        if self._title is not None:
+            self._ax.set_title(self._title)
+
+        if self._legend_config is not None:
+            self.config_legend()
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -134,50 +171,58 @@ class LinePlot(Visual):  # pragma: no cover
 # ------------------------------------------------------------------------------------------------ #
 
 
-class PairPlot(Visual):  # pragma: no cover
-    """Plot pairwise relationships in a dataset. This is a figure level plot showing a grid of axes."""
+class PairPlot(Figure):  # pragma: no cover
+    """Plot pairwise relationships in a dataset. This is a figure level plot showing a grid of axes
 
-    def __call__(
+    Args:
+        data (pd.DataFrame): Input data
+        vars (list): List of variable names from data to use. If None, all variables will be used.
+        hue (str): Variable that determines the colors of plot elements.
+        title (str): Title for the visualization.
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional. Default is set in the base class.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
+
+    def __init__(
         self,
         data: pd.DataFrame,
-        hue: str = None,
         vars: list = None,
-        x_vars: list = None,
-        y_vars: list = None,
+        hue: str = None,
         title: str = None,
-        style: str = "whitegrid",
-        palette: str = "colorblind",
+        canvas: Canvas = None,
         *args,
         **kwargs,
-    ) -> plt.Axes:
-        """Plots the histogram
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._data = data
+        self._vars = vars
+        self._hue = hue
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
 
-        Args:
-            data (pd.DataFrame): Input data
-            hue (str): Variable that determines the colors of plot elements.
-            vars (list): List of variable names from data to use. If None, all variables will be used.
-            x_vars (list): A list of variable names to use for each row of the grid.
-            y_vars (list): A list of variable names to use for each column of the grid.
-            style (str): A string representing a seaborn style. Optional. Defaults to 'whitegrid'
-            palette (str): A string indicating one of the supported palettes. See docstring for
-                Palette class in config module. Defaults to 'winter_blue'.
-            args and kwargs passed to the underlying seaborn histplot method.
-                See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
-                complete list of parameters.
-        """
+        self._legend_config = None
 
+    def visualize(self) -> None:
+        args = self._args
+        kwargs = self._kwargs
         g = sns.pairplot(
-            data=data,
-            hue=hue,
-            vars=vars,
-            x_vars=x_vars,
-            y_vars=y_vars,
+            data=self._data,
+            hue=self._hue,
+            vars=self._vars,
+            palette=self._canvas.palette,
             *args,
             **kwargs,
         )
-        if title is not None:
-            g.fig.suptitle(title)
+        if self._title is not None:
+            g.fig.suptitle(self._title)
         g.tight_layout()
+
+        if self._legend_config is not None:
+            self.config_legend()
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -185,47 +230,60 @@ class PairPlot(Visual):  # pragma: no cover
 # ------------------------------------------------------------------------------------------------ #
 
 
-class JointPlot(Visual):  # pragma: no cover
-    """Draw a plot of two variables with bivariate and univariate graphs."""
+class JointPlot(Figure):  # pragma: no cover
+    """Draw a plot of two variables with bivariate and univariate graphs.
 
-    def __call__(
+    Args:
+        data (pd.DataFrame): Input data
+        x (str): The variables that specify positions in the x axis
+        y (str): The variables that specify positions in the y axis
+        hue (str): Variable that determines the colors of plot elements.
+        title (str): Title for the visualization.
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional. Default is set in the base class.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
+
+    def __init__(
         self,
         data: pd.DataFrame,
         x: str,
         y: str = None,
         hue: str = None,
-        ax: plt.Axes = None,
         title: str = None,
-        style: str = "whitegrid",
-        palette: str = "colorblind",
+        canvas: Canvas = None,
         *args,
         **kwargs,
-    ) -> plt.Axes:
-        """Plots the histogram
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._data = data
+        self._x = x
+        self._y = y
+        self._hue = hue
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
 
-        Args:
-            data (pd.DataFrame): Input data
-            x (str): The variables that specify positions in the x axis
-            y (str): The variables that specify positions in the y axis
-            hue (str): Variable that determines the colors of plot elements.
-            ax (plt.Axes): A matplotlib Axes object. Optional.
-            style (str): A string representing a seaborn style. Optional. Defaults to 'whitegrid'
-            palette (str): A string indicating one of the supported palettes. See docstring for
-                Palette class in config module. Defaults to 'winter_blue'.
-            args and kwargs passed to the underlying seaborn histplot method.
-                See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
-                complete list of parameters.
-        """
+        self._legend_config = None
+
+    def visualize(self) -> None:
+        args = self._args
+        kwargs = self._kwargs
 
         g = sns.jointplot(
-            data=data,
-            x=x,
-            y=y,
-            hue=hue,
-            ax=ax,
+            data=self._data,
+            x=self._x,
+            y=self._y,
+            hue=self._hue,
+            palette=self._canvas.palette,
             *args,
             **kwargs,
         )
-        if title is not None:
-            g.fig.suptitle(title)
+        if self._title is not None:
+            g.fig.suptitle(self._title)
             g.fig.tight_layout()
+
+        if self._legend_config is not None:
+            self.config_legend()

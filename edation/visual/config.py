@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
-# Version    : 0.1.19                                                                              #
+# Project    : Data Exploration Framework                                                          #
+# Version    : 0.1.0                                                                               #
 # Python     : 3.10.11                                                                             #
 # Filename   : /edation/visual/config.py                                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/edation                                            #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Thursday July 27th 2023 03:36:09 pm                                                 #
+# Modified   : Thursday August 10th 2023 04:23:15 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -20,7 +20,6 @@ from __future__ import annotations
 from abc import ABC
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import List
 
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -112,30 +111,12 @@ PALETTES = {
 
 @dataclass
 class Canvas(PlotConfig):
-    """Canvas class encapsulating the figure and axes objects."""
+    """Canvas class encapsulating figure level configuration."""
 
-    style: str = "whitegrid"
-    figsize: tuple = (12, 4)
-    nrows: int = 1
-    ncols: int = 1
-    saturation: float = 0.5
-    fontsize: int = 10
-    fontsize_title: int = 10
-    fig: plt.figure = None
-    ax: plt.axes = None
-    axs: List = field(default_factory=lambda: [plt.axes])
-    palette: str = "Blues_r"
-
-    def __post_init__(self) -> None:
-        if self.nrows > 1 or self.ncols > 1:
-            figsize = []
-            figsize.append(self.figsize[0] * self.ncols)
-            figsize.append(self.figsize[1] * self.nrows)
-            self.fig, self.axs = plt.subplots(nrows=self.nrows, ncols=self.ncols, figsize=figsize)
-        else:
-            self.fig, self.ax = plt.subplots(
-                nrows=self.nrows, ncols=self.ncols, figsize=self.figsize
-            )
+    width: int = 12  # The width of the canvas.
+    height: int = 4  # If multiple rows of plots, this is the height of each row.
+    maxcols: int = 2  # The maximum number of columns in a multi-plot visualization.
+    palette: str = "Blues_r"  # Seaborn palette or matplotlib colormap
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -146,6 +127,7 @@ class LegendConfig(PlotConfig):
     loc: str = "best"
     ncols: int = 1
     fontsize: int = 8
+    labels: list[str] = field(default_factory=list)
     markerfirst: bool = True
     reverse: bool = False
     frameon: bool = False
