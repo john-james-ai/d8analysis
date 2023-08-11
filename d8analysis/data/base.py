@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:29:08 pm                                               #
-# Modified   : Thursday August 10th 2023 10:32:16 pm                                               #
+# Modified   : Friday August 11th 2023 03:43:33 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -54,6 +54,13 @@ class Dataset(ABC):
     def columns(self) -> list:
         """Returns a list containing the names of the columns in the dataset."""
         return self._df.columns
+
+    @property
+    def dtypes(self) -> list:
+        """Returns the count of data types in the dataset."""
+        dtypes = self._df.dtypes.value_counts().reset_index()
+        dtypes.columns = ["Data Type", "Count"]
+        return dtypes
 
     @property
     def size(self) -> int:

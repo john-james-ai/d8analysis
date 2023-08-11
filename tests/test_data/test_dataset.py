@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Project    : Enter Project Name in Workspace Settings                                            #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /tests/test_data/test_dataset.py                                                    #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : https://github.com/john-james-ai/d8analysis                                         #
+# URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:42:57 pm                                               #
-# Modified   : Thursday August 10th 2023 10:27:35 pm                                               #
+# Modified   : Friday August 11th 2023 03:44:40 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -58,6 +58,9 @@ class TestDataset:  # pragma: no cover
         logger.debug(ds.info())
         logger.debug(ds.overview())
         assert len(ds.sample()) == 5
+        dt = ds.dtypes
+        assert isinstance(dt, pd.DataFrame)
+        logger.debug(dt)
         df = ds.select(include=["Gender", "Education"])
         assert df.shape[1] == 2
         df = ds.select(exclude=["Gender"])

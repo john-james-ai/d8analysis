@@ -11,7 +11,7 @@
 # URL        : Enter URL in Workspace Settings                                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Thursday August 10th 2023 10:32:18 pm                                               #
+# Modified   : Friday August 11th 2023 03:47:05 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -64,6 +64,5 @@ def dataset():
 def container():
     container = d8analysisContainer()
     container.init_resources()
-    container.wire(packages=["d8analysis.service"])
 
     return container
