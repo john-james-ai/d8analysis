@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/edation                                            #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:42:57 pm                                               #
-# Modified   : Thursday August 10th 2023 09:24:23 pm                                               #
+# Modified   : Thursday August 10th 2023 10:11:42 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -68,6 +68,10 @@ class TestDataset:  # pragma: no cover
         df = ds.head()
         assert len(df) == 5
         logger.debug(ds.summary())
+        df = ds.describe(include=["category", "object", np.number])
+        logger.debug(df)
+        df = ds.describe(exclude=["object"])
+        logger.debug(df)
 
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()

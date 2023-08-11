@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "edation"
-version = "0.0.6"
+version = "0.0.8"
 description = "Exploratory Data Analysis Framework"
 authors = [
     "John James <john.james.ai.studio@gmail.com>",

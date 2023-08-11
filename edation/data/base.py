@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/edation                                            #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:29:08 pm                                               #
-# Modified   : Thursday August 10th 2023 09:22:37 pm                                               #
+# Modified   : Thursday August 10th 2023 10:09:11 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -19,7 +19,7 @@
 from __future__ import annotations
 from abc import ABC, abstractmethod
 import logging
-from typing import Any, Callable
+from typing import Any, Callable, Union
 
 import pandas as pd
 
@@ -144,3 +144,22 @@ class Dataset(ABC):
 
     def head(self, n: int = 5) -> pd.DataFrame:
         return self._df.head(n)
+
+    def describe(
+        self,
+        include: list[str] = None,
+        exclude: list[str] = None,
+        groupby: Union[str, list[str]] = None,
+    ) -> pd.DataFrame:
+        """Provides descriptive statistics for the dataset.
+
+        Args:
+
+            include (list[str]): List of data types to include in the analysis.
+            exclude (list[str]): List of data types to exclude from the analysis.
+            groupby (str): Column used as a factor variable for descriptive statistics.
+        """
+        if groupby is None:
+            return self._df.describe(include=include, exclude=exclude).T
+        else:
+            return self._df.groupby(by=groupby).describe(include=include, exclude=exclude).T
