@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
+# Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /tests/test_statistics/test_centrality.py/test_t.py                                 #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday June 8th 2023 03:48:00 am                                                  #
-# Modified   : Friday August 11th 2023 03:03:20 pm                                                 #
+# Modified   : Friday August 11th 2023 10:02:24 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -23,8 +23,8 @@ import logging
 import pandas as pd
 
 from d8analysis.quantitative.descriptive.summary import QuantStats
-from d8analysis.stats.centrality.ttest import TTest
-from d8analysis.analysis.base import StatTestProfileTwo
+from d8analysis.quantitative.statistical.centrality.ttest import TTest
+from d8analysis.quantitative.statistical.base import StatTestProfileTwo
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -39,7 +39,7 @@ single_line = f"\n{100 * '-'}"
 @pytest.mark.ttest
 class TestTTest:  # pragma: no cover
     # ============================================================================================ #
-    def test_pearson(self, dataset, caplog):
+    def test_ttest(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -53,8 +53,8 @@ class TestTTest:  # pragma: no cover
         # ---------------------------------------------------------------------------------------- #
         male = dataset[dataset["Gender"] == "Male"]["Income"]
         female = dataset[dataset["Gender"] == "Female"]["Income"]
-        test = TTest()
-        test(x=male, y=female)
+        test = TTest(x=male, y=female)
+        test.run()
         assert "Independent" in test.result.test
         assert isinstance(test.result.H0, str)
         assert isinstance(test.result.pvalue, float)

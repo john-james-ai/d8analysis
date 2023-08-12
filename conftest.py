@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
+# Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /conftest.py                                                                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Friday August 11th 2023 03:47:05 am                                                 #
+# Modified   : Friday August 11th 2023 09:48:10 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -29,7 +29,7 @@ DATAFILE = "data/Credit Score Classification Dataset.csv"
 RESET_SCRIPT = "tests/scripts/reset.sh"
 
 # ------------------------------------------------------------------------------------------------ #
-collect_ignore_glob = ["**/test_statistics*/*.*"]
+collect_ignore_glob = []
 
 
 # ------------------------------------------------------------------------------------------------ #

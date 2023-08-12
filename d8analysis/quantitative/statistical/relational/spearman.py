@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
+# Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /d8analysis/quantitative/statistical/relational/spearman.py                         #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Friday August 11th 2023 03:03:14 pm                                                 #
+# Modified   : Friday August 11th 2023 09:58:02 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -25,8 +25,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
-from d8analysis.analysis.base import StatTestProfileTwo
-from d8analysis.analysis.base import StatTestResult, StatisticalTestTwo, StatTestProfile
+from d8analysis.quantitative.statistical.base import StatTestProfileTwo
+from d8analysis.quantitative.statistical.base import (
+    StatTestResult,
+    StatisticalTest,
+    StatTestProfile,
+)
 from d8analysis.visual.config import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
@@ -61,7 +65,7 @@ class SpearmanCorrelationResult(StatTestResult):
 # ------------------------------------------------------------------------------------------------ #
 #                                          TEST                                                    #
 # ------------------------------------------------------------------------------------------------ #
-class SpearmanCorrelationTest(StatisticalTestTwo):
+class SpearmanCorrelationTest(StatisticalTest):
     __id = "spearman"
 
     def __init__(self, alpha: float = 0.05) -> None:

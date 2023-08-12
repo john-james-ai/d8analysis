@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
+# Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /tests/test_statistics/test_gof/test_chisq_gof.py                                   #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 09:32:36 pm                                                    #
-# Modified   : Friday August 11th 2023 03:03:07 pm                                                 #
+# Modified   : Saturday August 12th 2023 12:16:37 am                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -20,10 +20,9 @@ import inspect
 from datetime import datetime
 import pytest
 import logging
-import pandas as pd
 
-from d8analysis.stats.distribution.chisquare import ChiSquareGOFTest
-from d8analysis.analysis.base import StatTestProfile
+from d8analysis.quantitative.statistical.distribution.chisquare import ChiSquareTest
+from d8analysis.quantitative.statistical.base import StatTestProfile
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -50,13 +49,13 @@ class TestX2GOF:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        test = ChiSquareGOFTest()
-        test(data=dataset["Education"])
+        observed = dataset["Education"].value_counts(sort=True, ascending=False).values
+        test = ChiSquareTest(observed=observed)
+        test.run()
         assert "Chi" in test.result.test
         assert isinstance(test.result.H0, str)
         assert isinstance(test.result.pvalue, float)
         assert test.result.alpha == 0.05
-        assert isinstance(test.data, pd.Series)
         assert isinstance(test.profile, StatTestProfile)
         logging.debug(test.result)
         # ---------------------------------------------------------------------------------------- #
@@ -87,18 +86,12 @@ class TestX2GOF:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        observed = (
-            dataset["Credit Rating"]
-            .value_counts(sort=True, ascending=False)
-            .to_frame()
-            .sort_index()
-        )
+        observed = dataset["Education"].value_counts(sort=True, ascending=False).values
         expected = observed
-        expected["count"] = observed["count"].sum() / len(expected)
-        dexp = expected.to_dict()
+        logger.debug(observed)
 
-        test = ChiSquareGOFTest()
-        test(data=dataset["Credit Rating"], expected=dexp)
+        test = ChiSquareTest(observed=observed, expected=expected)
+        test.run()
         assert "Chi" in test.result.test
         assert isinstance(test.result.H0, str)
         assert isinstance(test.result.pvalue, float)

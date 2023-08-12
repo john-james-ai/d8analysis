@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
+# Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /tests/test_statistics/test_independence/test_chisq_ind.py                          #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 09:32:36 pm                                                    #
-# Modified   : Friday August 11th 2023 03:03:03 pm                                                 #
+# Modified   : Friday August 11th 2023 09:59:10 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,8 +22,8 @@ import pytest
 import logging
 import pandas as pd
 
-from d8analysis.stats.independence.chisquare import ChiSquareIndependenceTest
-from d8analysis.analysis.base import StatTestProfile
+from d8analysis.quantitative.statistical.relational.chisquare import ChiSquareIndependenceTest
+from d8analysis.quantitative.statistical.base import StatTestProfile
 
 
 # ------------------------------------------------------------------------------------------------ #

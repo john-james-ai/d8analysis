@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
+# Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /d8analysis/quantitative/statistical/relational/chisquare.py                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday May 29th 2023 03:00:39 am                                                    #
-# Modified   : Friday August 11th 2023 03:03:13 pm                                                 #
+# Modified   : Friday August 11th 2023 09:58:02 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -25,8 +25,12 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
-from d8analysis.analysis.base import StatTestProfileTwo
-from d8analysis.analysis.base import StatTestResult, StatisticalTestTwo, StatTestProfile
+from d8analysis.quantitative.statistical.base import StatTestProfileTwo
+from d8analysis.quantitative.statistical.base import (
+    StatTestResult,
+    StatisticalTest,
+    StatTestProfile,
+)
 from d8analysis.visual.config import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
@@ -157,7 +161,7 @@ class ChiSquareIndependenceResult(StatTestResult):
 # ------------------------------------------------------------------------------------------------ #
 #                                          TEST                                                    #
 # ------------------------------------------------------------------------------------------------ #
-class ChiSquareIndependenceTest(StatisticalTestTwo):
+class ChiSquareIndependenceTest(StatisticalTest):
     __id = "x2ind"
 
     def __init__(self, alpha: float = 0.05) -> None:

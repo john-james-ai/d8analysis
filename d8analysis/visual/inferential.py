@@ -4,14 +4,14 @@
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.12                                                                             #
-# Filename   : /d8analysis/visual/rv_continuous.py                                                 #
+# Filename   : /d8analysis/visual/inferential.py                                                   #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday August 11th 2023 06:37:59 pm                                                 #
-# Modified   : Friday August 11th 2023 09:35:57 pm                                                 #
+# Modified   : Saturday August 12th 2023 12:28:06 am                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -29,7 +29,7 @@ from d8analysis.quantitative.statistical.centrality.ttest import TTestResult
 
 
 # ------------------------------------------------------------------------------------------------ #
-#                            STUDENT'S T CONTINUOUS RANDOM VARIABLE                                #
+#                            STUDENT'S T HYPOTHESIS TEST                                           #
 # ------------------------------------------------------------------------------------------------ #
 class StudentsTPDF(Plot):  # pragma: no cover
     """Plots a Student's t probability density function (PDF) for a student's t-test.
@@ -174,5 +174,119 @@ class StudentsTPDF(Plot):  # pragma: no cover
                 ha="right",
                 arrowprops={"width": 2, "shrink": 0.05},
             )
+        except IndexError:
+            pass
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                                 CHI SQUARE GOF TEST                                              #
+# ------------------------------------------------------------------------------------------------ #
+class X2GOFTestPlot(Plot):  # pragma: no cover
+    """Plots results of a Chi-Square Goodness of Fit Test
+
+    Args:
+        result (TTestResult): A Student's t-test result object.
+        ax (plt.Axes): A matplotlib Axes object. Optional. If  If not none, the ax parameter
+            overrides the default set in the base class.
+        title (str): The visualization title. Optional
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
+
+    def __init__(
+        self,
+        result: TTestResult,
+        ax: plt.Axes = None,
+        title: str = None,
+        canvas: Canvas = None,
+        *args,
+        **kwargs,
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._result = result
+        self._ax = ax
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
+
+        self._legend_config = None
+        sns.set_style(self._canvas.style)
+
+    def plot(self) -> None:
+        self._ax = self._ax or self.config_axes()
+
+        # Render the probability distribution
+        x = np.linspace(
+            stats.chi2.ppf(0.01, self._result.dof), stats.chi2.ppf(0.99, self._result.dof), 100
+        )
+        y = stats.chi2.pdf(x, self._result.dof)
+        self._ax = sns.lineplot(x=x, y=y, markers=False, dashes=False, sort=True, ax=self._ax)
+
+        # Compute reject region
+        upper = x[-1]
+        upper_alpha = 1 - self._result.alpha
+        critical = stats.chi2.ppf(upper_alpha, self._result.dof)
+        self._fill_curve(critical=critical, upper=upper)
+
+        self._ax.set_title(
+            f"X\u00b2Test Result\n{self._result.result}",
+            fontsize=self._canvas.fontsize_title,
+        )
+
+        self._ax.set_xlabel(r"$X^2$")
+        self._ax.set_ylabel("Probability Density")
+
+    def _fill_curve(self, critical: float, upper: float) -> None:
+        """Fills the area under the curve at the value of the hypothesis test statistic."""
+
+        # Fill Upper Tail
+        x = np.arange(critical, upper, 0.001)
+        self._ax.fill_between(
+            x=x,
+            y1=0,
+            y2=stats.chi2.pdf(x, self._result.dof),
+            color=self._canvas.colors.crimson,
+        )
+
+        # Plot the statistic
+        line = self._ax.lines[0]
+        xdata = line.get_xydata()[:, 0]
+        ydata = line.get_xydata()[:, 1]
+        statistic = round(self._result.value, 4)
+        try:
+            idx = np.where(xdata > self._result.value)[0][0]
+            x = xdata[idx]
+            y = ydata[idx]
+            _ = sns.regplot(
+                x=np.array([x]),
+                y=np.array([y]),
+                scatter=True,
+                fit_reg=False,
+                marker="o",
+                scatter_kws={"s": 100},
+                ax=self._ax,
+                color=self._canvas.colors.dark_blue,
+            )
+            self._ax.annotate(
+                rf"$X^2$ = {str(statistic)}",
+                (x, y),
+                textcoords="offset points",
+                xytext=(0, 20),
+                ha="center",
+            )
+
+            self._ax.annotate(
+                "Critical Value",
+                (critical, 0),
+                xycoords="data",
+                textcoords="offset points",
+                xytext=(-20, 15),
+                ha="right",
+                arrowprops={"width": 2, "shrink": 0.05},
+            )
+
         except IndexError:
             pass
