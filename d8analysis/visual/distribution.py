@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /d8analysis/visual/distribution.py                                                  #
 # ------------------------------------------------------------------------------------------------ #
@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday June 18th 2023 01:41:15 am                                                   #
-# Modified   : Thursday August 10th 2023 10:27:09 pm                                               #
+# Modified   : Friday August 11th 2023 06:52:07 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -72,8 +72,8 @@ class Histogram(Plot):  # pragma: no cover
 
         self._legend_config = None
 
-    def visualize(self) -> None:
-        super().visualize()
+    def plot(self) -> None:
+        self._ax = self._ax or self.config_axes()
 
         args = self._args
         kwargs = self._kwargs
@@ -141,8 +141,8 @@ class PDF(Plot):  # pragma: no cover
 
         self._legend_config = None
 
-    def visualize(self) -> None:
-        super().visualize()
+    def plot(self) -> None:
+        self._ax = self._ax or self.config_axes()
 
         args = self._args
         kwargs = self._kwargs
@@ -210,8 +210,8 @@ class CDF(Plot):  # pragma: no cover
 
         self._legend_config = None
 
-    def visualize(self) -> None:
-        super().visualize()
+    def plot(self) -> None:
+        self._ax = self._ax or self.config_axes()
 
         args = self._args
         kwargs = self._kwargs
@@ -279,8 +279,8 @@ class BoxPlot(Plot):  # pragma: no cover
 
         self._legend_config = None
 
-    def visualize(self) -> None:
-        super().visualize()
+    def plot(self) -> None:
+        self._ax = self._ax or self.config_axes()
 
         args = self._args
         kwargs = self._kwargs
@@ -348,8 +348,8 @@ class ViolinPlot(Plot):  # pragma: no cover
 
         self._legend_config = None
 
-    def visualize(self) -> None:
-        super().visualize()
+    def plot(self) -> None:
+        self._ax = self._ax or self.config_axes()
 
         args = self._args
         kwargs = self._kwargs

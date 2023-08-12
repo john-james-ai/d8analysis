@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /d8analysis/visual/visual.py                                                        #
 # ------------------------------------------------------------------------------------------------ #
@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 04:06:34 pm                                               #
-# Modified   : Thursday August 10th 2023 10:27:08 pm                                               #
+# Modified   : Friday August 11th 2023 06:47:49 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -49,7 +49,7 @@ class Visual:
         """
         self._plots.append(plot)
 
-    def visualize(self) -> None:
+    def plot(self) -> None:
         sns.set_palette(self._canvas.palette)
 
         self._set_axes()

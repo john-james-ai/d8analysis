@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /d8analysis/visual/association.py                                                   #
 # ------------------------------------------------------------------------------------------------ #
@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 20th 2023 07:57:56 pm                                                  #
-# Modified   : Thursday August 10th 2023 10:27:13 pm                                               #
+# Modified   : Friday August 11th 2023 06:47:49 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -73,7 +73,7 @@ class ScatterPlot(Plot):  # pragma: no cover
 
         self._legend_config = None
 
-    def visualize(self) -> None:
+    def plot(self) -> None:
         super().visualize()
 
         args = self._args
@@ -143,7 +143,7 @@ class LinePlot(Plot):  # pragma: no cover
 
         self._legend_config = None
 
-    def visualize(self) -> None:
+    def plot(self) -> None:
         super().visualize()
 
         args = self._args
@@ -206,7 +206,7 @@ class PairPlot(Figure):  # pragma: no cover
 
         self._legend_config = None
 
-    def visualize(self) -> None:
+    def plot(self) -> None:
         args = self._args
         kwargs = self._kwargs
         g = sns.pairplot(
@@ -268,7 +268,7 @@ class JointPlot(Figure):  # pragma: no cover
 
         self._legend_config = None
 
-    def visualize(self) -> None:
+    def plot(self) -> None:
         args = self._args
         kwargs = self._kwargs
 

@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /d8analysis/visual/base.py                                                          #
 # ------------------------------------------------------------------------------------------------ #
@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 06:23:03 pm                                                    #
-# Modified   : Thursday August 10th 2023 10:27:12 pm                                               #
+# Modified   : Friday August 11th 2023 06:48:45 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -38,11 +38,8 @@ class Figure(ABC):
         self._canvas = canvas or Canvas()
 
     @abstractmethod
-    def visualize(self) -> None:
+    def plot(self) -> None:
         """Renders the visualization"""
-
-        if self._ax is None:
-            _, self._ax = plt.subplots(figsize=(self._canvas.width, self._canvas.height))
 
     def _wrap_ticklabels(
         self, axis: str, axes: List[plt.Axes], fontsize: int = 8
@@ -95,11 +92,14 @@ class Plot(Figure):
         self._legend_config = legend_config
 
     @abstractmethod
-    def visualize(self) -> None:
+    def plot(self) -> None:
         """Creates an axes if needed and renders the visualization"""
-        if self._ax is None:
-            _, self._ax = plt.subplots(figsize=(self._canvas.width, self._canvas.height))
 
     def config_legend(self) -> None:
         """Configures the plot legend"""
         plt.legend(**self._legend_config.as_dict())
+
+    def config_axes(self) -> plt.Axes:
+        """Returns a matplotlib Axes object based upon the Canvas configuration."""
+        _, ax = plt.subplots(figsize=(self._canvas.width, self._canvas.height))
+        return ax

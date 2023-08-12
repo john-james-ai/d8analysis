@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /d8analysis/visual/config.py                                                        #
 # ------------------------------------------------------------------------------------------------ #
@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Thursday August 10th 2023 10:27:10 pm                                               #
+# Modified   : Friday August 11th 2023 08:13:08 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -75,6 +75,7 @@ class Colors(PlotConfig):
     dark_blue: str = "#002B5B"
     blue: str = "#1F4690"
     orange: str = "#E8AA42"
+    crimson: str = "#BA0020"
 
     def __post_init__(self) -> None:
         return
@@ -117,6 +118,11 @@ class Canvas(PlotConfig):
     height: int = 4  # If multiple rows of plots, this is the height of each row.
     maxcols: int = 2  # The maximum number of columns in a multi-plot visualization.
     palette: str = "Blues_r"  # Seaborn palette or matplotlib colormap
+    style: str = "whitegrid"  # A Seaborn aesthetic
+    colors: Colors = Colors()
+    saturation: float = 0.5
+    fontsize: int = 10
+    fontsize_title: int = 10
 
 
 # ------------------------------------------------------------------------------------------------ #
