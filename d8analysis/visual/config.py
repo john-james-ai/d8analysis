@@ -11,18 +11,20 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Friday August 11th 2023 08:13:08 pm                                                 #
+# Modified   : Saturday August 12th 2023 06:22:15 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from __future__ import annotations
 from abc import ABC
+import math
 from dataclasses import dataclass, field
 from datetime import datetime
 
 import matplotlib.pyplot as plt
 import seaborn as sns
+from matplotlib.gridspec import GridSpec
 
 from d8analysis import IMMUTABLE_TYPES, SEQUENCE_TYPES
 
@@ -82,18 +84,11 @@ class Colors(PlotConfig):
 
 
 # ------------------------------------------------------------------------------------------------ #
-#                                            Palettes                                              #
+#                                            PALETTES                                              #
 # ------------------------------------------------------------------------------------------------ #
-PALETTES = {
-    "blues": "Blues",
-    "blues_r": "Blues_r",
+SEABORN_PALETTES = {
     "darkblue": sns.dark_palette("#69d", reverse=False, as_cmap=False),
-    "darkblue_r": sns.dark_palette("#69d", reverse=True, as_cmap=True),
-    "mako": "mako",
-    "bluegreen": "crest",
-    "paired": "Paired",
-    "dark": "dark",
-    "colorblind": "colorblind",
+    "darkblue_r": sns.dark_palette("#69d", reverse=True, as_cmap=False),
     "winter_blue": sns.color_palette(
         [Colors.cool_black, Colors.police_blue, Colors.teal_blue, Colors.pale_robin_egg_blue],
         as_cmap=True,
@@ -105,24 +100,16 @@ PALETTES = {
 }
 
 
-# ------------------------------------------------------------------------------------------------ #
-#                                            CANVAS                                                #
-# ------------------------------------------------------------------------------------------------ #
-
-
 @dataclass
-class Canvas(PlotConfig):
-    """Canvas class encapsulating figure level configuration."""
-
-    width: int = 12  # The width of the canvas.
-    height: int = 4  # If multiple rows of plots, this is the height of each row.
-    maxcols: int = 2  # The maximum number of columns in a multi-plot visualization.
-    palette: str = "Blues_r"  # Seaborn palette or matplotlib colormap
-    style: str = "whitegrid"  # A Seaborn aesthetic
-    colors: Colors = Colors()
-    saturation: float = 0.5
-    fontsize: int = 10
-    fontsize_title: int = 10
+class Palettes(PlotConfig):
+    blues: str = "Blues"
+    blues_r: str = "Blues_r"
+    mako: str = "mako"
+    bluegreen: str = "crest"
+    paired: str = "Paired"
+    dark: str = "dark"
+    colorblind: str = "colorblind"
+    seaborn_palettes: dict = field(default_factory=dict)
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -258,3 +245,65 @@ class HeatmapConfig(PlotConfig):
     square: bool = False
     xticklabels: str = "auto"
     yticklabels: str = "auto"
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                                            CANVAS                                                #
+# ------------------------------------------------------------------------------------------------ #
+
+
+@dataclass
+class Canvas(PlotConfig):
+    """Canvas class encapsulating figure level configuration."""
+
+    width: int = 12  # The maximum width of the canvas
+    height: int = 4  # The height of a single row.
+    maxcols: int = 2  # The maximum number of columns in a multi-plot visualization.
+    palette: str = "Blues_r"  # Seaborn palette or matplotlib colormap
+    style: str = "whitegrid"  # A Seaborn aesthetic
+    saturation: float = 0.5
+    fontsize: int = 10
+    fontsize_title: int = 10
+    colors: Colors = Colors()
+    palettes: Palettes = Palettes()
+    legend_config: LegendConfig = LegendConfig()
+    histplot_config: HistplotConfig = HistplotConfig()
+    kdeplot_config: KdeplotConfig = KdeplotConfig()
+    heatmap_config: HeatmapConfig = HeatmapConfig()
+    lineplot_config: LineplotConfig = LineplotConfig()
+    scatterplot_config: ScatterplotConfig = ScatterplotConfig()
+    boxplot_config: BoxplotConfig = BoxplotConfig()
+    pointplot_config: PointplotConfig = PointplotConfig()
+    countplot_config: CountplotConfig = CountplotConfig()
+    barplot_config: BarplotConfig = BarplotConfig()
+
+    def get_figaxes(self, nplots: int = 1, figsize: tuple = None) -> Canvas:
+        """Configures the figure and axes objects.
+
+        Args:
+            nplots (int): The number of plots to be rendered on the canvas.
+            figsize (tuple[int,int]): Plot width and row height.
+        """
+        figsize = figsize or (self.width, self.height)
+
+        if nplots == 1:
+            fig, axes = plt.subplots(figsize=figsize)
+        else:
+            nrows = math.ceil(nplots / self.maxcols)
+            ncols = min(self.maxcols, nplots)
+
+            fig = plt.figure(layout="constrained", figsize=figsize)
+            gs = GridSpec(nrows=nrows, ncols=ncols, figure=fig)
+
+            axes = []
+            for idx in range(nplots):
+                row = int(idx / ncols)
+                col = idx % ncols
+
+                if idx < nplots - 1:
+                    ax = fig.add_subplot(gs[row, col])
+                else:
+                    ax = fig.add_subplot(gs[row, col:])
+                axes.append(ax)
+
+        return fig, axes

@@ -4,14 +4,14 @@
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /tests/test_statistics/test_gof/test_ks2.py                                         #
+# Filename   : /tests/test_statistics/test_correlation/test_pearson.py                             #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Monday June 5th 2023 09:32:36 pm                                                    #
-# Modified   : Friday August 11th 2023 09:55:32 pm                                                 #
+# Created    : Wednesday June 7th 2023 09:15:17 pm                                                 #
+# Modified   : Saturday August 12th 2023 05:21:32 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,8 +22,8 @@ import pytest
 import logging
 import pandas as pd
 
-from d8analysis.quantitative.statistical.distribution.kstwo import KSTwoTest
-from d8analysis.quantitative.statistical.base import StatTestProfile
+from d8analysis.quantitative.inferential.relational.pearson import PearsonCorrelationTest
+from d8analysis.quantitative.inferential.base import StatTestProfileTwo
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -34,11 +34,11 @@ single_line = f"\n{100 * '-'}"
 
 
 @pytest.mark.stats
-@pytest.mark.gof
-@pytest.mark.ks2
-class TestKSTwoTest:  # pragma: no cover
+@pytest.mark.corr
+@pytest.mark.pearson
+class TestPearson:  # pragma: no cover
     # ============================================================================================ #
-    def test_gof_reject(self, dataset, caplog):
+    def test_pearson(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -50,23 +50,16 @@ class TestKSTwoTest:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        female = dataset.loc[dataset["Gender"] == "Female"]["Income"]
-        male = dataset.loc[dataset["Gender"] == "Male"]["Income"]
-        female.name = "female"
-        male.name = "male"
-        test = KSTwoTest()
-        test(sample1=female, sample2=male)
-        assert "Kolmo" in test.result.test
-        assert test.result.pvalue < 0.05
-        assert test.result.value < 1
+        test = PearsonCorrelationTest()
+        test(data=dataset, x="Income", y="Age")
+        assert "Pearson" in test.result.test
         assert isinstance(test.result.H0, str)
         assert isinstance(test.result.pvalue, float)
         assert test.result.alpha == 0.05
-        assert isinstance(test.sample1, pd.Series)
-        assert isinstance(test.sample2, pd.Series)
-        assert isinstance(test.profile, StatTestProfile)
-        assert isinstance(test.profile, StatTestProfile)
-        logger.debug(f"\n{test.result}")
+        assert isinstance(test.result.data, pd.DataFrame)
+        assert isinstance(test.profile, StatTestProfileTwo)
+        logging.debug(test.result)
+
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()
         duration = round((end - start).total_seconds(), 1)
@@ -83,7 +76,7 @@ class TestKSTwoTest:  # pragma: no cover
         logger.info(single_line)
 
     # ============================================================================================ #
-    def test_gof_fail_to_reject(self, dataset, caplog):
+    def test_arguments(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -95,19 +88,29 @@ class TestKSTwoTest:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        test = KSTwoTest()
-        test(sample1=dataset["Income"], sample2=dataset["Income"])
-        assert "Kolmo" in test.result.test
-        assert test.result.pvalue > 0.05
-        assert test.result.value < 1
-        assert isinstance(test.result.H0, str)
-        assert isinstance(test.result.pvalue, float)
-        assert test.result.alpha == 0.05
-        assert isinstance(test.sample1, pd.Series)
-        assert isinstance(test.sample2, pd.Series)
-        assert isinstance(test.profile, StatTestProfile)
-        assert isinstance(test.profile, StatTestProfile)
-        logger.debug(f"\n{test.result}")
+        test = PearsonCorrelationTest()
+        # Test two arrays no dataframe
+        x = dataset["Income"]
+        y = dataset["Age"]
+        test(x=x, y=y)
+        assert "Pearson" in test.result.test
+        assert isinstance(test.result.x, str)
+        assert isinstance(test.result.y, str)
+        assert test.result.x == "Sample 1"
+        assert test.result.y == "Sample 2"
+
+        test(data=dataset, x="Income", y="Age")
+
+        with pytest.raises(ValueError):
+            test()
+        with pytest.raises(ValueError):
+            test(x=x, y="something")
+        with pytest.raises(ValueError):
+            test(dataset, x="no", y="way")
+        with pytest.raises(ValueError):
+            test(dataset, x=x, y=y)
+        with pytest.raises(ValueError):
+            test(dataset["Income"], x=x, y=y)
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()
         duration = round((end - start).total_seconds(), 1)

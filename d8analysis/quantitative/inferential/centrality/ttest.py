@@ -4,14 +4,14 @@
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /d8analysis/quantitative/statistical/centrality/ttest.py                            #
+# Filename   : /d8analysis/quantitative/inferential/centrality/ttest.py                            #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 11:41:00 pm                                                 #
-# Modified   : Friday August 11th 2023 07:57:46 pm                                                 #
+# Modified   : Sunday August 13th 2023 07:57:49 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,13 +21,13 @@ from dataclasses import dataclass
 import numpy as np
 from scipy import stats
 
-from d8analysis.quantitative.statistical.base import (
+from d8analysis.quantitative.inferential.base import (
     StatTestProfileTwo,
     StatTestResult,
     StatisticalTest,
     StatTestProfile,
 )
-from d8analysis.quantitative.descriptive.summary import QuantStats
+from d8analysis.quantitative.descriptive.statistics import QuantStats
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -37,10 +37,10 @@ from d8analysis.quantitative.descriptive.summary import QuantStats
 class TTestResult(StatTestResult):
     dof: int = None
     homoscedastic: bool = None
-    x: str = None
-    y: str = None
-    x_stats: QuantStats = None
-    y_stats: QuantStats = None
+    a: np.ndarray = None
+    b: np.ndarray = None
+    a_stats: QuantStats = None
+    b_stats: QuantStats = None
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -53,8 +53,8 @@ class TTest(StatisticalTest):
     (expected) values. This test assumes that the populations have identical variances by default.
 
     Args:
-        x: (np.ndarray): An array containing the first of two independent samples.
-        y: (np.ndarray): An array containing the second of two independent samples.
+        a: (np.ndarray): An array containing the first of two independent samples.
+        b: (np.ndarray): An array containing the second of two independent samples.
         alpha (float): The level of statistical significance for inference.
         homoscedastic (bool): If True, perform a standard independent 2 sample test t
             hat assumes equal population variances. If False, perform Welch’s
@@ -65,11 +65,11 @@ class TTest(StatisticalTest):
     __id = "t2"
 
     def __init__(
-        self, x: np.ndarray, y: np.ndarray, alpha: float = 0.05, homoscedastic: bool = False
+        self, a: np.ndarray, b: np.ndarray, alpha: float = 0.05, homoscedastic: bool = False
     ) -> None:
         super().__init__()
-        self._x = x
-        self._y = y
+        self._a = a
+        self._b = b
         self._alpha = alpha
         self._homoscedastic = homoscedastic
         self._profile = StatTestProfileTwo.create(self.__id)
@@ -88,18 +88,19 @@ class TTest(StatisticalTest):
     def run(self) -> None:
         """Executes the TTest."""
 
-        statistic, pvalue = stats.ttest_ind(a=self._x, b=self._y, equal_var=self._homoscedastic)
+        statistic, pvalue = stats.ttest_ind(a=self._a, b=self._b, equal_var=self._homoscedastic)
 
-        x_stats = QuantStats.compute(self._x)
-        y_stats = QuantStats.compute(self._y)
-        dof = x_stats.length + y_stats.length - 2
+        a_stats = QuantStats.compute(self._a)
+        b_stats = QuantStats.compute(self._b)
 
-        result = self._report_results(x_stats, y_stats, dof, statistic, pvalue)
+        dof = len(self._a) + len(self._b) - 2
+
+        result = self._report_results(a_stats, b_stats, dof, statistic, pvalue)
 
         if pvalue > self._alpha:  # pragma: no cover
-            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence against identical centers for x and y is not significant."
+            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence against identical centers for a and b is not significant."
         else:
-            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against identical centers for x and y is significant."
+            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against identical centers for a and b is significant."
 
         # Create the result object.
         self._result = TTestResult(
@@ -112,13 +113,13 @@ class TTest(StatisticalTest):
             value=np.abs(statistic),
             pvalue=pvalue,
             result=result,
-            x=self._x,
-            y=self._y,
-            x_stats=x_stats,
-            y_stats=y_stats,
+            a=self._a,
+            b=self._b,
+            a_stats=a_stats,
+            b_stats=b_stats,
             inference=inference,
             alpha=self._alpha,
         )
 
-    def _report_results(self, x_stats, y_stats, dof, statistic, pvalue) -> str:
-        return f"Independent Samples t Test\nX: (N = {x_stats.count}, M = {round(x_stats.mean,2)}, SD = {round(x_stats.std,2)})\nY: (N = {y_stats.count}, M = {round(y_stats.mean,2)}, SD = {round(y_stats.std,2)})\nt({dof}) = {round(statistic,2)}, {self._report_pvalue(pvalue)} {self._report_alpha()}"
+    def _report_results(self, a_stats, b_stats, dof, statistic, pvalue) -> str:
+        return f"Independent Samples t Test\na: (N = {a_stats.count}, M = {round(a_stats.mean,2)}, SD = {round(a_stats.std,2)})\nb: (N = {b_stats.count}, M = {round(b_stats.mean,2)}, SD = {round(b_stats.std,2)})\nt({dof}) = {round(statistic,2)}, {self._report_pvalue(pvalue)} {self._report_alpha()}"

@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Friday August 11th 2023 05:49:14 pm                                                 #
+# Modified   : Saturday August 12th 2023 12:37:36 am                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -23,7 +23,6 @@ import logging
 from dataclasses import dataclass
 
 import pandas as pd
-import numpy as np
 
 from d8analysis import IMMUTABLE_TYPES, SEQUENCE_TYPES
 
@@ -48,11 +47,6 @@ class Analysis(ABC):
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
 class Result(ABC):
-    analysis: str = None  # The class name for the Analysis object that created the result
-    started: datetime = None  # The datetime the analysis started.
-    ended: datetime = None  # The datetime the analysis ended
-    duration: np.int64 = 0  # Elapsed time
-
     def __repr__(self) -> str:
         return "{}({})".format(
             self.__class__.__name__,

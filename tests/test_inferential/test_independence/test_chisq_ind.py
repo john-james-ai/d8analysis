@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 09:32:36 pm                                                    #
-# Modified   : Friday August 11th 2023 09:59:10 pm                                                 #
+# Modified   : Saturday August 12th 2023 05:21:25 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,8 +22,8 @@ import pytest
 import logging
 import pandas as pd
 
-from d8analysis.quantitative.statistical.relational.chisquare import ChiSquareIndependenceTest
-from d8analysis.quantitative.statistical.base import StatTestProfile
+from d8analysis.quantitative.inferential.relational.chisquare import ChiSquareIndependenceTest
+from d8analysis.quantitative.inferential.base import StatTestProfile
 
 
 # ------------------------------------------------------------------------------------------------ #

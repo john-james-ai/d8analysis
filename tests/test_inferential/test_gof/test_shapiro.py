@@ -4,14 +4,14 @@
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /tests/test_statistics/test_correlation/test_spearman.py                            #
+# Filename   : /tests/test_statistics/test_gof/test_shapiro.py                                     #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 09:15:17 pm                                                 #
-# Modified   : Friday August 11th 2023 09:56:44 pm                                                 #
+# Modified   : Saturday August 12th 2023 05:21:26 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,9 +21,9 @@ from datetime import datetime
 import pytest
 import logging
 import pandas as pd
-
-from d8analysis.quantitative.statistical.relational.spearman import SpearmanCorrelationTest
-from d8analysis.quantitative.statistical.base import StatTestProfileTwo
+import numpy as np
+from d8analysis.quantitative.inferential.distribution.shapiro import ShapiroWilkTest
+from d8analysis.quantitative.inferential.base import StatTestProfileOne
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -34,11 +34,11 @@ single_line = f"\n{100 * '-'}"
 
 
 @pytest.mark.stats
-@pytest.mark.corr
-@pytest.mark.spearman
-class TestSpearman:  # pragma: no cover
+@pytest.mark.norm
+@pytest.mark.shapiro
+class TestShapiroWilk:  # pragma: no cover
     # ============================================================================================ #
-    def test_spearman(self, dataset, caplog):
+    def test_shapiro(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -50,14 +50,14 @@ class TestSpearman:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        test = SpearmanCorrelationTest()
-        test(data=dataset, x="Income", y="Age")
-        assert "Spearman" in test.result.test
+        test = ShapiroWilkTest()
+        test(data=dataset["Income"])
+        assert "Shapiro" in test.result.test
         assert isinstance(test.result.H0, str)
         assert isinstance(test.result.pvalue, float)
         assert test.result.alpha == 0.05
-        assert isinstance(test.result.data, pd.DataFrame)
-        assert isinstance(test.profile, StatTestProfileTwo)
+        assert isinstance(test.result.data, (pd.Series, np.ndarray))
+        assert isinstance(test.profile, StatTestProfileOne)
         logging.debug(test.result)
 
         # ---------------------------------------------------------------------------------------- #
@@ -76,7 +76,7 @@ class TestSpearman:  # pragma: no cover
         logger.info(single_line)
 
     # ============================================================================================ #
-    def test_arguments(self, dataset, caplog):
+    def test_large_dataset(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -88,29 +88,18 @@ class TestSpearman:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        test = SpearmanCorrelationTest()
-        # Test two arrays no dataframe
-        x = dataset["Income"]
-        y = dataset["Age"]
-        test(x=x, y=y)
-        assert "Spearman" in test.result.test
-        assert isinstance(test.result.x, str)
-        assert isinstance(test.result.y, str)
-        assert test.result.x == "Sample 1"
-        assert test.result.y == "Sample 2"
+        for i in range(5):
+            dataset = pd.concat([dataset, dataset], axis=0)
+        test = ShapiroWilkTest()
+        test(data=dataset["Income"])
+        assert "Shapiro" in test.result.test
+        assert isinstance(test.result.H0, str)
+        assert isinstance(test.result.pvalue, float)
+        assert test.result.alpha == 0.05
+        assert isinstance(test.result.data, (pd.Series, np.ndarray))
+        assert isinstance(test.profile, StatTestProfileOne)
+        logging.debug(test.result)
 
-        test(data=dataset, x="Income", y="Age")
-
-        with pytest.raises(ValueError):
-            test()
-        with pytest.raises(ValueError):
-            test(x=x, y="something")
-        with pytest.raises(ValueError):
-            test(dataset, x="no", y="way")
-        with pytest.raises(ValueError):
-            test(dataset, x=x, y=y)
-        with pytest.raises(ValueError):
-            test(dataset["Income"], x=x, y=y)
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()
         duration = round((end - start).total_seconds(), 1)

@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 06:23:03 pm                                                    #
-# Modified   : Friday August 11th 2023 06:48:45 pm                                                 #
+# Modified   : Saturday August 12th 2023 06:13:36 am                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,25 +21,41 @@ from abc import ABC, abstractmethod
 from typing import List
 
 import matplotlib.pyplot as plt
-from d8analysis.visual.config import LegendConfig, Canvas
+from d8analysis.visual.config import Canvas
 
 
 # ------------------------------------------------------------------------------------------------ #
-class Figure(ABC):
-    """Abstract base class for figure-based visualization classes.
+class Plot(ABC):
+    """Abstract base class for axis-based plot visualization classes.
 
-    Subclasses can call the constructor to obtain a default canvas.
+    Subclasses can call the constructor to obtain a default canvas and axes object.
 
     Args:
         canvas (Canvas): Plot configuration object.
     """
 
-    def __init__(self, canvas: Canvas = None) -> None:
-        self._canvas = canvas or Canvas()
+    def __init__(self, canvas: Canvas, *args, **kwargs) -> None:
+        self._canvas = canvas
+
+    @property
+    def axes(self) -> plt.Axes:
+        return self._axes
+
+    @axes.setter
+    def axes(self, axes: plt.Axes) -> None:
+        self._axes = axes
+
+    @property
+    def fig(self) -> plt.Figure:
+        return self._fig
+
+    @fig.setter
+    def fig(self, fig: plt.Figure) -> None:
+        self._fig = fig
 
     @abstractmethod
     def plot(self) -> None:
-        """Renders the visualization"""
+        """Creates an axes if needed and renders the visualization"""
 
     def _wrap_ticklabels(
         self, axis: str, axes: List[plt.Axes], fontsize: int = 8
@@ -60,46 +76,3 @@ class Figure(ABC):
                 ax.tick_params(axis="y", labelsize=fontsize)
 
         return axes
-
-
-# ------------------------------------------------------------------------------------------------ #
-class Plot(Figure):
-    """Abstract base class for axis-based plot visualization classes.
-
-    Subclasses can call the constructor to obtain a default canvas and axes object.
-
-    Args:
-        canvas (Canvas): Plot configuration object.
-    """
-
-    def __init__(self, canvas: Canvas = None) -> None:
-        self._canvas = canvas or Canvas()
-
-    @property
-    def ax(self) -> plt.Axes:
-        return self._ax
-
-    @ax.setter
-    def ax(self, ax: plt.Axes) -> None:
-        self._ax = ax
-
-    @property
-    def legend_config(self) -> LegendConfig:
-        return self._legend_config
-
-    @legend_config.setter
-    def legend_config(self, legend_config: LegendConfig) -> None:
-        self._legend_config = legend_config
-
-    @abstractmethod
-    def plot(self) -> None:
-        """Creates an axes if needed and renders the visualization"""
-
-    def config_legend(self) -> None:
-        """Configures the plot legend"""
-        plt.legend(**self._legend_config.as_dict())
-
-    def config_axes(self) -> plt.Axes:
-        """Returns a matplotlib Axes object based upon the Canvas configuration."""
-        _, ax = plt.subplots(figsize=(self._canvas.width, self._canvas.height))
-        return ax

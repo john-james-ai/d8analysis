@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 20th 2023 07:57:56 pm                                                  #
-# Modified   : Friday August 11th 2023 06:47:49 pm                                                 #
+# Modified   : Saturday August 12th 2023 04:01:31 am                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -57,7 +57,7 @@ class ScatterPlot(Plot):  # pragma: no cover
         hue: str = None,
         ax: plt.Axes = None,
         title: str = None,
-        canvas: Canvas = None,
+        canvas: type[Canvas] = Canvas,
         *args,
         **kwargs,
     ) -> None:
@@ -127,7 +127,7 @@ class LinePlot(Plot):  # pragma: no cover
         hue: str = None,
         ax: plt.Axes = None,
         title: str = None,
-        canvas: Canvas = None,
+        canvas: type[Canvas] = Canvas,
         *args,
         **kwargs,
     ) -> None:
@@ -192,7 +192,7 @@ class PairPlot(Figure):  # pragma: no cover
         vars: list = None,
         hue: str = None,
         title: str = None,
-        canvas: Canvas = None,
+        canvas: type[Canvas] = Canvas,
         *args,
         **kwargs,
     ) -> None:
@@ -253,7 +253,7 @@ class JointPlot(Figure):  # pragma: no cover
         y: str = None,
         hue: str = None,
         title: str = None,
-        canvas: Canvas = None,
+        canvas: type[Canvas] = Canvas,
         *args,
         **kwargs,
     ) -> None:

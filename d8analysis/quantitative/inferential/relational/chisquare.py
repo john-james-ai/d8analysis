@@ -4,14 +4,14 @@
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
-# Filename   : /d8analysis/quantitative/statistical/relational/chisquare.py                        #
+# Filename   : /d8analysis/quantitative/inferential/relational/chisquare.py                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday May 29th 2023 03:00:39 am                                                    #
-# Modified   : Friday August 11th 2023 09:58:02 pm                                                 #
+# Modified   : Saturday August 12th 2023 05:21:18 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -25,8 +25,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
-from d8analysis.quantitative.statistical.base import StatTestProfileTwo
-from d8analysis.quantitative.statistical.base import (
+from d8analysis.quantitative.inferential.base import StatTestProfileTwo
+from d8analysis.quantitative.inferential.base import (
     StatTestResult,
     StatisticalTest,
     StatTestProfile,

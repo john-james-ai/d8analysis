@@ -4,20 +4,19 @@
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /d8analysis/quantitative/statistical/relational/spearman.py                         #
+# Filename   : /d8analysis/quantitative/inferential/distribution/shapiro.py                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Friday August 11th 2023 09:58:02 pm                                                 #
+# Modified   : Saturday August 12th 2023 05:21:19 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from dataclasses import dataclass
-from typing import Union
 
 import numpy as np
 import pandas as pd
@@ -25,12 +24,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
 
-from d8analysis.quantitative.statistical.base import StatTestProfileTwo
-from d8analysis.quantitative.statistical.base import (
-    StatTestResult,
-    StatisticalTest,
-    StatTestProfile,
-)
+from d8analysis.quantitative.inferential.base import StatTestProfileOne
+from d8analysis.quantitative.inferential.base import StatTestResult, StatisticalTest
 from d8analysis.visual.config import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
@@ -41,41 +36,59 @@ sns.set_style(Canvas.style)
 #                                     TEST RESULT                                                  #
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
-class SpearmanCorrelationResult(StatTestResult):
+class ShapiroWilkResult(StatTestResult):
     data: pd.DataFrame = None
-    x: str = None
-    y: str = None
 
     def plot(self, varname: str = None, ax: plt.Axes = None) -> plt.Axes:  # pragma: no cover
         canvas = Canvas()
         ax = ax or canvas.ax
-        ax = sns.scatterplot(data=self.data, x=self.x, y=self.y, ax=ax)
 
-        ax.set_title(
-            f"Spearman's Test for Correlation\n{self.result}",
-            fontsize=canvas.fontsize_title,
+        loc = np.mean(self.data)
+        scale = np.std(self.data)
+
+        x = np.linspace(
+            stats.norm.ppf(0.01, loc=loc, scale=scale),
+            stats.norm.ppf(0.99, loc=loc, scale=scale),
+            100,
+        )
+        y = stats.norm.pdf(x=x, loc=loc, scale=scale)
+        ax = sns.lineplot(
+            x=x,
+            y=y,
+            markers=False,
+            dashes=False,
+            sort=True,
+            ax=ax,
+            color=canvas.colors.dark_blue,
+            label="Normal Distribution",
+        )
+        ax = sns.kdeplot(
+            x=self.data, ax=ax, color=canvas.colors.orange, label="Data Kernel Density Estimate"
         )
 
-        ax.set_xlabel(self.x)
-        ax.set_ylabel(self.y)
-        plt.tight_layout()
+        ax.set_title(f"Shapiro-Wilk Normality Test\n{self.result}", fontsize=canvas.fontsize_title)
+
+        ax.set_xlabel("X")
+        ax.set_ylabel("Probability Density")
+        ax.legend(fontsize=canvas.fontsize)
+
         return ax
 
 
 # ------------------------------------------------------------------------------------------------ #
 #                                          TEST                                                    #
 # ------------------------------------------------------------------------------------------------ #
-class SpearmanCorrelationTest(StatisticalTest):
-    __id = "spearman"
+class ShapiroWilkTest(StatisticalTest):
+    __id = "sw"
 
     def __init__(self, alpha: float = 0.05) -> None:
         super().__init__()
         self._alpha = alpha
-        self._profile = StatTestProfileTwo.create(self.__id)
+        self._profile = StatTestProfileOne.create(self.__id)
         self._result = None
 
     @property
-    def profile(self) -> StatTestProfile:
+    def profile(self) -> StatTestProfileOne:
         """Returns the statistical test profile."""
         return self._profile
 
@@ -84,44 +97,38 @@ class SpearmanCorrelationTest(StatisticalTest):
         """Returns a Statistical Test Result object."""
         return self._result
 
-    def __call__(
-        self,
-        data: pd.DataFrame = None,
-        x: Union[np.ndarray, str] = None,
-        y: Union[np.ndarray, str] = None,
-    ) -> None:
+    def __call__(self, data: np.ndarray) -> None:
         """Performs the statistical test and creates a result object.
 
-        Internally, the data is converted into a DataFrame and x and y are strings referencing columns in data.
-
         Args:
-            data (pd.DataFrame) A pandas dataframe containing the two nominal/categorical
-                variable columns to be tested. Optional.
-            x: (Union[np.ndarray,str]): An array or string key referencing a column data, if data is provided.
-            y: (Union[np.ndarray,str]): An array or string key referencing a column data, if data is provided.
+            data (np.ndarray): Array of data to be tested.
 
         """
-        data, x, y = self._parse_arguments(data=data, x=x, y=y)
 
-        r, pvalue = stats.spearmanr(data[x], data[y])
+        W, pvalue = stats.shapiro(x=data)
 
         if pvalue > self._alpha:  # pragma: no cover
-            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. Correlation between {x} and {y} is not significant."
+            inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence didn't indicate non-normality for the data."
         else:
-            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. Correlation between {x} and {y} is significant."
+            inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against normality is significant."
+
+        interpretation = None
+        if len(data) > 5000:
+            interpretation = (
+                "For N > 5000, the W test statistic is accurate, but the p-value may not be."
+            )
 
         # Create the result object.
-        self._result = SpearmanCorrelationResult(
+        self._result = ShapiroWilkResult(
             test=self._profile.name,
             H0=self._profile.H0,
-            statistic="Spearman correlation coefficient",
+            statistic=self._profile.statistic,
             hypothesis=self._profile.hypothesis,
-            value=r,
+            value=W,
             pvalue=pvalue,
-            result=f"r({len(data)})={round(r,2)}, {self._report_pvalue(pvalue)} {self._report_alpha()}",
+            result=f"(W={round(W,2)}, {self._report_pvalue(pvalue)}), {self._report_alpha()}",
             data=data,
-            x=x,
-            y=y,
             inference=inference,
+            interpretation=interpretation,
             alpha=self._alpha,
         )

@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday August 11th 2023 06:37:59 pm                                                 #
-# Modified   : Saturday August 12th 2023 12:28:06 am                                               #
+# Modified   : Saturday August 12th 2023 05:21:14 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -23,15 +23,21 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from scipy import stats
 
+from dependency_injector.wiring import inject, Provide
+
+from d8analysis.container import d8analysisContainer
 from d8analysis.visual.base import Plot
 from d8analysis.visual.config import Canvas
-from d8analysis.quantitative.statistical.centrality.ttest import TTestResult
+from d8analysis.quantitative.inferential.centrality.ttest import TTestResult
+from d8analysis.quantitative.inferential.distribution.chisquare import ChiSquareResult
+from d8analysis.quantitative.inferential.distribution.ksone import KSOneTestResult
+from d8analysis.data.generation import RVSDistribution
 
 
 # ------------------------------------------------------------------------------------------------ #
 #                            STUDENT'S T HYPOTHESIS TEST                                           #
 # ------------------------------------------------------------------------------------------------ #
-class StudentsTPDF(Plot):  # pragma: no cover
+class TTestPlot(Plot):  # pragma: no cover
     """Plots a Student's t probability density function (PDF) for a student's t-test.
 
     Parameterized by the t-statistic, degrees of freedom and the signficance level, this
@@ -49,27 +55,28 @@ class StudentsTPDF(Plot):  # pragma: no cover
             complete list of parameters.
     """
 
+    @inject
     def __init__(
         self,
         result: TTestResult,
-        ax: plt.Axes = None,
         title: str = None,
-        canvas: Canvas = None,
+        canvas: type[Canvas] = Provide[d8analysisContainer.canvas],
         *args,
         **kwargs,
     ) -> None:
         super().__init__(canvas=canvas)
         self._result = result
-        self._ax = ax
+        self._canvas = canvas
         self._title = title
         self._args = args
         self._kwargs = kwargs
 
-        self._legend_config = None
+        self._axes = None
+        self._fig = None
         sns.set_style(self._canvas.style)
 
     def plot(self) -> None:
-        self._ax = self._ax or self.config_axes()
+        self._axes = self._axes or self._canvas.config().axes
 
         # Render the probability distribution
         x = np.linspace(
@@ -179,13 +186,13 @@ class StudentsTPDF(Plot):  # pragma: no cover
 
 
 # ------------------------------------------------------------------------------------------------ #
-#                                 CHI SQUARE GOF TEST                                              #
+#                                 CHI SQUARE TEST                                                  #
 # ------------------------------------------------------------------------------------------------ #
-class X2GOFTestPlot(Plot):  # pragma: no cover
+class X2TestPlot(Plot):  # pragma: no cover
     """Plots results of a Chi-Square Goodness of Fit Test
 
     Args:
-        result (TTestResult): A Student's t-test result object.
+        result (ChiSquareResult): A Student's t-test result object.
         ax (plt.Axes): A matplotlib Axes object. Optional. If  If not none, the ax parameter
             overrides the default set in the base class.
         title (str): The visualization title. Optional
@@ -196,27 +203,28 @@ class X2GOFTestPlot(Plot):  # pragma: no cover
             complete list of parameters.
     """
 
+    @inject
     def __init__(
         self,
-        result: TTestResult,
-        ax: plt.Axes = None,
+        result: ChiSquareResult,
         title: str = None,
-        canvas: Canvas = None,
+        canvas: type[Canvas] = Provide[d8analysisContainer.canvas],
         *args,
         **kwargs,
     ) -> None:
         super().__init__(canvas=canvas)
         self._result = result
-        self._ax = ax
+        self._canvas = canvas
         self._title = title
         self._args = args
         self._kwargs = kwargs
 
-        self._legend_config = None
+        self._axes = None
+        self._fig = None
         sns.set_style(self._canvas.style)
 
     def plot(self) -> None:
-        self._ax = self._ax or self.config_axes()
+        self._axes = self._axes or self._canvas.config().axes
 
         # Render the probability distribution
         x = np.linspace(
@@ -231,7 +239,7 @@ class X2GOFTestPlot(Plot):  # pragma: no cover
         critical = stats.chi2.ppf(upper_alpha, self._result.dof)
         self._fill_curve(critical=critical, upper=upper)
 
-        self._ax.set_title(
+        self._axes.set_title(
             f"X\u00b2Test Result\n{self._result.result}",
             fontsize=self._canvas.fontsize_title,
         )
@@ -290,3 +298,91 @@ class X2GOFTestPlot(Plot):  # pragma: no cover
 
         except IndexError:
             pass
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                           KOLMOGOROV-SMIRNOV GOF TEST PLOT                                       #
+# ------------------------------------------------------------------------------------------------ #
+class KSOneTestPlot(Plot):
+
+    """Plots results of a one-sample Kolmogorov-Smirnov test for goodness of fit.
+
+    This test compares the underlying distribution F(x) of a sample against a given continuous
+    distribution G(x).
+
+    Args:
+        result (KSOneTestResult): A Student's t-test result object.
+        ax (plt.Axes): A matplotlib Axes object. Optional. If  If not none, the ax parameter
+            overrides the default set in the base class.
+        title (str): The visualization title. Optional
+        canvas (Canvas): A dataclass containing the configuration of the canvas
+            for the visualization. Optional.
+        args and kwargs passed to the underlying seaborn histplot method.
+            See https://seaborn.pydata.org/generated/seaborn.histplot.html for a
+            complete list of parameters.
+    """
+
+    @inject
+    def __init__(
+        self,
+        result: KSOneTestResult,
+        title: str = None,
+        canvas: type[Canvas] = Provide[d8analysisContainer.canvas],
+        *args,
+        **kwargs,
+    ) -> None:
+        super().__init__(canvas=canvas)
+        self._result = result
+        self._canvas = canvas
+        self._title = title
+        self._args = args
+        self._kwargs = kwargs
+
+        self._axes = None
+        self._fig = None
+        sns.set_style(self._canvas.style)
+
+    def plot(self) -> None:
+        # Two axes, one for pdf, the other for cdf
+        fig, (ax1, ax2) = self._canvas.get_figaxes(2)
+
+        # Obtain a distribution object which returns a pdf, and cdf for the reference distribution
+        dist = RVSDistribution()
+        _, pdf, cdf = dist(data=self._result.data, distribution=self._result.reference_distribution)
+
+        # Plot empirical and theoretical pdfs
+        p1 = sns.kdeplot(
+            data=self._results.data, color=self._canvas.colors.dark_blue, legend=False, ax=ax1
+        )
+        p2 = sns.lineplot(x=pdf.x, y=pdf.y, legend=False, ax=ax1)
+
+        # Plot empirical and theoretical cdfs
+        p3 = sns.kdeplot(
+            data=self._results.data,
+            color=self._canvas.colors.dark_blue,
+            legend=False,
+            ax=ax2,
+            cumulative=True,
+        )
+        p4 = sns.lineplot(x=cdf.x, y=cdf.y, legend=False, ax=ax2)
+
+        # Configure the legends.
+        ax1.legend(
+            (p1, p2),
+            ("Empirical Probability Density Function", "Theoretical Probability Density Function"),
+            loc="upper right",
+        )
+        ax2.legend(
+            (p3, p4),
+            (
+                "Empirical Cumulative Distribution Function",
+                "Theoretical Cumulative Distribution Function",
+            ),
+            loc="upper left",
+        )
+        fig.suptitle(
+            f"Kolmogorov-Smirnov Goodness of Fit\n{self.reference_distribution.capitalize()} Distribution\n{self.result}",
+            fontsize=self._canvas.fontsize_title,
+        )
+        plt.tight_layout()
+        plt.show()

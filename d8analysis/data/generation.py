@@ -2,16 +2,16 @@
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
-# Filename   : /d8analysis/stats/distribution.py                                                   #
+# Filename   : /d8analysis/data/generation.py                                                      #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday May 27th 2023 08:56:02 pm                                                  #
-# Modified   : Thursday August 10th 2023 10:27:31 pm                                               #
+# Modified   : Saturday August 12th 2023 01:10:45 am                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -47,9 +47,23 @@ DISTRIBUTIONS = {
     "gamma": stats.gamma,
     "logistic": stats.logistic,
     "lognorm": stats.lognorm,
-    # "pareto": stats.pareto,
     "uniform": stats.uniform,
     "weibull": stats.weibull_min,
+}
+# ------------------------------------------------------------------------------------------------ #
+#                                    SCIPY CDF FUNCTIONS                                           #
+# ------------------------------------------------------------------------------------------------ #
+CDF = {
+    "beta": stats.beta.cdf,
+    "normal": stats.norm.cdf,
+    "X2": stats.chi2.cdf,
+    "exponential": stats.expon.cdf,
+    "f": stats.f.cdf,
+    "gamma": stats.gamma.cdf,
+    "logistic": stats.logistic.cdf,
+    "lognorm": stats.lognorm.cdf,
+    "uniform": stats.uniform.cdf,
+    "weibull": stats.weibull_min.cdf,
 }
 
 
@@ -544,61 +558,6 @@ def lognorm(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def pareto(data: np.ndarray) -> np.ndarray:
-    """Generates random variates for the pareto distribution
-
-    Args:
-        data (np.ndarray): 1D Numpy array of data from which parameters will be estimated.
-
-    Returns:
-        rvs: Random variate of the distribution
-        pdf: Data from the probability density function
-        cdf: Data from the cumulative distribution function
-    """
-    b, loc, scale = get_params(data=data, distribution="pareto")
-    name = "Pareto Distribution"
-    x_range = np.linspace(min(data), max(data), NUM_POINTS)
-    params = (
-        "b ="
-        + str(round(b, 2))
-        + "\nloc = "
-        + str(round(loc, 2))
-        + ", scale = "
-        + str(round(scale, 2))
-    )
-    formula = r"$f(x, b) = \frac{b}{x^{b+1}}$" + "\n" + r"For x >= 1, b > 0"
-
-    # Random variate
-    rvs = stats.pareto.rvs(b, loc=loc, scale=scale, size=len(data))
-    rvs = Distribution(
-        name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
-    )
-
-    # Probability density function
-    pdf = stats.pareto.pdf(x=x_range, b=b, loc=loc, scale=scale)
-    pdf = Distribution(
-        name=name,
-        label="Probability Density Function",
-        formula=formula,
-        params=params,
-        x=x_range,
-        y=pdf,
-    )
-
-    # Cumulative density function
-    cdf = stats.pareto.cdf(x=x_range, b=b, loc=loc, scale=scale)
-    cdf = Distribution(
-        name=name,
-        label="Cumulative Density Function",
-        params=params,
-        formula=formula,
-        x=x_range,
-        y=cdf,
-    )
-
-    return rvs, pdf, cdf
-
-
 def uniform(data: np.ndarray) -> np.ndarray:
     """Generates random variates for the uniform distribution
 
@@ -720,8 +679,8 @@ class RVSDistribution:
     """Random variates for various distributions. Parameters estimated from data.
 
     The parameters for the specified distribution will be estimated from the data provided.
-    It returns an array of the designated distribution, the parameters estimated from
-    the data provided, of length matching provided data.
+    It returns an array of data from the designated distribution, equal in length
+    to the data provided.
 
     This is used by goodness of fit tests to evaluate the degree to which a distribution
     matches an hypothesized distribution.
@@ -781,8 +740,6 @@ class RVSDistribution:
         self._distribution = distribution
 
         try:
-            self._logger.debug(f"\nDistribution: {distribution}")
-            self._logger.debug(f"\nAvailable Distributions:\n{self.__DISTRIBUTIONS.keys()}")
             self._rvs, self._pdf, self._cdf = self.__DISTRIBUTIONS[distribution](data=data)
         except KeyError as e:  # pragma: no cover
             msg = f"{distribution} is not supported.\n{e}"

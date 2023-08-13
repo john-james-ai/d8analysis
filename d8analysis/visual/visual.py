@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 04:06:34 pm                                               #
-# Modified   : Friday August 11th 2023 06:47:49 pm                                                 #
+# Modified   : Saturday August 12th 2023 04:01:31 am                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -37,7 +37,7 @@ class Visual:
 
     """
 
-    def __init__(self, canvas: Canvas = None) -> None:
+    def __init__(self, canvas: type[Canvas] = Canvas) -> None:
         self._canvas = canvas or Canvas()
         self._plots = []
 
