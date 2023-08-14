@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Friday August 11th 2023 09:48:10 pm                                                 #
+# Modified   : Sunday August 13th 2023 08:28:59 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,7 +22,7 @@ import pandas as pd
 import subprocess
 import dotenv
 
-from d8analysis.container import d8analysisContainer
+from d8analysis.container import D8AnalysisContainer
 
 # ------------------------------------------------------------------------------------------------ #
 DATAFILE = "data/Credit Score Classification Dataset.csv"
@@ -62,7 +62,7 @@ def dataset():
 # ------------------------------------------------------------------------------------------------ #
 @pytest.fixture(scope="module", autouse=True)
 def container():
-    container = d8analysisContainer()
+    container = D8AnalysisContainer()
     container.init_resources()
 
     return container
