@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Sunday August 13th 2023 10:10:49 pm                                                 #
+# Modified   : Sunday August 13th 2023 10:10:20 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,6 +21,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 import seaborn as sns
+import matplotlib.pyplot as plt
 from dependency_injector.wiring import inject, Provide
 
 from d8analysis.visual.base import Canvas

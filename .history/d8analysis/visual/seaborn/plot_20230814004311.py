@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 08:23:33 am                                                 #
-# Modified   : Monday August 14th 2023 01:21:28 am                                                 #
+# Modified   : Monday August 14th 2023 12:43:11 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -369,9 +369,6 @@ class SeabornVisualizer(Visualizer):  # pragma: no cover
         if title is not None:
             ax.set_title(title)
 
-        if hue is not None:
-            plt.legend(loc="upper right")
-
     def violinplot(
         self,
         data: Union[pd.DataFrame, np.ndarray],
@@ -513,14 +510,10 @@ class SeabornVisualizer(Visualizer):  # pragma: no cover
             ax=ax2,
             color=self._canvas.colors.orange,
             label="Cumulative Distribution Function",
-            legend=True,
         )
         title = "Probability Density Function and Cumulative Distribution Function"
-
-        h1, l1 = ax1.get_legend_handles_labels()
-        h2, l2 = ax2.get_legend_handles_labels()
-
-        ax1.legend(handles=h1 + h2, labels=l1 + l2, loc="upper left")
+        ax1.get_legend().remove()
+        fig.legend()
         fig.suptitle(title, fontsize=self._canvas.fontsize_title)
         fig.tight_layout()
 

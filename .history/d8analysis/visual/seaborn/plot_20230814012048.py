@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 08:23:33 am                                                 #
-# Modified   : Monday August 14th 2023 01:21:28 am                                                 #
+# Modified   : Monday August 14th 2023 01:20:48 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -370,7 +370,7 @@ class SeabornVisualizer(Visualizer):  # pragma: no cover
             ax.set_title(title)
 
         if hue is not None:
-            plt.legend(loc="upper right")
+            plt.legend(loc="best")
 
     def violinplot(
         self,

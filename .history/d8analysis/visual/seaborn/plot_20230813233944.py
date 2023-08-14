@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 08:23:33 am                                                 #
-# Modified   : Monday August 14th 2023 01:21:28 am                                                 #
+# Modified   : Sunday August 13th 2023 11:39:44 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -30,8 +30,6 @@ from d8analysis.visual.seaborn.config import SeabornCanvas
 
 # ------------------------------------------------------------------------------------------------ #
 class SeabornVisualizer(Visualizer):  # pragma: no cover
-    """Wrapper for Seaborn plotiziations."""
-
     def __init__(self, canvas: SeabornCanvas):
         super().__init__(canvas)
         self._canvas = canvas
@@ -369,9 +367,6 @@ class SeabornVisualizer(Visualizer):  # pragma: no cover
         if title is not None:
             ax.set_title(title)
 
-        if hue is not None:
-            plt.legend(loc="upper right")
-
     def violinplot(
         self,
         data: Union[pd.DataFrame, np.ndarray],
@@ -421,6 +416,8 @@ class SeabornVisualizer(Visualizer):  # pragma: no cover
     def histpdfplot(
         self,
         data: Union[pd.DataFrame, np.ndarray],
+        x_pdf: np.ndarray,
+        y_pdf: np.ndarray,
         x: str = None,
         y: str = None,
         title: str = None,
@@ -448,23 +445,33 @@ class SeabornVisualizer(Visualizer):  # pragma: no cover
 
         """
         if ax is None:
-            fig, ax = self._canvas.get_figaxes()
+            fig, ax1 = self._canvas.get_figaxes()
 
-        ax = sns.histplot(
+        ax1 = sns.histplot(
             data=data,
             x=x,
             y=y,
-            stat="density",
+            stat="count",
             element="bars",
             fill=True,
-            kde=True,
             color=self._canvas.colors.dark_blue,
-            ax=ax,
+            ax=ax1,
             label="Empirical Distribution",
             legend=True,
         )
-        if title is not None:
-            ax.set_title(title)
+        ax2 = ax1.twinx()
+        ax2 = sns.lineplot(
+            x=x_pdf,
+            y=y_pdf,
+            ax=ax2,
+            color=self._canvas.colors.orange,
+            label="Probability Distribution Function",
+        )
+        title = "Empirical Distribution and Probability Density Function"
+        ax2.get_legend().remove()
+        fig.legend()
+        fig.suptitle(title, fontsize=self._canvas.fontsize_title)
+        fig.tight_layout()
 
     def pdfcdfplot(
         self,
@@ -513,14 +520,10 @@ class SeabornVisualizer(Visualizer):  # pragma: no cover
             ax=ax2,
             color=self._canvas.colors.orange,
             label="Cumulative Distribution Function",
-            legend=True,
         )
         title = "Probability Density Function and Cumulative Distribution Function"
-
-        h1, l1 = ax1.get_legend_handles_labels()
-        h2, l2 = ax2.get_legend_handles_labels()
-
-        ax1.legend(handles=h1 + h2, labels=l1 + l2, loc="upper left")
+        ax2.get_legend().remove()
+        fig.legend()
         fig.suptitle(title, fontsize=self._canvas.fontsize_title)
         fig.tight_layout()
 

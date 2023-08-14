@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Sunday August 13th 2023 10:10:49 pm                                                 #
+# Modified   : Sunday August 13th 2023 09:39:28 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,6 +21,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 import seaborn as sns
+import matplotlib.pyplot as plt
 from dependency_injector.wiring import inject, Provide
 
 from d8analysis.visual.base import Canvas
@@ -55,70 +56,9 @@ class SpearmanCorrelationResult(StatTestResult):
         self._ax = sns.lineplot(x=x, y=y, markers=False, dashes=False, sort=True, ax=self._ax)
 
         # Transform the r statistic and pvalue as per https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html#scipy.stats.spearmanr
-        critical_value = self.value * np.sqrt(self.dof / ((self.value + 1.0) * (1.0 - self.value)))
-        pvalue = dist.cdf(-critical_value) + dist.sf(critical_value)
-
-        # Compute reject region.
-        upper = x >= critical_value
-        lower = x <= -critical_value
-
-        # Plot statistic
-        idx = np.where(x[upper])[0]
-        a = x[idx]
-        b = y[idx]
-        _ = sns.regplot(
-            x=np.array([a]),
-            y=np.array([b]),
-            scatter=True,
-            fit_reg=False,
-            marker="o",
-            scatter_kws={"s": 100},
-            ax=self._ax,
-            color=self._canvas.colors.dark_blue,
-        )
-        self._ax.annotate(
-            f"r({self.dof})={self.value}, p={round(pvalue,4)}",
-            (a, b),
-            textcoords="offset points",
-            xytext=(0, 10),
-            ha="center",
-        )
-
-        # Fill Lower Tail
-        self._ax.fill_between(
-            x[lower],
-            y1=0,
-            y2=y[lower],
-            color=self._canvas.colors.crimson,
-        )
-
-        # Fill Upper Tail
-        self._ax.fill_between(
-            x[upper],
-            y1=0,
-            y2=y[upper],
-            color=self._canvas.colors.crimson,
-        )
-
-        # Create annotations
-        self._ax.annotate(
-            "Critical Value",
-            (-critical_value, 0),
-            textcoords="offset points",
-            xytext=(20, 15),
-            ha="left",
-            arrowprops={"width": 2, "shrink": 0.05},
-        )
-
-        self._ax.annotate(
-            "Critical Value",
-            (critical_value, 0),
-            xycoords="data",
-            textcoords="offset points",
-            xytext=(-20, 15),
-            ha="right",
-            arrowprops={"width": 2, "shrink": 0.05},
-        )
+        r_transformed = self.value * np.sqrt(self.dof / ((self.value + 1.0) * (1.0 - self.value)))
+        pvalue = dist.cdf(-r_transformed) + dist.sf(r_transformed)
+        annotation = f"p-value={round(pvalue,3)}\n(shaded area)"
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -183,7 +123,7 @@ class SpearmanCorrelationTest(StatisticalTest):
         )
 
     def _report_results(self, r: float, pvalue: float, dof: float) -> str:
-        return f"Spearman Correlation Test\nThe two variables had {self._interpret_r(r)}.\nr({dof})={round(r,3)}, {self._report_pvalue(pvalue)}."
+        return f"Spearman Correlation Test\nThe two variables had {self._interpret_r(r)}.\nr({dof})={round(r,2)}, {self._report_pvalue(pvalue)}."
 
     def _interpret_r(self, r: float) -> str:
         """Interprets the value of the correlation[1]_

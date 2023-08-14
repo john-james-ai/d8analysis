@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 06:23:03 pm                                                    #
-# Modified   : Sunday August 13th 2023 10:36:00 pm                                                 #
+# Modified   : Sunday August 13th 2023 10:18:50 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -53,9 +53,9 @@ class Canvas(DataClass):
 
 
 # ------------------------------------------------------------------------------------------------ #
-#                                       VISUALIZER                                                 #
+#                                            PLOT                                                  #
 # ------------------------------------------------------------------------------------------------ #
-class Visualizer(ABC):  # pragma: no cover
+class Plot(ABC):  # pragma: no cover
     """Wrapper for Seaborn visualizations.
 
 
@@ -65,43 +65,43 @@ class Visualizer(ABC):  # pragma: no cover
     """
 
     @abstractmethod
-    def __init__(self, canvas: Canvas, *args, **kwargs) -> None:  # pragma: no cover
+    def __init__(self, canvas: Canvas, *args, **kwargs) -> None:
         """Defines the construction requirement for Visualizers"""
 
     @abstractmethod
-    def lineplot(self, *args, **kwargs) -> None:  # pragma: no cover
+    def lineplot(self, *args, **kwargs) -> None:
         """Renders the plot"""
 
     @abstractmethod
-    def boxplot(self, *args, **kwargs) -> None:  # pragma: no cover
+    def boxplot(self, *args, **kwargs) -> None:
         """Renders the plot"""
 
     @abstractmethod
-    def kdeplot(self, *args, **kwargs) -> None:  # pragma: no cover
+    def kdeplot(self, *args, **kwargs) -> None:
         """Renders the plot"""
 
     @abstractmethod
-    def ecdfplot(self, *args, **kwargs) -> None:  # pragma: no cover
+    def ecdfplot(self, *args, **kwargs) -> None:
         """Renders the plot"""
 
     @abstractmethod
-    def histogram(self, *args, **kwargs) -> None:  # pragma: no cover
+    def histogram(self, *args, **kwargs) -> None:
         """Renders the plot"""
 
     @abstractmethod
-    def scatterplot(self, *args, **kwargs) -> None:  # pragma: no cover
+    def scatterplot(self, *args, **kwargs) -> None:
         """Renders the plot"""
 
     @abstractmethod
-    def barplot(self, *args, **kwargs) -> None:  # pragma: no cover
+    def barplot(self, *args, **kwargs) -> None:
         """Renders the plot"""
 
 
 # ------------------------------------------------------------------------------------------------ #
-#                                          Visual                                                  #
+#                                          VISUALIZER                                              #
 # ------------------------------------------------------------------------------------------------ #
-class Visual(ABC):
-    """Wrapper classes for Visualizer methods."""
+class Visualizer(ABC):
+    """Wrapper classes for Plots"""
 
     def plot(self) -> None:
         """Renders the visualization."""

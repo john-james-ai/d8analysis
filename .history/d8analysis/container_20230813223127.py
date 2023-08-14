@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday March 27th 2023 07:02:56 pm                                                  #
-# Modified   : Sunday August 13th 2023 11:41:00 pm                                                 #
+# Modified   : Sunday August 13th 2023 10:31:27 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -41,7 +41,7 @@ class LoggingContainer(containers.DeclarativeContainer):
 #                                    VISUALIZER CONTAINER                                          #
 # ------------------------------------------------------------------------------------------------ #
 class VisualizerContainer(containers.DeclarativeContainer):
-    canvas = providers.Dependency()
+    (canvas,) = providers.Dependency()
     seaborn = providers.Factory(SeabornVisualizer, canvas=canvas)
 
 

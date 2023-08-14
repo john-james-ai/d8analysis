@@ -79,7 +79,6 @@ addopts = """\
 filterwarnings = [
     "ignore::pytest.PytestCollectionWarning",
     "ignore::pytest.PytestUnknownMarkWarning",
-    "ignore::UserWarning",
     ]
 
 [tool.coverage.report]

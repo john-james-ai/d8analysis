@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Sunday August 13th 2023 10:10:49 pm                                                 #
+# Modified   : Sunday August 13th 2023 10:04:59 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,6 +21,7 @@ import pandas as pd
 import numpy as np
 from scipy import stats
 import seaborn as sns
+import matplotlib.pyplot as plt
 from dependency_injector.wiring import inject, Provide
 
 from d8analysis.visual.base import Canvas
@@ -57,6 +58,7 @@ class SpearmanCorrelationResult(StatTestResult):
         # Transform the r statistic and pvalue as per https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.spearmanr.html#scipy.stats.spearmanr
         critical_value = self.value * np.sqrt(self.dof / ((self.value + 1.0) * (1.0 - self.value)))
         pvalue = dist.cdf(-critical_value) + dist.sf(critical_value)
+        annotation = f"p-value={round(pvalue,4)}\n(shaded area)"
 
         # Compute reject region.
         upper = x >= critical_value
@@ -77,8 +79,8 @@ class SpearmanCorrelationResult(StatTestResult):
             color=self._canvas.colors.dark_blue,
         )
         self._ax.annotate(
-            f"r({self.dof})={self.value}, p={round(pvalue,4)}",
-            (a, b),
+            f"r = {self.value}",
+            (x, y),
             textcoords="offset points",
             xytext=(0, 10),
             ha="center",
@@ -183,7 +185,7 @@ class SpearmanCorrelationTest(StatisticalTest):
         )
 
     def _report_results(self, r: float, pvalue: float, dof: float) -> str:
-        return f"Spearman Correlation Test\nThe two variables had {self._interpret_r(r)}.\nr({dof})={round(r,3)}, {self._report_pvalue(pvalue)}."
+        return f"Spearman Correlation Test\nThe two variables had {self._interpret_r(r)}.\nr({dof})={round(r,2)}, {self._report_pvalue(pvalue)}."
 
     def _interpret_r(self, r: float) -> str:
         """Interprets the value of the correlation[1]_
