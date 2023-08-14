@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Monday August 14th 2023 06:10:09 am                                                 #
+# Modified   : Monday August 14th 2023 02:40:46 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -45,22 +45,37 @@ class KSTestResult(StatTestResult):
 
     a: np.ndarray = None
     b: Union[np.ndarray, str] = None
+    a_name: str = "Sample 1"  # Name of Sample
+    b_name: str = "Sample 2"  # Name of Sample 2 if two sample test
 
     @inject
     def __post_init__(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
         super().__post_init__(canvas=canvas)
+        self._ax1 = None
+        self._ax2 = None
+        self._ax3 = None
+
+    def plot(self) -> None:
         self._fig, (self._ax1, self._ax2, self._ax3) = plt.subplots(
             nrows=3, ncols=1, figsize=(12, 12)
         )
+        self.plot_statistic()
+        self.plot_cdf()
+        self.plot_pdf()
 
-    def plot(self) -> None:
-        self._plot_statistic()
-        self._plot_cdf()
-        self._plot_pdf()
-        self._fig.tight_layout()
+    def plot_statistic(self, ax: plt.Axes = None) -> None:
+        """Plots the test statistic and reject region
 
-    def _plot_statistic(self) -> None:
-        """Plots the test statistic and reject region"""
+        Args:
+            ax (plt.Axes): Matplotlib axes object. Optional. If provided, this will override the current
+                value of the axes designated for this plot, if any. Otherwise, if the axes is
+                None, one is provided by the canvas object.
+        """
+
+        if ax is not None:
+            self._ax1 = ax
+        elif self._ax1 is None:
+            _, self._ax1 = self._canvas.get_figaxes()
 
         n = len(self.a)
 
@@ -169,26 +184,38 @@ class KSTestResult(StatTestResult):
         except IndexError:
             pass
 
-    def _plot_cdf(self) -> None:
+    def plot_cdf(self, ax: plt.Axes = None) -> None:
+        """Plots the cumulative distribution function for two samples or the sample and the theoretical distribution.
+
+        Args:
+            ax (plt.Axes): Matplotlib axes object. Optional. If provided, this will override the current
+                value of the axes designated for this plot, if any. Otherwise, if the axes is
+                None, one is provided by the canvas object.
+        """
+        if ax is not None:
+            self._ax1 = ax
+        elif self._ax2 is None:
+            _, self._ax2 = self._canvas.get_figaxes()
+
         x = self.a
 
         if isinstance(self.b, str):
             title = "Theoretical and Empirical Cumulative Distribution Function"
-            d = RVSDistribution()
-            cdf = d(data=x, distribution=self.b).cdf
             self._ax2 = sns.ecdfplot(
                 x=x,
                 stat="proportion",
                 ax=self._ax2,
-                label="Empirical Cumulative Distribution Function",
+                label=f"Empirical Cumulative Distribution Function: {self.a_name}",
                 legend=True,
             )
+            d = RVSDistribution()
+            cdf = d(data=x, distribution=self.b).cdf
             self._ax2 = sns.lineplot(
                 x=cdf.x,
                 y=cdf.y,
                 ax=self._ax2,
                 color=self._canvas.colors.orange,
-                label="Theoretical Cumulative Distribution Function",
+                label=f"Cumulative Distribution Function: {cdf.name}",
                 legend=True,
             )
         else:
@@ -198,7 +225,7 @@ class KSTestResult(StatTestResult):
                 x=x,
                 stat="proportion",
                 ax=self._ax2,
-                label="Cumulative Distribution Function: Sample 1",
+                label=f"Empirical Cumulative Distribution Function: {self.a_name}",
                 legend=True,
             )
             self._ax2 = sns.ecdfplot(
@@ -206,7 +233,7 @@ class KSTestResult(StatTestResult):
                 stat="proportion",
                 ax=self._ax2,
                 color=self._canvas.colors.orange,
-                label="Cumulative Distribution Function: Sample 2",
+                label=f"Empirical Cumulative Distribution Function: {self.b_name}",
                 legend=True,
             )
 
@@ -214,27 +241,39 @@ class KSTestResult(StatTestResult):
             self._ax2.legend(handles=h2, labels=l2, loc="upper left")
 
         self._ax2.set_title(title, fontsize=self._canvas.fontsize_title)
-        self._fig.tight_layout()
+        plt.tight_layout()
 
-    def _plot_pdf(self) -> None:
+    def plot_pdf(self, ax: plt.Axes = None) -> None:
+        """Plots the probability density function for the two samples or sample and theoretical distriubtion.
+
+        Args:
+            ax (plt.Axes): Matplotlib axes object. Optional. If provided, this will override the current
+                value of the axes designated for this plot, if any. Otherwise, if the axes is
+                None, one is provided by the canvas object.
+        """
+        if ax is not None:
+            self._ax3 = ax
+        elif self._ax3 is None:
+            _, self._ax3 = self._canvas.get_figaxes()
+
         x = self.a
 
         if isinstance(self.b, str):
             title = "Theoretical and Empirical Probability Density Function"
-            d = RVSDistribution()
-            pdf = d(data=x, distribution=self.b).pdf
             self._ax3 = sns.kdeplot(
                 x=x,
                 ax=self._ax3,
-                label="Empirical Probability Density Function",
+                label=f"Empirical Probability Density Function: {self.a_name}",
                 legend=True,
             )
+            d = RVSDistribution()
+            pdf = d(data=x, distribution=self.b).pdf
             self._ax3 = sns.lineplot(
                 x=pdf.x,
                 y=pdf.y,
                 ax=self._ax3,
                 color=self._canvas.colors.orange,
-                label="Theoretical Probability Density Function",
+                label=f"Probability Density Function: {pdf.name} ",
                 legend=True,
             )
         else:
@@ -243,21 +282,21 @@ class KSTestResult(StatTestResult):
             self._ax3 = sns.kdeplot(
                 x=x,
                 ax=self._ax3,
-                label="Probability Density Function: Sample 1",
+                label=f"Empirical Probability Density Function: {self.a_name}",
                 legend=True,
             )
             self._ax3 = sns.kdeplot(
                 x=x2,
                 ax=self._ax3,
                 color=self._canvas.colors.orange,
-                label="Probability Density Function: Sample 2",
+                label=f"Empirical Probability Density Function: {self.b_name}",
                 legend=True,
             )
             h1, l1 = self._ax3.get_legend_handles_labels()
             self._ax3.legend(handles=h1, labels=l1, loc="upper right")
 
         self._ax3.set_title(title, fontsize=self._canvas.fontsize_title)
-        self._fig.tight_layout()
+        plt.tight_layout()
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -271,15 +310,26 @@ class KSTest(StatisticalTest):
         b (Union[str, np.ndarray]): A 1-D array, or a string containing the name of the
             reference distribution from the scipy list of Continuous Distributions
             at https://docs.scipy.org/doc/scipy/reference/stats.html
+        a_name (str): The name of the sample distribution. Optional.
+        b_name (str): The name of the sample 2 distribution, if two-sample test. Optional.
 
     """
 
     __id = "kstest"
 
-    def __init__(self, a: np.ndarray, b: Union[str, np.ndarray], alpha: float = 0.05) -> None:
+    def __init__(
+        self,
+        a: np.ndarray,
+        b: Union[str, np.ndarray],
+        a_name: str = "Sample 1",
+        b_name: str = "Sample 2",
+        alpha: float = 0.05,
+    ) -> None:
         super().__init__()
         self._a = a
         self._b = b
+        self._a_name = a_name
+        self._b_name = b_name
         self._alpha = alpha
         self._profile = StatTestProfileOne.create(self.__id)
         self._result = None
@@ -326,6 +376,8 @@ class KSTest(StatisticalTest):
             result=self._report_results(n=n, statistic=result.statistic, pvalue=result.pvalue),
             a=self._a,
             b=self._b,
+            a_name=self._a_name,
+            b_name=self._b_name,
             inference=inference,
             interpretation=interpretation,
             alpha=self._alpha,
