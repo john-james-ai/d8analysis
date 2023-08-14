@@ -11,14 +11,14 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Monday August 14th 2023 04:30:39 am                                                 #
+# Modified   : Monday August 14th 2023 04:42:45 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from dataclasses import dataclass
+
 import pandas as pd
-import numpy as np
 from scipy import stats
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -46,34 +46,28 @@ class PearsonCorrelationResult(StatTestResult):
     @inject
     def __post_init__(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
         super().__post_init__(canvas=canvas)
-        _, self._ax = self._canvas.get_figaxes()
+        self._ax = None
 
-    def plot(self) -> None:
-        """Plots the test statistic and reject region"""
+    def plot(self, ax: plt.Axes = None) -> None:
+        """Plots the data.
 
-        # Compute the pooled skew in the data
-        pooled = np.concatenate((self.data[self.a].values, self.data[self.b].values), axis=None)
-        skew = stats.skew(pooled)
+        Args:
+            ax (plt.Axes): Matplotlib axes object. Optional. If provided, this will override the current
+                value of the axes designated for this plot, if any. Otherwise, if the axes is
+                None, one is provided by the canvas object.
+        """
 
-        # Render the probability distribution
-        x = np.linspace(stats.pearson3.ppf(0.01, skew), stats.pearson3.ppf(0.99, skew), 100)
-        y = stats.pearson3.pdf(x, skew)
-        self._ax = sns.lineplot(x=x, y=y, markers=False, dashes=False, sort=True, ax=self._ax)
+        if ax is not None:
+            self._ax = ax
+        elif self._ax is None:
+            _, self._ax = self._canvas.get_figaxes()
 
-        # Compute reject region
-        lower = x[0]
-        upper = x[-1]
-        lower_alpha = self.alpha / 2
-        upper_alpha = 1 - (self.alpha / 2)
-        lower_critical = stats.pearson3.ppf(lower_alpha, skew)
-        upper_critical = stats.pearson3.ppf(upper_alpha, skew)
-
-        self._fill_reject_region(
-            skew=skew,
-            lower=lower,
-            upper=upper,
-            lower_critical=lower_critical,
-            upper_critical=upper_critical,
+        self._ax = sns.regplot(
+            data=self.data,
+            x=self.a,
+            y=self.b,
+            ax=self._ax,
+            fit_reg=True,
         )
 
         self._ax.set_title(
@@ -81,88 +75,7 @@ class PearsonCorrelationResult(StatTestResult):
             fontsize=self._canvas.fontsize_title,
         )
 
-        # ax.set_xlabel(r"$X^2$")
-        self._ax.set_ylabel("Probability Density")
         plt.tight_layout()
-
-        if self._legend_config is not None:
-            self.config_legend()
-
-    def _fill_reject_region(
-        self,
-        skew: float,
-        lower: float,
-        upper: float,
-        lower_critical: float,
-        upper_critical: float,
-    ) -> None:
-        """Fills the area under the curve at the value of the hypothesis test statistic."""
-
-        # Fill lower tail
-        xlower = np.arange(lower, lower_critical, 0.001)
-        self._ax.fill_between(
-            x=xlower,
-            y1=0,
-            y2=stats.pearson3.pdf(xlower, skew),
-            color=self._canvas.colors.orange,
-        )
-
-        # Fill Upper Tail
-        xupper = np.arange(upper_critical, upper, 0.001)
-        self._ax.fill_between(
-            x=xupper,
-            y1=0,
-            y2=stats.pearson3.pdf(xupper, skew),
-            color=self._canvas.colors.orange,
-        )
-
-        # Plot the statistic
-        line = self._ax.lines[0]
-        xdata = line.get_xydata()[:, 0]
-        ydata = line.get_xydata()[:, 1]
-        statistic = round(self.value, 4)
-        try:
-            idx = np.where(xdata > self.value)[0][0]
-            x = xdata[idx]
-            y = ydata[idx]
-            _ = sns.regplot(
-                x=np.array([x]),
-                y=np.array([y]),
-                scatter=True,
-                fit_reg=False,
-                marker="o",
-                scatter_kws={"s": 100},
-                ax=self._ax,
-                color=self._canvas.colors.dark_blue,
-            )
-            self._ax.annotate(
-                f"t = {str(statistic)}",
-                (x, y),
-                textcoords="offset points",
-                xytext=(0, 10),
-                ha="center",
-            )
-
-            self._ax.annotate(
-                "Critical Value",
-                (lower_critical, 0),
-                textcoords="offset points",
-                xytext=(20, 15),
-                ha="left",
-                arrowprops={"width": 2, "shrink": 0.05},
-            )
-
-            self._ax.annotate(
-                "Critical Value",
-                (upper_critical, 0),
-                xycoords="data",
-                textcoords="offset points",
-                xytext=(-20, 15),
-                ha="right",
-                arrowprops={"width": 2, "shrink": 0.05},
-            )
-        except IndexError:
-            pass
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -193,9 +106,14 @@ class PearsonCorrelationTest(StatisticalTest):
     def run(self) -> None:
         """Performs the statistical test and creates a result object."""
 
-        r, pvalue = stats.pearsonr(
+        pearson_result = stats.pearsonr(
             x=self._data[self._a].values, y=self._data[self._b].values, alternative="two-sided"
         )
+        r = pearson_result.statistic
+        pvalue = pearson_result.pvalue
+        confidence_interval = pearson_result.confidence_interval(0.05)
+        self._logger.debug(pearson_result)
+        self._logger.debug(confidence_interval)
 
         dof = len(self._data) - 2
 
@@ -204,7 +122,7 @@ class PearsonCorrelationTest(StatisticalTest):
         if pvalue > self._alpha:  # pragma: no cover
             inference = f"The two variables had {self._interpret_r(r)}, r({dof})={round(r,2)}, {self._report_pvalue(pvalue)}.\nHowever, the pvalue, {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}% indicating that the correlation coefficient is not statistically significant."
         else:
-            inference = f"The two variables had {self._interpret_r(r)}, r({dof})={round(r,2)}, {self._report_pvalue(pvalue)}.\nHowever, the pvalue, {round(pvalue,2)} is lower than level of significance {int(self._alpha*100)}% indicating that the correlation coefficient is statistically significant."
+            inference = f"The two variables had {self._interpret_r(r)}, r({dof})={round(r,2)}, {self._report_pvalue(pvalue)}.\nFurther, the pvalue, {round(pvalue,2)} is lower than level of significance {int(self._alpha*100)}% indicating that the correlation coefficient is statistically significant."
 
         # Create the result object.
         self._result = PearsonCorrelationResult(
@@ -223,7 +141,7 @@ class PearsonCorrelationTest(StatisticalTest):
         )
 
     def _report_results(self, r: float, pvalue: float, dof: float) -> str:
-        return f"Pearson Correlation Test\nThe two variables had {self._interpret_r(r)}.\nr({dof})={round(r,2)}, {self._report_pvalue(pvalue)}."
+        return f"Pearson Correlation Test\nr({dof})={round(r,2)}, {self._report_pvalue(pvalue)}\n{self._interpret_r(r=r).capitalize()}"
 
     def _interpret_r(self, r: float) -> str:
         """Interprets the value of the correlation[1]_

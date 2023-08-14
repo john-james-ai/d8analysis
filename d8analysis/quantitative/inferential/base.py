@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Monday August 14th 2023 02:37:26 am                                                 #
+# Modified   : Monday August 14th 2023 04:34:59 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -148,6 +148,10 @@ class StatTestResult(Result):
         self._canvas = canvas
         sns.set_style(self._canvas.style)
         sns.set_palette(self._canvas.palette)
+
+    @abstractmethod
+    def plot(self, *args, **kwargs) -> None:
+        """Renders plots of test statistics, pdf, cdf, data, etc..."""
 
 
 # ------------------------------------------------------------------------------------------------ #
