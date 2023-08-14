@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Sunday August 13th 2023 08:41:52 am                                                 #
+# Modified   : Monday August 14th 2023 03:53:50 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -81,6 +81,7 @@ class DataClass(ABC):
         d = self.as_dict()
         for k, v in d.items():
             if type(v) in IMMUTABLE_TYPES:
+                k = k.capitalize()
                 s += f"\n{k.rjust(width,' ')} | {v}"
         s += "\n\n"
         return s

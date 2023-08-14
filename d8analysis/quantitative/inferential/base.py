@@ -4,14 +4,14 @@
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /d8analysis/quantitative/statistical/base.py                                        #
+# Filename   : /d8analysis/quantitative/inferential/base.py                                        #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Friday August 11th 2023 09:53:32 pm                                                 #
+# Modified   : Monday August 14th 2023 02:37:26 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -20,12 +20,14 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from datetime import datetime
 from dataclasses import dataclass, fields
+import seaborn as sns
 
 import pandas as pd
 
 from d8analysis.service.io import IOService
 from d8analysis import IMMUTABLE_TYPES, SEQUENCE_TYPES
 from d8analysis.analysis.base import Analysis, Result
+from d8analysis.visual.base import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
 ANALYSIS_TYPES = {
@@ -141,6 +143,11 @@ class StatTestResult(Result):
     alpha: float = 0.05
     result: str = None
     interpretation: str = None
+
+    def __post_init__(self, canvas: Canvas) -> None:
+        self._canvas = canvas
+        sns.set_style(self._canvas.style)
+        sns.set_palette(self._canvas.palette)
 
 
 # ------------------------------------------------------------------------------------------------ #

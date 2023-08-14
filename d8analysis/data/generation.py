@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday May 27th 2023 08:56:02 pm                                                  #
-# Modified   : Sunday August 13th 2023 04:13:19 pm                                                 #
+# Modified   : Monday August 14th 2023 05:00:34 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -40,7 +40,7 @@ sns.set_style(SeabornCanvas.style)
 # ------------------------------------------------------------------------------------------------ #
 DISTRIBUTIONS = {
     "beta": stats.beta,
-    "normal": stats.norm,
+    "norm": stats.norm,
     "X2": stats.chi2,
     "exponential": stats.expon,
     "f": stats.f,
@@ -55,7 +55,7 @@ DISTRIBUTIONS = {
 # ------------------------------------------------------------------------------------------------ #
 CDF = {
     "beta": stats.beta.cdf,
-    "normal": stats.norm.cdf,
+    "norm": stats.norm.cdf,
     "X2": stats.chi2.cdf,
     "exponential": stats.expon.cdf,
     "f": stats.f.cdf,
@@ -168,7 +168,7 @@ def beta(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def normal(data: np.ndarray) -> np.ndarray:
+def norm(data: np.ndarray) -> np.ndarray:
     """Generates random variates for the normal distribution
 
     Args:
@@ -180,7 +180,7 @@ def normal(data: np.ndarray) -> np.ndarray:
         cdf: Data from the cumulative distribution function
     """
     # Estimate parameters
-    loc, scale = get_params(data=data, distribution="normal")
+    loc, scale = get_params(data=data, distribution="norm")
 
     name = "Normal Distribution"
     x_range = np.linspace(min(data), max(data), NUM_POINTS)
@@ -691,7 +691,7 @@ class RVSDistribution:
 
     __DISTRIBUTIONS = {
         "beta": beta,
-        "normal": normal,
+        "norm": norm,
         "X2": chi2,
         "exponential": exponential,
         "f": f,
@@ -745,6 +745,7 @@ class RVSDistribution:
             msg = f"{distribution} is not supported.\n{e}"
             self._logger.debug(msg)
             raise NotImplementedError(msg)
+        return self
 
     def histplot(self, ax: plt.Axes = None) -> plt.Axes:  # pragma: no cover
         """Plots the distribution of the data as a histogram
@@ -790,7 +791,9 @@ class RVSDistribution:
         canvas = SeabornCanvas()
         ax = ax or canvas.ax
 
-        ax = sns.lineplot(x=self._cdf.x, y=self._cdf.y, ax=ax, color=canvas.colors.dark_blue)
+        ax = sns.lineplot(
+            x=self._cdf.x, y=self._cdf.y, ax=ax, color=canvas.colors.orange, legend=True
+        )
         title = f"{self._cdf.name}\n{self._cdf.label}\n{self._cdf.params}"
         ax.set_title(title, fontsize=canvas.fontsize_title)
         return ax

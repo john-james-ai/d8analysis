@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Sunday August 13th 2023 10:10:49 pm                                                 #
+# Modified   : Monday August 14th 2023 04:30:39 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -44,9 +44,12 @@ class SpearmanCorrelationResult(StatTestResult):
     dof: float = None
 
     @inject
-    def plot(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
-        self._canvas = canvas()
-        __, self._ax = self._canvas.get_figaxes()
+    def __post_init__(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
+        super().__post_init__(canvas=canvas)
+        _, self._ax = self._canvas.get_figaxes()
+
+    def plot(self) -> None:
+        """Plots the test statistic and reject region"""
 
         # Render probability distribution
         dist = stats.t(df=self.dof)
@@ -89,7 +92,7 @@ class SpearmanCorrelationResult(StatTestResult):
             x[lower],
             y1=0,
             y2=y[lower],
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Fill Upper Tail
@@ -97,7 +100,7 @@ class SpearmanCorrelationResult(StatTestResult):
             x[upper],
             y1=0,
             y2=y[upper],
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Create annotations

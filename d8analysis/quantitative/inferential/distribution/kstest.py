@@ -11,16 +11,15 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Sunday August 13th 2023 06:11:14 pm                                                 #
+# Modified   : Monday August 14th 2023 06:10:09 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from dataclasses import dataclass
-from typing import Union, Tuple
+from typing import Union
 
 import numpy as np
-import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from scipy import stats
@@ -34,6 +33,7 @@ from d8analysis.quantitative.inferential.base import (
     StatisticalTest,
     StatTestProfile,
 )
+from d8analysis.data.generation import RVSDistribution
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -41,25 +41,33 @@ from d8analysis.quantitative.inferential.base import (
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
 class KSTestResult(StatTestResult):
-    reference_distribution: str = None
-    data: Union[pd.DataFrame, np.ndarray, pd.Series] = None
+    """Encapsulates the hypothesis test results."""
+
+    a: np.ndarray = None
+    b: Union[np.ndarray, str] = None
 
     @inject
-    def plot(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
-        """Plots the test statistic and reject region
+    def __post_init__(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
+        super().__post_init__(canvas=canvas)
+        self._fig, (self._ax1, self._ax2, self._ax3) = plt.subplots(
+            nrows=3, ncols=1, figsize=(12, 12)
+        )
 
-        Args:
-            canvas (Canvas): Visual configuration object.
-        """
-        self._canvas = canvas()
-        _, self._ax = self._canvas.get_figaxes()
+    def plot(self) -> None:
+        self._plot_statistic()
+        self._plot_cdf()
+        self._plot_pdf()
+        self._fig.tight_layout()
 
-        n = len(self.data)
+    def _plot_statistic(self) -> None:
+        """Plots the test statistic and reject region"""
+
+        n = len(self.a)
 
         # Render the probability distribution
-        x = np.linspace(stats.kstwo.ppf(0.001, self.dof), stats.kstwo.ppf(0.999, self.dof), 500)
+        x = np.linspace(stats.kstwo.ppf(0.001, n), stats.kstwo.ppf(0.999, n), 500)
         y = stats.kstwo.pdf(x, n)
-        self._ax = sns.lineplot(x=x, y=y, markers=False, dashes=False, sort=True, ax=self._ax)
+        self._ax1 = sns.lineplot(x=x, y=y, markers=False, dashes=False, sort=True, ax=self._ax1)
 
         # Compute reject region
         lower = x[0]
@@ -77,16 +85,13 @@ class KSTestResult(StatTestResult):
             upper_critical=upper_critical,
         )
 
-        self._ax.set_title(
-            f"{self.result}",
+        self._ax1.set_title(
+            f"Kolmogorov-Smirnov Goodness of Fit\n{self.result}",
             fontsize=self._canvas.fontsize_title,
         )
 
-        self._ax.set_ylabel("Probability Density")
+        self._ax1.set_ylabel("Probability Density")
         plt.tight_layout()
-
-        if self._legend_config is not None:
-            self.config_legend()
 
     def _fill_reject_region(
         self,
@@ -100,24 +105,24 @@ class KSTestResult(StatTestResult):
 
         # Fill lower tail
         xlower = np.arange(lower, lower_critical, 0.001)
-        self._ax.fill_between(
+        self._ax1.fill_between(
             x=xlower,
             y1=0,
             y2=stats.kstwo.pdf(xlower, n),
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Fill Upper Tail
         xupper = np.arange(upper_critical, upper, 0.001)
-        self._ax.fill_between(
+        self._ax1.fill_between(
             x=xupper,
             y1=0,
             y2=stats.kstwo.pdf(xupper, n),
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Plot the statistic
-        line = self._ax.lines[0]
+        line = self._ax1.lines[0]
         xdata = line.get_xydata()[:, 0]
         ydata = line.get_xydata()[:, 1]
         statistic = round(self.value, 4)
@@ -132,37 +137,127 @@ class KSTestResult(StatTestResult):
                 fit_reg=False,
                 marker="o",
                 scatter_kws={"s": 100},
-                ax=self._ax,
+                ax=self._ax1,
                 color=self._canvas.colors.dark_blue,
             )
-            self._ax.annotate(
-                f"t = {str(statistic)}",
+            self._ax1.annotate(
+                f"D = {str(statistic)}",
                 (x, y),
                 textcoords="offset points",
                 xytext=(0, 10),
                 ha="center",
             )
 
-            self._ax.annotate(
+            self._ax1.annotate(
                 "Critical Value",
                 (lower_critical, 0),
                 textcoords="offset points",
                 xytext=(20, 15),
                 ha="left",
-                arrowprops={"width": 2, "shrink": 0.05},
+                arrowprops={"width": 2, "headwidth": 4, "shrink": 0.05},
             )
 
-            self._ax.annotate(
+            self._ax1.annotate(
                 "Critical Value",
                 (upper_critical, 0),
                 xycoords="data",
                 textcoords="offset points",
                 xytext=(-20, 15),
                 ha="right",
-                arrowprops={"width": 2, "shrink": 0.05},
+                arrowprops={"width": 2, "headwidth": 4, "shrink": 0.05},
             )
         except IndexError:
             pass
+
+    def _plot_cdf(self) -> None:
+        x = self.a
+
+        if isinstance(self.b, str):
+            title = "Theoretical and Empirical Cumulative Distribution Function"
+            d = RVSDistribution()
+            cdf = d(data=x, distribution=self.b).cdf
+            self._ax2 = sns.ecdfplot(
+                x=x,
+                stat="proportion",
+                ax=self._ax2,
+                label="Empirical Cumulative Distribution Function",
+                legend=True,
+            )
+            self._ax2 = sns.lineplot(
+                x=cdf.x,
+                y=cdf.y,
+                ax=self._ax2,
+                color=self._canvas.colors.orange,
+                label="Theoretical Cumulative Distribution Function",
+                legend=True,
+            )
+        else:
+            title = "Two Sample Cumulative Distribution Function"
+            x2 = self.b
+            self._ax2 = sns.ecdfplot(
+                x=x,
+                stat="proportion",
+                ax=self._ax2,
+                label="Cumulative Distribution Function: Sample 1",
+                legend=True,
+            )
+            self._ax2 = sns.ecdfplot(
+                x=x2,
+                stat="proportion",
+                ax=self._ax2,
+                color=self._canvas.colors.orange,
+                label="Cumulative Distribution Function: Sample 2",
+                legend=True,
+            )
+
+            h2, l2 = self._ax2.get_legend_handles_labels()
+            self._ax2.legend(handles=h2, labels=l2, loc="upper left")
+
+        self._ax2.set_title(title, fontsize=self._canvas.fontsize_title)
+        self._fig.tight_layout()
+
+    def _plot_pdf(self) -> None:
+        x = self.a
+
+        if isinstance(self.b, str):
+            title = "Theoretical and Empirical Probability Density Function"
+            d = RVSDistribution()
+            pdf = d(data=x, distribution=self.b).pdf
+            self._ax3 = sns.kdeplot(
+                x=x,
+                ax=self._ax3,
+                label="Empirical Probability Density Function",
+                legend=True,
+            )
+            self._ax3 = sns.lineplot(
+                x=pdf.x,
+                y=pdf.y,
+                ax=self._ax3,
+                color=self._canvas.colors.orange,
+                label="Theoretical Probability Density Function",
+                legend=True,
+            )
+        else:
+            title = "Two Sample Probability Density Function"
+            x2 = self.b
+            self._ax3 = sns.kdeplot(
+                x=x,
+                ax=self._ax3,
+                label="Probability Density Function: Sample 1",
+                legend=True,
+            )
+            self._ax3 = sns.kdeplot(
+                x=x2,
+                ax=self._ax3,
+                color=self._canvas.colors.orange,
+                label="Probability Density Function: Sample 2",
+                legend=True,
+            )
+            h1, l1 = self._ax3.get_legend_handles_labels()
+            self._ax3.legend(handles=h1, labels=l1, loc="upper right")
+
+        self._ax3.set_title(title, fontsize=self._canvas.fontsize_title)
+        self._fig.tight_layout()
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -172,18 +267,19 @@ class KSTest(StatisticalTest):
     """Performs the statistical test and creates a result object.
 
     Args:
-        data (np.ndarray): 1D Numpy array of data to be tested.
-        reference_distribution (str): A reference distribution from the scipy list
-            of Continuous Distributions at https://docs.scipy.org/doc/scipy/reference/stats.html
+        a (np.ndarray): 1D Numpy array of data to be tested.
+        b (Union[str, np.ndarray]): A 1-D array, or a string containing the name of the
+            reference distribution from the scipy list of Continuous Distributions
+            at https://docs.scipy.org/doc/scipy/reference/stats.html
 
     """
 
-    __id = "ks1"
+    __id = "kstest"
 
-    def __init__(self, data: np.ndarray, reference_distribution: str, alpha: float = 0.05) -> None:
+    def __init__(self, a: np.ndarray, b: Union[str, np.ndarray], alpha: float = 0.05) -> None:
         super().__init__()
-        self._data = data
-        self._reference_distribution = reference_distribution
+        self._a = a
+        self._b = b
         self._alpha = alpha
         self._profile = StatTestProfileOne.create(self.__id)
         self._result = None
@@ -194,11 +290,6 @@ class KSTest(StatisticalTest):
         return self._profile
 
     @property
-    def data(self) -> Union[np.ndarray, Tuple[np.ndarray, np.ndarray]]:
-        """Returns the data tested"""
-        return self._data
-
-    @property
     def result(self) -> StatTestResult:
         """Returns a Statistical Test Result object."""
         return self._result
@@ -206,25 +297,22 @@ class KSTest(StatisticalTest):
     def run(self) -> None:
         """Performs the statistical test and creates a result object."""
 
+        n = len(self._a)
+
         # Conduct the two-sided ks test
         try:
-            result = stats.ks_1samp(
-                x=self._data, cdf=self._reference_distribution, alternative="two-sided"
-            )
+            result = stats.kstest(rvs=self._a, cdf=self._b, alternative="two-sided")
         except KeyError as e:
             msg = f"Distribution {self._reference_distribution} is not supported.\n{e}"
             self._logger.error(msg)
             raise
 
-        if result.pvalue > self._alpha:
-            inference = f"The pvalue {round(result.pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence against the data being drawn from the {self._reference_distribution} distribution is not significant."
-        else:
-            inference = f"The pvalue {round(result.pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against the data being drawn from the {self._reference_distribution} distribution is significant."
+        inference = self._infer(pvalue=result.pvalue)
 
         interpretation = None
-        if len(self._data) < 50:
+        if len(self._a) < 50:
             interpretation = "Note: The Kolmogorov-Smirnov Test requires a sample size N > 50. For smaller sample sizes, the Shapiro-Wilk test should be considered."
-        if len(self._data) > 1000:
+        if len(self._a) > 1000:
             interpretation = "Note: The Kolmogorov-Smirnov Test on large sample sizes may lead to rejections of the null hypothesis that are statistically significant, yet practically insignificant."
 
         # Create the result object.
@@ -235,10 +323,29 @@ class KSTest(StatisticalTest):
             hypothesis=self._profile.hypothesis,
             value=result.statistic,
             pvalue=result.pvalue,
-            result=f"(N={len(self._data)})={round(result.statistic,2)}, {self._report_pvalue(result.pvalue)} {self._report_alpha()}",
-            data=self._data,
-            reference_distribution=self._reference_distribution,
+            result=self._report_results(n=n, statistic=result.statistic, pvalue=result.pvalue),
+            a=self._a,
+            b=self._b,
             inference=inference,
             interpretation=interpretation,
             alpha=self._alpha,
         )
+
+    def _infer(self, pvalue: float) -> str:
+        """Formats the inference for the hypothesis based upon whether it is one or two sample"""
+        if isinstance(self._b, str):
+            if pvalue > self._alpha:
+                inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence against the data being drawn from the {self._b} is not significant."
+            else:
+                inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against the data being drawn from the {self._b} is significant."
+        else:
+            if pvalue > self._alpha:
+                inference = f"The pvalue {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is not rejected. The evidence against the data being drawn from the same distribution is not significant."
+            else:
+                inference = f"The pvalue {round(pvalue,2)} is less than level of significance {int(self._alpha*100)}%; therefore, the null hypothesis is rejected. The evidence against the data being drawn from the same distribution is significant."
+        return inference
+
+    def _report_results(self, n: int, statistic: float, pvalue: float) -> str:
+        """Reports the result in APA style."""
+        result = f"D({n})={round(statistic,4)}, p={round(pvalue,3)}"
+        return result

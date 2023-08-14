@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday August 11th 2023 06:37:59 pm                                                 #
-# Modified   : Sunday August 13th 2023 06:11:03 pm                                                 #
+# Modified   : Monday August 14th 2023 04:30:39 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -124,7 +124,7 @@ class TTestPlot(Plot):  # pragma: no cover
             x=xlower,
             y1=0,
             y2=stats.t.pdf(xlower, self._result.dof),
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Fill Upper Tail
@@ -133,7 +133,7 @@ class TTestPlot(Plot):  # pragma: no cover
             x=xupper,
             y1=0,
             y2=stats.t.pdf(xupper, self._result.dof),
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Plot the statistic
@@ -256,7 +256,7 @@ class X2TestPlot(Plot):  # pragma: no cover
             x=x,
             y1=0,
             y2=stats.chi2.pdf(x, self._result.dof),
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Plot the statistic

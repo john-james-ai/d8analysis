@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday May 29th 2023 03:00:39 am                                                    #
-# Modified   : Sunday August 13th 2023 06:35:28 pm                                                 #
+# Modified   : Monday August 14th 2023 04:30:39 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -45,9 +45,12 @@ class ChiSquareIndependenceResult(StatTestResult):
     y: str = None
 
     @inject
-    def plot(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
-        self._canvas = canvas()
-        __, self._ax = self._canvas.get_figaxes()
+    def __post_init__(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
+        super().__post_init__(canvas=canvas)
+        _, self._ax = self._canvas.get_figaxes()
+
+    def plot(self) -> None:
+        """Plots the test statistic and reject region"""
 
         # Render the probability distribution
         x = np.linspace(stats.chi2.ppf(0.01, self.dof), stats.chi2.ppf(0.99, self.dof), 100)
@@ -78,7 +81,7 @@ class ChiSquareIndependenceResult(StatTestResult):
             x=x,
             y1=0,
             y2=stats.chi2.pdf(x, self._result.dof),
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Plot the statistic

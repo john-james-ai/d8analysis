@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 11:41:00 pm                                                 #
-# Modified   : Sunday August 13th 2023 06:51:09 pm                                                 #
+# Modified   : Monday August 14th 2023 04:30:38 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -48,14 +48,12 @@ class TTestResult(StatTestResult):
     b_stats: QuantStats = None
 
     @inject
-    def plot(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
-        """Plots the test statistic and reject region
-
-        Args:
-            canvas (Canvas): Visual configuration object.
-        """
-        self._canvas = canvas()
+    def __post_init__(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
+        super().__post_init__(canvas=canvas)
         _, self._ax = self._canvas.get_figaxes()
+
+    def plot(self) -> None:
+        """Plots the test statistic and reject region"""
 
         # Render the probability distribution
         x = np.linspace(stats.t.ppf(0.001, self.dof), stats.t.ppf(0.999, self.dof), 500)
@@ -75,16 +73,13 @@ class TTestResult(StatTestResult):
         )
 
         self._ax.set_title(
-            f"{self.result}",
+            "Independent Samples T-Test",
             fontsize=self._canvas.fontsize_title,
         )
 
         # ax.set_xlabel(r"$X^2$")
         self._ax.set_ylabel("Probability Density")
         plt.tight_layout()
-
-        if self._legend_config is not None:
-            self.config_legend()
 
     def _fill_reject_region(
         self,
@@ -101,7 +96,7 @@ class TTestResult(StatTestResult):
             x=xlower,
             y1=0,
             y2=stats.t.pdf(xlower, self.dof),
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Fill Upper Tail
@@ -110,7 +105,7 @@ class TTestResult(StatTestResult):
             x=xupper,
             y1=0,
             y2=stats.t.pdf(xupper, self.dof),
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Plot the statistic
@@ -146,7 +141,7 @@ class TTestResult(StatTestResult):
                 textcoords="offset points",
                 xytext=(20, 15),
                 ha="left",
-                arrowprops={"width": 2, "shrink": 0.05},
+                arrowprops={"width": 2, "headwidth": 4, "shrink": 0.05},
             )
 
             self._ax.annotate(
@@ -156,7 +151,16 @@ class TTestResult(StatTestResult):
                 textcoords="offset points",
                 xytext=(-20, 15),
                 ha="right",
-                arrowprops={"width": 2, "shrink": 0.05},
+                arrowprops={"width": 2, "headwidth": 4, "shrink": 0.05},
+            )
+
+            self._ax.text(
+                0.5,
+                0.5,
+                self.result,
+                horizontalalignment="center",
+                verticalalignment="center",
+                transform=self._ax.transAxes,
             )
         except IndexError:
             pass

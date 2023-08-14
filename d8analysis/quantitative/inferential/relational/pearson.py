@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Sunday August 13th 2023 09:25:54 pm                                                 #
+# Modified   : Monday August 14th 2023 04:30:39 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -44,9 +44,12 @@ class PearsonCorrelationResult(StatTestResult):
     b: str = None
 
     @inject
-    def plot(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
-        self._canvas = canvas()
-        __, self._ax = self._canvas.get_figaxes()
+    def __post_init__(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
+        super().__post_init__(canvas=canvas)
+        _, self._ax = self._canvas.get_figaxes()
+
+    def plot(self) -> None:
+        """Plots the test statistic and reject region"""
 
         # Compute the pooled skew in the data
         pooled = np.concatenate((self.data[self.a].values, self.data[self.b].values), axis=None)
@@ -101,7 +104,7 @@ class PearsonCorrelationResult(StatTestResult):
             x=xlower,
             y1=0,
             y2=stats.pearson3.pdf(xlower, skew),
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Fill Upper Tail
@@ -110,7 +113,7 @@ class PearsonCorrelationResult(StatTestResult):
             x=xupper,
             y1=0,
             y2=stats.pearson3.pdf(xupper, skew),
-            color=self._canvas.colors.crimson,
+            color=self._canvas.colors.orange,
         )
 
         # Plot the statistic

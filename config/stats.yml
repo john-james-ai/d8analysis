@@ -1,3 +1,21 @@
+#!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+# ================================================================================================ #
+# Project    : Exploratory Data Analysis Framework                                                 #
+# Version    : 0.1.19                                                                              #
+# Python     : 3.10.12                                                                             #
+# Filename   : /config/stats.yml                                                                   #
+# ------------------------------------------------------------------------------------------------ #
+# Author     : John James                                                                          #
+# Email      : john.james.ai.studio@gmail.com                                                      #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
+# ------------------------------------------------------------------------------------------------ #
+# Created    : Monday June 5th 2023 04:55:06 pm                                                    #
+# Modified   : Monday August 14th 2023 02:28:27 am                                                 #
+# ------------------------------------------------------------------------------------------------ #
+# License    : MIT License                                                                         #
+# Copyright  : (c) 2023 John James                                                                 #
+# ================================================================================================ #
 ad:
   '#': 13
   H0: Data drawn from stated distribution family
@@ -150,7 +168,7 @@ ks1:
   use_when: Large samples sizes > 50
   x_variable_type: continuous
   y_variable_type: .nan
-ks2:
+kstest:
   '#': 3
   H0: Data drawn from the same distribution
   Version: 1

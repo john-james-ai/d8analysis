@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Sunday August 13th 2023 09:17:08 am                                                 #
+# Modified   : Monday August 14th 2023 02:12:23 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -210,7 +210,7 @@ class SeabornCanvas(Canvas):
     style: str = "whitegrid"  # A Seaborn aesthetic
     saturation: float = 0.5
     fontsize: int = 10
-    fontsize_title: int = 10
+    fontsize_title: int = 12
     colors: Colors = Colors()
     palettes: Palettes = Palettes()
     legend_config: LegendConfig = LegendConfig()
