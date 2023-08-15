@@ -11,21 +11,19 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Monday August 14th 2023 04:34:59 pm                                                 #
+# Modified   : Monday August 14th 2023 05:52:34 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from __future__ import annotations
-from abc import ABC, abstractmethod
-from datetime import datetime
+from abc import abstractmethod
+import logging
 from dataclasses import dataclass, fields
 import seaborn as sns
 
-import pandas as pd
-
+from d8analysis import DataClass
 from d8analysis.service.io import IOService
-from d8analysis import IMMUTABLE_TYPES, SEQUENCE_TYPES
 from d8analysis.analysis.base import Analysis, Result
 from d8analysis.visual.base import Canvas
 
@@ -40,7 +38,7 @@ STAT_CONFIG = "config/stats.yml"
 
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
-class StatTestProfile(ABC):
+class StatTestProfile(DataClass):
     """Abstract base class defining the interface for statistical tests.
 
     Interface inspired by: https://doc.dataiku.com/dss/latest/statistics/tests.html
@@ -57,54 +55,6 @@ class StatTestProfile(ABC):
     min_sample_size: int = None
     assumptions: str = None
     use_when: str = None
-
-    def __repr__(self) -> str:
-        return "{}({})".format(
-            self.__class__.__name__,
-            ", ".join(
-                "{}={!r}".format(k, v)
-                for k, v in self.__dict__.items()
-                if type(v) in IMMUTABLE_TYPES
-            ),
-        )
-
-    def __str__(self) -> str:
-        width = 32
-        breadth = width * 2
-        s = f"\n\n{self.__class__.__name__.center(breadth, ' ')}"
-        d = self.as_dict()
-        for k, v in d.items():
-            if type(v) in IMMUTABLE_TYPES:
-                s += f"\n{k.rjust(width,' ')} | {v}"
-        s += "\n\n"
-        return s
-
-    def as_dict(self) -> dict:
-        """Returns a dictionary representation of the the Config object."""
-        return {
-            k: self._export_config(v) for k, v in self.__dict__.items() if not k.startswith("_")
-        }
-
-    @classmethod
-    def _export_config(cls, v):  # pragma: no cover
-        """Returns v with Configs converted to dicts, recursively."""
-        if isinstance(v, IMMUTABLE_TYPES):
-            return v
-        elif isinstance(v, SEQUENCE_TYPES):
-            return type(v)(map(cls._export_config, v))
-        elif isinstance(v, datetime):
-            return v
-        elif isinstance(v, dict):
-            return v
-        elif hasattr(v, "as_dict"):
-            return v.as_dict()
-        else:
-            """Else nothing. What do you want?"""
-
-    def as_df(self) -> pd.DataFrame:
-        """Returns the project in DataFrame format"""
-        d = self.as_dict()
-        return pd.DataFrame(data=d, index=[0])
 
     @classmethod
     def create(cls, id) -> None:
@@ -148,6 +98,7 @@ class StatTestResult(Result):
         self._canvas = canvas
         sns.set_style(self._canvas.style)
         sns.set_palette(self._canvas.palette)
+        self._logger = logging.getLogger(f"{self.__class__.__name__}")
 
     @abstractmethod
     def plot(self, *args, **kwargs) -> None:

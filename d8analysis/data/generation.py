@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday May 27th 2023 08:56:02 pm                                                  #
-# Modified   : Monday August 14th 2023 05:00:34 am                                                 #
+# Modified   : Monday August 14th 2023 06:55:26 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -101,7 +101,7 @@ class Distribution:
 # ------------------------------------------------------------------------------------------------ #
 #                                   DATA GENERATORS                                                #
 # ------------------------------------------------------------------------------------------------ #
-def beta(data: np.ndarray) -> np.ndarray:
+def beta(data: np.ndarray, size: int = None) -> np.ndarray:
     """Generates random variates for the beta distribution
 
     Args:
@@ -137,8 +137,10 @@ def beta(data: np.ndarray) -> np.ndarray:
         + r"$\alpha$ > 0, $\beta$ > 0 are shape parameters"
     )
 
+    size = size or len(data)
+
     # Random variate
-    rvs = stats.beta.rvs(a, b, loc=loc, scale=scale, size=len(data))
+    rvs = stats.beta.rvs(a, b, loc=loc, scale=scale, size=size)
     rvs = Distribution(
         name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
@@ -168,7 +170,7 @@ def beta(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def norm(data: np.ndarray) -> np.ndarray:
+def norm(data: np.ndarray, size: int = None) -> np.ndarray:
     """Generates random variates for the normal distribution
 
     Args:
@@ -187,8 +189,10 @@ def norm(data: np.ndarray) -> np.ndarray:
     params = "loc = " + str(round(loc, 2)) + ", scale = " + str(round(scale, 2))
     formula = r"$ f(x) = \frac{\exp(-x^2/2)}{\sqrt{2\pi}}$" + "\n" + r"For real number x"
 
+    size = size or len(data)
+
     # Random variate
-    rvs = stats.norm.rvs(loc=loc, scale=scale, size=len(data))
+    rvs = stats.norm.rvs(loc=loc, scale=scale, size=size)
     rvs = Distribution(
         name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
@@ -218,7 +222,7 @@ def norm(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def chi2(data: np.ndarray) -> np.ndarray:
+def chi2(data: np.ndarray, size: int = None) -> np.ndarray:
     """Generates random variates for the chi-squared distribution
 
     Args:
@@ -240,8 +244,10 @@ def chi2(data: np.ndarray) -> np.ndarray:
         + "for x>0 and k>0 (degrees of freedom)"
     )
 
+    size = size or len(data)
+
     # Random variate
-    rvs = stats.chi2.rvs(df=df, loc=loc, scale=scale, size=len(data))
+    rvs = stats.chi2.rvs(df=df, loc=loc, scale=scale, size=size)
     rvs = Distribution(
         name=name,
         label=r"$\chi^2$ Random Variate",
@@ -276,7 +282,7 @@ def chi2(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def exponential(data: np.ndarray) -> np.ndarray:
+def exponential(data: np.ndarray, size: int = None) -> np.ndarray:
     """Generates random variates for the exponential distribution
 
     Args:
@@ -288,14 +294,16 @@ def exponential(data: np.ndarray) -> np.ndarray:
         cdf: Data from the cumulative distribution function
     """
     loc, scale = get_params(data=data, distribution="exponential")
-    rvs = stats.expon.rvs(loc=loc, scale=scale, size=len(data))
+    rvs = stats.expon.rvs(loc=loc, scale=scale, size=size)
     name = "Exponential Distribution"
     x_range = np.linspace(min(data), max(data), NUM_POINTS)
     params = "\nloc = " + str(round(loc, 2)) + ", scale = " + str(round(scale, 2))
     formula = r"$f(x) = \exp(-x)$" + "\n" + r"for x >= 0"
 
+    size = size or len(data)
+
     # Random variate
-    rvs = stats.expon.rvs(loc=loc, scale=scale, size=len(data))
+    rvs = stats.expon.rvs(loc=loc, scale=scale, size=size)
     rvs = Distribution(
         name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
@@ -325,7 +333,7 @@ def exponential(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def f(data: np.ndarray) -> np.ndarray:
+def f(data: np.ndarray, size: int = None) -> np.ndarray:
     """Generates random variates for the f distribution
 
     Args:
@@ -355,8 +363,10 @@ def f(data: np.ndarray) -> np.ndarray:
         + r"For x > 0 and parameters $df_1$, $df_2$ > 0"
     )
 
+    size = size or len(data)
+
     # Random variate
-    rvs = stats.f.rvs(dfn=dfn, dfd=dfd, loc=loc, scale=scale, size=len(data))
+    rvs = stats.f.rvs(dfn=dfn, dfd=dfd, loc=loc, scale=scale, size=size)
     rvs = Distribution(
         name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
@@ -392,7 +402,7 @@ def f(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def gamma(data: np.ndarray) -> np.ndarray:
+def gamma(data: np.ndarray, size: int = None) -> np.ndarray:
     """Generates random variates for the gamma distribution
 
     Args:
@@ -420,8 +430,10 @@ def gamma(data: np.ndarray) -> np.ndarray:
         + r"For x >= 0, a > 0, and $\Gamma$ is the gamma function"
     )
 
+    size = size or len(data)
+
     # Random variate
-    rvs = stats.gamma.rvs(a, loc=loc, scale=scale, size=len(data))
+    rvs = stats.gamma.rvs(a, loc=loc, scale=scale, size=size)
     rvs = Distribution(
         name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
@@ -451,7 +463,7 @@ def gamma(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def logistic(data: np.ndarray) -> np.ndarray:
+def logistic(data: np.ndarray, size: int = None) -> np.ndarray:
     """Generates random variates for the logistic distribution
 
     Args:
@@ -468,8 +480,10 @@ def logistic(data: np.ndarray) -> np.ndarray:
     params = "loc = " + str(round(loc, 2)) + ", scale = " + str(round(scale, 2))
     formula = r"$ f(x) = \frac{\exp(-x)}{(1+\exp(-x))^2}$"
 
+    size = size or len(data)
+
     # Random variate
-    rvs = stats.logistic.rvs(loc=loc, scale=scale, size=len(data))
+    rvs = stats.logistic.rvs(loc=loc, scale=scale, size=size)
     rvs = Distribution(
         name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
@@ -499,7 +513,7 @@ def logistic(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def lognorm(data: np.ndarray) -> np.ndarray:
+def lognorm(data: np.ndarray, size: int = None) -> np.ndarray:
     """Generates random variates for the log normal distribution
 
     Args:
@@ -527,8 +541,10 @@ def lognorm(data: np.ndarray) -> np.ndarray:
         + r"For x > 0, s > 0."
     )
 
+    size = size or len(data)
+
     # Random variate
-    rvs = stats.lognorm.rvs(s, loc=loc, scale=scale, size=len(data))
+    rvs = stats.lognorm.rvs(s, loc=loc, scale=scale, size=size)
     rvs = Distribution(
         name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
@@ -558,7 +574,7 @@ def lognorm(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def uniform(data: np.ndarray) -> np.ndarray:
+def uniform(data: np.ndarray, size: int = None) -> np.ndarray:
     """Generates random variates for the uniform distribution
 
     Args:
@@ -575,8 +591,10 @@ def uniform(data: np.ndarray) -> np.ndarray:
     params = "loc = " + str(round(loc, 2)) + ", scale = " + str(round(scale, 2))
     formula = r"$ f(x) = \frac{1}{(b-a)}$" + "for a <= x <= b"
 
+    size = size or len(data)
+
     # Random variate
-    rvs = stats.uniform.rvs(loc=loc, scale=scale, size=len(data))
+    rvs = stats.uniform.rvs(loc=loc, scale=scale, size=size)
     rvs = Distribution(
         name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
@@ -606,7 +624,7 @@ def uniform(data: np.ndarray) -> np.ndarray:
     return rvs, pdf, cdf
 
 
-def weibull(data: np.ndarray) -> np.ndarray:
+def weibull(data: np.ndarray, size: int = None) -> np.ndarray:
     """Generates random variates for the uniform distribution
 
     Args:
@@ -630,9 +648,9 @@ def weibull(data: np.ndarray) -> np.ndarray:
         + str(round(scale, 2))
     )
     formula = r"$f(x, c) = c x^{c-1} \exp(-x^c)$" + "\n" + r"For x > 0, c > 0."
-
+    size = size or len(data)
     # Random variate
-    rvs = stats.weibull_min.rvs(c, loc=loc, scale=scale, size=len(data))
+    rvs = stats.weibull_min.rvs(c, loc=loc, scale=scale, size=size)
     rvs = Distribution(
         name=name, label="Random Variate", x=x_range, y=rvs, params=params, formula=formula
     )
@@ -729,7 +747,7 @@ class RVSDistribution:
         """Returns the random variate"""
         return self._cdf
 
-    def __call__(self, data: np.ndarray, distribution: str) -> np.ndarray:
+    def __call__(self, data: np.ndarray, distribution: str, size: int = None) -> np.ndarray:
         """Returns random values of the designated distribution
 
         Args:
@@ -740,7 +758,9 @@ class RVSDistribution:
         self._distribution = distribution
 
         try:
-            self._rvs, self._pdf, self._cdf = self.__DISTRIBUTIONS[distribution](data=data)
+            self._rvs, self._pdf, self._cdf = self.__DISTRIBUTIONS[distribution](
+                data=data, size=size
+            )
         except KeyError as e:  # pragma: no cover
             msg = f"{distribution} is not supported.\n{e}"
             self._logger.debug(msg)
