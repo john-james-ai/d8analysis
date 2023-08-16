@@ -4,45 +4,46 @@
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /d8analysis/analysis/base.py                                                        #
+# Filename   : /d8analysis/quantitative/descriptive/categorical.py                                 #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Monday August 14th 2023 07:50:22 pm                                                 #
+# Created    : Thursday June 8th 2023 02:56:56 am                                                  #
+# Modified   : Tuesday August 15th 2023 08:25:51 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
-from __future__ import annotations
-from abc import ABC, abstractmethod, abstractproperty
-import logging
 from dataclasses import dataclass
+import statistics
+from typing import Union
 
-from d8analysis import DataClass
+import pandas as pd
+import numpy as np
 
-logging.getLogger("matplotlib").setLevel(logging.WARNING)
-# ------------------------------------------------------------------------------------------------ #
-
-
-class Analysis(ABC):
-    """Defines the interface for analysis classes."""
-
-    def __init__(self, *args, **kwargs) -> None:
-        self._logger = logging.getLogger(f"{self.__class__.__name__}")
-
-    @abstractproperty
-    def result(self) -> Result:
-        """Returns a Result object for the analysis"""
-
-    @abstractmethod
-    def run(self) -> None:
-        """Executes the analysis"""
+from d8analysis.quantitative.descriptive.base import DescriptiveOne
 
 
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
-class Result(DataClass):
-    """Base class for all results"""
+class DescriptiveStats(DescriptiveOne):
+    name: str  # Name of variable
+    length: int  # total  length of variable
+    count: int  # number of non-null values
+    size: float  # total number of bytes
+    mode: Union[int, str]
+    unique: int
+
+    @classmethod
+    def describe(cls, x: Union[pd.Series, np.ndarray], name: str = None) -> None:
+        name = name or cls.get_name(x=x)
+        return cls(
+            name=name,
+            length=len(x),
+            count=len(list(filter(None, x))),
+            size=x.__sizeof__(),
+            mode=statistics.mode(x),
+            unique=len(np.unique(x)),
+        )

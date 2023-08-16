@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Sunday August 13th 2023 08:28:59 am                                                 #
+# Modified   : Tuesday August 15th 2023 06:49:28 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -20,16 +20,38 @@ import os
 import pytest
 import pandas as pd
 import subprocess
+from datetime import datetime
 import dotenv
+import logging
+from dataclasses import dataclass
 
+from d8analysis.service.config import LoggingConfig
 from d8analysis.container import D8AnalysisContainer
+from d8analysis import DataClass
 
 # ------------------------------------------------------------------------------------------------ #
+logging.getLogger("matplotlib").setLevel(logging.WARNING)
+# ------------------------------------------------------------------------------------------------ #
+LOGGING_CONFIG = "config/logging.yml"
 DATAFILE = "data/Credit Score Classification Dataset.csv"
 RESET_SCRIPT = "tests/scripts/reset.sh"
 
 # ------------------------------------------------------------------------------------------------ #
 collect_ignore_glob = []
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                                      DATACLASS                                                   #
+# ------------------------------------------------------------------------------------------------ #
+@dataclass
+class TestDataClass(DataClass):
+    name: str = "test"
+    size: int = 8329
+    length: float = 920932.98
+    dt: datetime = datetime.now()
+    # somelist: list = field(default_factory=lambda: [2, 3, 6])
+    # sometuple: tuple = field(default=lambda: (2, "two", 2.0))
+    # somedict: dict = field(default=lambda: {"some": 2, "dict": "yeah"})
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -47,8 +69,14 @@ def reset():
 def mode():
     dotenv_file = dotenv.find_dotenv()
     dotenv.load_dotenv(dotenv_file)
+    prior_mode = os.environ["MODE"]
+    prior_logging_level = LoggingConfig.get_level()
     os.environ["MODE"] = "test"
     dotenv.set_key(dotenv_file, "MODE", os.environ["MODE"])
+    LoggingConfig.set_level("DEBUG")
+    yield
+    os.environ["MODE"] = prior_mode
+    LoggingConfig.set_level(prior_logging_level)
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -64,5 +92,14 @@ def dataset():
 def container():
     container = D8AnalysisContainer()
     container.init_resources()
+    container.wire(packages=["d8analysis"])
 
     return container
+
+
+# ------------------------------------------------------------------------------------------------ #
+#                                     DATACLASS                                                    #
+# ------------------------------------------------------------------------------------------------ #
+@pytest.fixture(scope="module", autouse=False)
+def dataklass():
+    return TestDataClass()

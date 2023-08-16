@@ -3,15 +3,15 @@
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
-# Python     : 3.10.10                                                                             #
-# Filename   : /tests/test_statistics/test_gof/test_ks2.py                                         #
+# Python     : 3.10.12                                                                             #
+# Filename   : /tests/test_quantitative/test_descriptive/test_stats.py                             #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Monday June 5th 2023 09:32:36 pm                                                    #
-# Modified   : Saturday August 12th 2023 05:21:27 pm                                               #
+# Created    : Tuesday August 15th 2023 08:02:48 pm                                                #
+# Modified   : Tuesday August 15th 2023 08:26:53 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -20,10 +20,8 @@ import inspect
 from datetime import datetime
 import pytest
 import logging
-import pandas as pd
 
-from d8analysis.quantitative.inferential.distribution.kstwo import KSTwoTest
-from d8analysis.quantitative.inferential.base import StatTestProfile
+from d8analysis.quantitative.descriptive import categorical, continuous
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -34,11 +32,9 @@ single_line = f"\n{100 * '-'}"
 
 
 @pytest.mark.stats
-@pytest.mark.gof
-@pytest.mark.ks2
-class TestKSTwoTest:  # pragma: no cover
+class TestStats:  # pragma: no cover
     # ============================================================================================ #
-    def test_gof_reject(self, dataset, caplog):
+    def test_continuous(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -50,23 +46,23 @@ class TestKSTwoTest:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        female = dataset.loc[dataset["Gender"] == "Female"]["Income"]
-        male = dataset.loc[dataset["Gender"] == "Male"]["Income"]
-        female.name = "female"
-        male.name = "male"
-        test = KSTwoTest()
-        test(sample1=female, sample2=male)
-        assert "Kolmo" in test.result.test
-        assert test.result.pvalue < 0.05
-        assert test.result.value < 1
-        assert isinstance(test.result.H0, str)
-        assert isinstance(test.result.pvalue, float)
-        assert test.result.alpha == 0.05
-        assert isinstance(test.sample1, pd.Series)
-        assert isinstance(test.sample2, pd.Series)
-        assert isinstance(test.profile, StatTestProfile)
-        assert isinstance(test.profile, StatTestProfile)
-        logger.debug(f"\n{test.result}")
+        stats = continuous.DescriptiveStats.describe(x=dataset["Income"])
+        assert stats.name == "Income"
+        assert isinstance(stats.length, int)
+        assert isinstance(stats.count, int)
+        assert isinstance(stats.size, int)
+        assert isinstance(stats.min, (int, float))
+        assert isinstance(stats.q25, (int, float))
+        assert isinstance(stats.mean, (int, float))
+        assert isinstance(stats.q75, (int, float))
+        assert isinstance(stats.max, (int, float))
+        assert isinstance(stats.range, (int, float))
+        assert isinstance(stats.std, float)
+        assert isinstance(stats.var, float)
+        assert isinstance(stats.skew, float)
+        assert isinstance(stats.kurtosis, float)
+        logging.debug(stats)
+
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()
         duration = round((end - start).total_seconds(), 1)
@@ -83,7 +79,7 @@ class TestKSTwoTest:  # pragma: no cover
         logger.info(single_line)
 
     # ============================================================================================ #
-    def test_gof_fail_to_reject(self, dataset, caplog):
+    def test_categorical(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -95,25 +91,21 @@ class TestKSTwoTest:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        test = KSTwoTest()
-        test(sample1=dataset["Income"], sample2=dataset["Income"])
-        assert "Kolmo" in test.result.test
-        assert test.result.pvalue > 0.05
-        assert test.result.value < 1
-        assert isinstance(test.result.H0, str)
-        assert isinstance(test.result.pvalue, float)
-        assert test.result.alpha == 0.05
-        assert isinstance(test.sample1, pd.Series)
-        assert isinstance(test.sample2, pd.Series)
-        assert isinstance(test.profile, StatTestProfile)
-        assert isinstance(test.profile, StatTestProfile)
-        logger.debug(f"\n{test.result}")
+        stats = categorical.DescriptiveStats.describe(x=dataset["Education"])
+        assert stats.name == "Education"
+        assert isinstance(stats.length, int)
+        assert isinstance(stats.count, int)
+        assert isinstance(stats.size, int)
+        assert isinstance(stats.mode, (str, int, float))
+        assert isinstance(stats.unique, int)
+        logging.debug(stats)
+
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()
         duration = round((end - start).total_seconds(), 1)
 
         logger.info(
-            "\nCompleted {} {} in {} seconds at {} on {}".format(
+            "\n\tCompleted {} {} in {} seconds at {} on {}".format(
                 self.__class__.__name__,
                 inspect.stack()[0][3],
                 duration,

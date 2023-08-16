@@ -3,25 +3,46 @@
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
-# Python     : 3.10.11                                                                             #
-# Filename   : /d8analysis/edation.py                                                              #
+# Python     : 3.10.12                                                                             #
+# Filename   : /tests/data/service/config/logging2.yml                                             #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Wednesday June 21st 2023 03:41:39 am                                                #
-# Modified   : Sunday August 13th 2023 08:28:59 am                                                 #
+# Created    : Tuesday August 15th 2023 05:35:15 pm                                                #
+# Modified   : Tuesday August 15th 2023 05:35:19 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
-
-from d8analysis.container import D8AnalysisContainer
-
-# ------------------------------------------------------------------------------------------------ #
-
-if __name__ == "__main__":
-    container = D8AnalysisContainer()
-    container.init_resources()
-    container.wire(modules=["d8analysis.application.ports.driver"])
+logging:
+  disable_existing_loggers: false
+  formatters:
+    console:
+      datefmt: '%m/%d/%Y %I:%M:%S %p'
+      format: '[%(asctime)s] [%(levelname)s] [%(name)s] [%(funcName)s] : %(message)s'
+    file:
+      datefmt: '%m/%d/%Y %I:%M:%S %p'
+      format: '[%(asctime)s] [%(levelname)s] [%(name)s] [%(module)s] [%(funcName)s]
+        : %(message)s'
+  handlers:
+    console:
+      class: logging.StreamHandler
+      formatter: console
+      level: UPDATED
+      stream: ext://sys.stderr
+    file:
+      backupCount: 0
+      class: logging.handlers.TimedRotatingFileHandler
+      filename: log/d8analysis.log
+      formatter: file
+      interval: 1
+      level: DEBUG
+      when: midnight
+  root:
+    handlers:
+    - console
+    - file
+    level: DEBUG
+  version: 1

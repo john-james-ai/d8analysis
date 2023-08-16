@@ -11,20 +11,19 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Monday August 14th 2023 05:52:34 pm                                                 #
+# Modified   : Tuesday August 15th 2023 08:29:03 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from __future__ import annotations
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 import logging
 from dataclasses import dataclass, fields
 import seaborn as sns
 
 from d8analysis import DataClass
 from d8analysis.service.io import IOService
-from d8analysis.analysis.base import Analysis, Result
 from d8analysis.visual.base import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
@@ -82,7 +81,7 @@ class StatTestProfileTwo(StatTestProfile):
 
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
-class StatTestResult(Result):
+class StatTestResult(DataClass):
     test: str = None
     hypothesis: str = None
     H0: str = None
@@ -106,12 +105,12 @@ class StatTestResult(Result):
 
 
 # ------------------------------------------------------------------------------------------------ #
-class StatisticalTest(Analysis):
+class StatisticalTest(ABC):
     """Base class for Statistical Tests"""
 
     def __init__(self, io: IOService = IOService, *args, **kwargs) -> None:
-        super().__init__()
         self._io = io
+        self._logger = logging.getLogger(f"{self.__class__.__name__}")
 
     @property
     @abstractmethod
@@ -132,7 +131,7 @@ class StatisticalTest(Analysis):
         if pvalue < 0.001:
             return "p<.001"
         else:
-            return "P=" + str(round(pvalue, 3))
+            return "p=" + str(round(pvalue, 4))
 
     def _report_alpha(self) -> str:
         a = int(self._alpha * 100)

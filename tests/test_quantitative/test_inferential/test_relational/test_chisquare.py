@@ -4,14 +4,14 @@
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
-# Filename   : /tests/test_quantitative/test_inferential/test_t.py                                 #
+# Filename   : /tests/test_quantitative/test_inferential/test_relational/test_chisquare.py         #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Thursday June 8th 2023 03:48:00 am                                                  #
-# Modified   : Sunday August 13th 2023 06:10:57 pm                                                 #
+# Created    : Monday June 5th 2023 09:32:36 pm                                                    #
+# Modified   : Tuesday August 15th 2023 05:19:56 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,9 +22,8 @@ import pytest
 import logging
 import pandas as pd
 
-from d8analysis.quantitative.descriptive.statistics import QuantStats
-from d8analysis.quantitative.inferential.centrality.ttest import TTest
-from d8analysis.quantitative.inferential.base import StatTestProfileTwo
+from d8analysis.quantitative.inferential.relational.chisquare import ChiSquareIndependenceTest
+from d8analysis.quantitative.inferential.base import StatTestProfile
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -35,11 +34,11 @@ single_line = f"\n{100 * '-'}"
 
 
 @pytest.mark.stats
-@pytest.mark.center
-@pytest.mark.ttest
-class TestTTest:  # pragma: no cover
+@pytest.mark.ind
+@pytest.mark.x2ind
+class TestX2Independence:  # pragma: no cover
     # ============================================================================================ #
-    def test_ttest(self, dataset, caplog):
+    def test_x2(self, dataset, caplog):
         start = datetime.now()
         logger.info(
             "\n\nStarted {} {} at {} on {}".format(
@@ -51,19 +50,16 @@ class TestTTest:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        male = dataset[dataset["Gender"] == "Male"]["Income"]
-        female = dataset[dataset["Gender"] == "Female"]["Income"]
-        test = TTest(a=male, b=female)
+        test = ChiSquareIndependenceTest(data=dataset, a="Education", b="Credit Rating")
         test.run()
-        assert "Independent" in test.result.test
+        assert "Chi" in test.result.test
         assert isinstance(test.result.H0, str)
+        assert isinstance(test.result.value, float)
         assert isinstance(test.result.pvalue, float)
         assert test.result.alpha == 0.05
-        assert isinstance(test.result.a, pd.Series)
-        assert isinstance(test.result.b, pd.Series)
-        assert isinstance(test.result.a_stats, QuantStats)
-        assert isinstance(test.result.b_stats, QuantStats)
-        assert isinstance(test.profile, StatTestProfileTwo)
+        assert isinstance(test.result.data, pd.DataFrame)
+        assert isinstance(test.profile, StatTestProfile)
+        assert isinstance(test.result.result, str)
         logging.debug(test.result)
 
         # ---------------------------------------------------------------------------------------- #

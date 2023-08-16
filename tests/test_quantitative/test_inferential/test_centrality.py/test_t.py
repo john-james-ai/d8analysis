@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday June 8th 2023 03:48:00 am                                                  #
-# Modified   : Sunday August 13th 2023 06:11:16 pm                                                 #
+# Modified   : Tuesday August 15th 2023 08:00:21 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,7 +22,7 @@ import pytest
 import logging
 import pandas as pd
 
-from d8analysis.quantitative.descriptive.statistics import QuantStats
+from d8analysis.quantitative.descriptive.continuous import DescriptiveStats
 from d8analysis.quantitative.inferential.centrality.ttest import TTest
 from d8analysis.quantitative.inferential.base import StatTestProfileTwo
 
@@ -61,8 +61,8 @@ class TestTTest:  # pragma: no cover
         assert test.result.alpha == 0.05
         assert isinstance(test.result.a, pd.Series)
         assert isinstance(test.result.b, pd.Series)
-        assert isinstance(test.result.a_stats, QuantStats)
-        assert isinstance(test.result.b_stats, QuantStats)
+        assert isinstance(test.result.a_stats, DescriptiveStats)
+        assert isinstance(test.result.b_stats, DescriptiveStats)
         assert isinstance(test.profile, StatTestProfileTwo)
         logging.debug(test.result)
 

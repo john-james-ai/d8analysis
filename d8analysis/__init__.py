@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Monday August 14th 2023 03:53:50 am                                                 #
+# Modified   : Tuesday August 15th 2023 07:01:21 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -64,8 +64,8 @@ NUMERICS = [
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
 class DataClass(ABC):
-    def __repr__(self) -> str:
-        return "{}({})".format(
+    def __repr__(self) -> str:  # pragma: no cover tested, but missing in coverage
+        s = "{}({})".format(
             self.__class__.__name__,
             ", ".join(
                 "{}={!r}".format(k, v)
@@ -73,6 +73,7 @@ class DataClass(ABC):
                 if type(v) in IMMUTABLE_TYPES
             ),
         )
+        return s
 
     def __str__(self) -> str:
         width = 32

@@ -3,15 +3,15 @@
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
-# Python     : 3.10.10                                                                             #
-# Filename   : /tests/test_statistics/test_profile.py                                              #
+# Python     : 3.10.12                                                                             #
+# Filename   : /tests/test_quantitative/test_inferential/test_profile.py                           #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 06:13:21 pm                                                    #
-# Modified   : Saturday August 12th 2023 05:21:34 pm                                               #
+# Modified   : Tuesday August 15th 2023 04:44:28 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #

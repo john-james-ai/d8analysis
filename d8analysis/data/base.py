@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
+# Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /d8analysis/data/base.py                                                            #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:29:08 pm                                               #
-# Modified   : Friday August 11th 2023 02:56:25 pm                                                 #
+# Modified   : Tuesday August 15th 2023 06:19:35 pm                                                #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from __future__ import annotations
-from abc import ABC, abstractmethod
+from abc import ABC, abstractmethod, abstractproperty
 import logging
 from typing import Any, Callable, Union
 
@@ -46,7 +46,7 @@ class Dataset(ABC):
     def __getitem__(self, idx: int) -> Any:
         """Returns an entity at the designated index"""
 
-    @abstractmethod
+    @abstractproperty
     def summary(self) -> pd.DataFrame:
         """Returns a summary of the dataset contents in DataFrame format"""
 
@@ -178,7 +178,7 @@ class Dataset(ABC):
         if groupby is None:
             return self._df.describe(include=include, exclude=exclude).T
         else:
-            return self._df.groupby(by=groupby).describe(include=include, exclude=exclude).T
+            return self._df.groupby(by=groupby).describe(include=include, exclude=exclude)
 
     # ------------------------------------------------------------------------------------------- #
     def unique(self, columns: list = None) -> pd.DataFrame:
