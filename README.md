@@ -3,6 +3,7 @@
 [![PyPI](https://img.shields.io/pypi/v/d8analysis?style=flat-square)](https://pypi.python.org/pypi/d8analysis/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/d8analysis?style=flat-square)](https://pypi.python.org/pypi/d8analysis/)
 [![PyPI - License](https://img.shields.io/pypi/l/d8analysis?style=flat-square)](https://pypi.python.org/pypi/d8analysis/)
+![Code Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen.svg)
 
 ---
 
