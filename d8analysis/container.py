@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday March 27th 2023 07:02:56 pm                                                  #
-# Modified   : Sunday August 13th 2023 11:41:00 pm                                                 #
+# Modified   : Saturday August 19th 2023 06:48:55 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -21,6 +21,7 @@ import logging.config  # pragma: no cover
 
 from dependency_injector import containers, providers
 
+from d8analysis.service.config import LoggingConfig
 from d8analysis.visual.seaborn.config import SeabornCanvas
 from d8analysis.visual.seaborn.plot import SeabornVisualizer
 
@@ -63,3 +64,11 @@ class D8AnalysisContainer(containers.DeclarativeContainer):
     canvas = providers.Container(CanvasContainer)
 
     visualizer = providers.Container(VisualizerContainer, canvas=canvas.seaborn)
+
+
+if __name__ == "__main__":
+    # Dependencies
+    LoggingConfig.set_level("WARNING")
+    container = D8AnalysisContainer()
+    container.init_resources()
+    container.wire(packages=["d8analysis"])
