@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday August 15th 2023 04:04:08 pm                                                #
-# Modified   : Tuesday August 15th 2023 04:18:32 pm                                                #
+# Modified   : Saturday August 19th 2023 07:25:59 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -45,7 +45,7 @@ class GridPlot:
         canvas: type[SeabornCanvas] = Provide[D8AnalysisContainer.canvas.seaborn],
     ) -> None:
         self._title = title
-        self._canvas = canvas or SeabornCanvas()
+        self._canvas = canvas
         self._plots = []
 
     def add_plot(self, plot: SeabornVisual) -> None:
@@ -60,9 +60,9 @@ class GridPlot:
         sns.set_style(self._canvas.style)
         sns.set_palette(self._canvas.palette)
 
-        self._set_axes()
-        for plot in self._plots:
-            plot.plot()
+        axes = self._set_axes()
+        for ax, plot in zip(axes, self._plots):
+            plot.plot(ax=ax)
 
     def _set_axes(self) -> None:
         """Sets the axis object on each designated plot."""
@@ -79,6 +79,8 @@ class GridPlot:
 
         gs = GridSpec(nrows=nrows, ncols=ncols, figure=fig)
 
+        axes = []
+
         for idx, plot in enumerate(self._plots):
             row = int(idx / ncols)
             col = idx % ncols
@@ -88,5 +90,5 @@ class GridPlot:
                 ax = fig.add_subplot(gs[row, col])
             else:
                 ax = fig.add_subplot(gs[row, col:])
-
-            plot.ax = ax
+            axes.append(ax)
+        return axes

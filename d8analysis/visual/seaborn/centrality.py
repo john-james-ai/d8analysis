@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 11:33:13 pm                                                 #
-# Modified   : Monday August 14th 2023 12:16:30 am                                                 #
+# Modified   : Saturday August 19th 2023 07:38:12 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -41,7 +41,6 @@ class Barplot(SeabornVisual):  # pragma: no cover
         y: str = None,
         hue: str = None,
         title: str = None,
-        ax: plt.Axes = None,
         visualizer: SeabornVisualizer = Provide[D8AnalysisContainer.visualizer.seaborn],
         *args,
         **kwargs,
@@ -52,11 +51,10 @@ class Barplot(SeabornVisual):  # pragma: no cover
         self._y = y
         self._hue = hue
         self._title = title
-        self._ax = ax
         self._args = args
         self._kwargs = kwargs
 
-    def plot(self) -> None:
+    def plot(self, ax: plt.Axes = None) -> None:
         """Renders the plot"""
         self._visualizer.barplot(
             data=self._data,
@@ -64,7 +62,7 @@ class Barplot(SeabornVisual):  # pragma: no cover
             y=self._y,
             hue=self._hue,
             title=self._title,
-            ax=self._ax,
+            ax=ax,
             *self._args,
             **self._kwargs,
         )

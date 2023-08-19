@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 11:30:40 pm                                                 #
-# Modified   : Saturday August 19th 2023 05:56:26 pm                                               #
+# Modified   : Saturday August 19th 2023 07:38:35 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -44,7 +44,6 @@ class Histogram(SeabornVisual):  # pragma: no cover
         element: str = "bars",
         fill: bool = True,
         title: str = None,
-        ax: plt.Axes = None,
         visualizer: SeabornVisualizer = Provide[D8AnalysisContainer.visualizer.seaborn],
         *args,
         **kwargs,
@@ -58,11 +57,11 @@ class Histogram(SeabornVisual):  # pragma: no cover
         self._element = element
         self._fill = fill
         self._title = title
-        self._ax = ax
+
         self._args = args
         self._kwargs = kwargs
 
-    def plot(self) -> None:
+    def plot(self, ax: plt.Axes = None) -> None:
         """Renders the plot"""
         self._visualizer.histogram(
             data=self._data,
@@ -73,7 +72,7 @@ class Histogram(SeabornVisual):  # pragma: no cover
             element=self._element,
             fill=self._fill,
             title=self._title,
-            ax=self._ax,
+            ax=ax,
             *self._args,
             **self._kwargs,
         )
@@ -91,7 +90,6 @@ class BoxPlot(SeabornVisual):  # pragma: no cover
         y: str = None,
         hue: str = None,
         title: str = None,
-        ax: plt.Axes = None,
         visualizer: SeabornVisualizer = Provide[D8AnalysisContainer.visualizer.seaborn],
         *args,
         **kwargs,
@@ -102,11 +100,11 @@ class BoxPlot(SeabornVisual):  # pragma: no cover
         self._y = y
         self._hue = hue
         self._title = title
-        self._ax = ax
+
         self._args = args
         self._kwargs = kwargs
 
-    def plot(self) -> None:
+    def plot(self, ax: plt.Axes = None) -> None:
         """Renders the plot"""
         self._visualizer.boxplot(
             data=self._data,
@@ -114,7 +112,7 @@ class BoxPlot(SeabornVisual):  # pragma: no cover
             y=self._y,
             hue=self._hue,
             title=self._title,
-            ax=self._ax,
+            ax=ax,
             *self._args,
             **self._kwargs,
         )
@@ -132,7 +130,6 @@ class KDEPlot(SeabornVisual):  # pragma: no cover
         y: str = None,
         hue: str = None,
         title: str = None,
-        ax: plt.Axes = None,
         visualizer: SeabornVisualizer = Provide[D8AnalysisContainer.visualizer.seaborn],
         *args,
         **kwargs,
@@ -143,11 +140,11 @@ class KDEPlot(SeabornVisual):  # pragma: no cover
         self._y = y
         self._hue = hue
         self._title = title
-        self._ax = ax
+
         self._args = args
         self._kwargs = kwargs
 
-    def plot(self) -> None:
+    def plot(self, ax: plt.Axes = None) -> None:
         """Renders the plot"""
         self._visualizer.kdeplot(
             data=self._data,
@@ -155,7 +152,7 @@ class KDEPlot(SeabornVisual):  # pragma: no cover
             y=self._y,
             hue=self._hue,
             title=self._title,
-            ax=self._ax,
+            ax=ax,
             *self._args,
             **self._kwargs,
         )
@@ -173,7 +170,6 @@ class ECDFPlot(SeabornVisual):  # pragma: no cover
         y: str = None,
         hue: str = None,
         title: str = None,
-        ax: plt.Axes = None,
         visualizer: SeabornVisualizer = Provide[D8AnalysisContainer.visualizer.seaborn],
         *args,
         **kwargs,
@@ -184,11 +180,11 @@ class ECDFPlot(SeabornVisual):  # pragma: no cover
         self._y = y
         self._hue = hue
         self._title = title
-        self._ax = ax
+
         self._args = args
         self._kwargs = kwargs
 
-    def plot(self) -> None:
+    def plot(self, ax: plt.Axes = None) -> None:
         """Renders the plot"""
         self._visualizer.ecdfplot(
             data=self._data,
@@ -196,7 +192,7 @@ class ECDFPlot(SeabornVisual):  # pragma: no cover
             y=self._y,
             hue=self._hue,
             title=self._title,
-            ax=self._ax,
+            ax=ax,
             *self._args,
             **self._kwargs,
         )
@@ -214,7 +210,6 @@ class ViolinPlot(SeabornVisual):  # pragma: no cover
         y: str = None,
         hue: str = None,
         title: str = None,
-        ax: plt.Axes = None,
         visualizer: SeabornVisualizer = Provide[D8AnalysisContainer.visualizer.seaborn],
         *args,
         **kwargs,
@@ -225,11 +220,11 @@ class ViolinPlot(SeabornVisual):  # pragma: no cover
         self._y = y
         self._hue = hue
         self._title = title
-        self._ax = ax
+
         self._args = args
         self._kwargs = kwargs
 
-    def plot(self) -> None:
+    def plot(self, ax: plt.Axes = None) -> None:
         """Renders the plot"""
         self._visualizer.violinplot(
             data=self._data,
@@ -237,7 +232,7 @@ class ViolinPlot(SeabornVisual):  # pragma: no cover
             y=self._y,
             hue=self._hue,
             title=self._title,
-            ax=self._ax,
+            ax=ax,
             *self._args,
             **self._kwargs,
         )
@@ -254,7 +249,6 @@ class HistPDFPlot(SeabornVisual):  # pragma: no cover
         x: str = None,
         y: str = None,
         title: str = None,
-        ax: plt.Axes = None,
         visualizer: SeabornVisualizer = Provide[D8AnalysisContainer.visualizer.seaborn],
         *args,
         **kwargs,
@@ -264,18 +258,18 @@ class HistPDFPlot(SeabornVisual):  # pragma: no cover
         self._x = x
         self._y = y
         self._title = title
-        self._ax = ax
+
         self._args = args
         self._kwargs = kwargs
 
-    def plot(self) -> None:
+    def plot(self, ax: plt.Axes = None) -> None:
         """Renders the plot"""
         self._visualizer.histpdfplot(
             data=self._data,
             x=self._x,
             y=self._y,
             title=self._title,
-            ax=self._ax,
+            ax=ax,
             *self._args,
             **self._kwargs,
         )
@@ -292,7 +286,6 @@ class PdfCdfPlot(SeabornVisual):  # pragma: no cover
         x: str = None,
         y: str = None,
         title: str = None,
-        ax: plt.Axes = None,
         visualizer: SeabornVisualizer = Provide[D8AnalysisContainer.visualizer.seaborn],
         *args,
         **kwargs,
@@ -302,18 +295,18 @@ class PdfCdfPlot(SeabornVisual):  # pragma: no cover
         self._x = x
         self._y = y
         self._title = title
-        self._ax = ax
+
         self._args = args
         self._kwargs = kwargs
 
-    def plot(self) -> None:
+    def plot(self, ax: plt.Axes = None) -> None:
         """Renders the plot"""
         self._visualizer.pdfcdfplot(
             data=self._data,
             x=self._x,
             y=self._y,
             title=self._title,
-            ax=self._ax,
+            ax=ax,
             *self._args,
             **self._kwargs,
         )

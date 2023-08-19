@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday June 8th 2023 02:56:56 am                                                  #
-# Modified   : Saturday August 19th 2023 06:23:02 pm                                               #
+# Modified   : Saturday August 19th 2023 06:56:16 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -76,7 +76,7 @@ class CategoricalFreqDistribution:
         self._data = data
         self._x = x
         self._caps = caps
-        self._canvas = canvas
+        self._canvas = canvas()
         self._freq = None
 
     def compute(self) -> pd.DataFrame:
