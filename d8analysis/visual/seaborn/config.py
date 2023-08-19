@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Saturday August 19th 2023 12:54:20 pm                                               #
+# Modified   : Saturday August 19th 2023 05:29:52 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,7 +24,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from matplotlib.gridspec import GridSpec
 
-from d8analysis import DataClass
+from d8analysis.data.dataclass import DataClass
 from d8analysis.visual.base import Canvas
 from d8analysis.visual.config import Colors
 

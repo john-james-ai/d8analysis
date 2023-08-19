@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday August 19th 2023 04:32:10 pm                                               #
-# Modified   : Saturday August 19th 2023 05:16:53 pm                                               #
+# Modified   : Saturday August 19th 2023 05:36:09 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -47,7 +47,7 @@ class TestContinuousFreqDist:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        fd = continuous.FrequencyDistribution(data=dataset, x="Income", bins=5)
+        fd = continuous.ContinuousFreqDistribution(data=dataset, x="Income", bins=5)
         df = fd.compute()
         assert isinstance(df, pd.DataFrame)
         assert "Proportion" in df.columns
@@ -80,7 +80,7 @@ class TestContinuousFreqDist:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        fd = categorical.FrequencyDistribution(data=dataset, x="Education")
+        fd = categorical.CategoricalFreqDistribution(data=dataset, x="Education")
         df = fd.compute()
         assert isinstance(df, pd.DataFrame)
         assert "Proportion" in df.columns

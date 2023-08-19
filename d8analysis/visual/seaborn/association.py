@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 11:25:29 pm                                                 #
-# Modified   : Monday August 14th 2023 12:23:02 am                                                 #
+# Modified   : Saturday August 19th 2023 05:55:42 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -65,7 +65,7 @@ class PairPlot(SeabornVisual):  # pragma: no cover
 
 
 # ------------------------------------------------------------------------------------------------ #
-class ScatterPlot(SeabornVisual):
+class ScatterPlot(SeabornVisual):  # pragma: no cover
     """Wrapper for the lineplot method in SeabornVisualizer."""
 
     @inject
@@ -144,7 +144,7 @@ class JointPlot(SeabornVisual):  # pragma: no cover
 
 
 # ------------------------------------------------------------------------------------------------ #
-class LinePlot(SeabornVisual):
+class LinePlot(SeabornVisual):  # pragma: no cover
     """Wrapper for the lineplot method in SeabornVisualizer."""
 
     @inject

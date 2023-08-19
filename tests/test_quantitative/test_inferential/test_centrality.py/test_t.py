@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday June 8th 2023 03:48:00 am                                                  #
-# Modified   : Saturday August 19th 2023 12:08:08 pm                                               #
+# Modified   : Saturday August 19th 2023 05:52:11 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,7 +22,7 @@ import pytest
 import logging
 import pandas as pd
 
-from d8analysis.quantitative.descriptive.continuous import DescriptiveStats
+from d8analysis.quantitative.descriptive.continuous import ContinuousStats
 from d8analysis.quantitative.inferential.centrality.ttest import TTest
 from d8analysis.quantitative.inferential.base import StatTestProfileTwo
 
@@ -61,8 +61,8 @@ class TestTTest:  # pragma: no cover
         assert test.result.alpha == 0.05
         assert isinstance(test.result.a, pd.Series)
         assert isinstance(test.result.b, pd.Series)
-        assert isinstance(test.result.a_stats, DescriptiveStats)
-        assert isinstance(test.result.b_stats, DescriptiveStats)
+        assert isinstance(test.result.a_stats, ContinuousStats)
+        assert isinstance(test.result.b_stats, ContinuousStats)
         assert isinstance(test.profile, StatTestProfileTwo)
         logging.debug(test.result)
 
@@ -103,8 +103,8 @@ class TestTTest:  # pragma: no cover
         assert test.result.alpha == 0.05
         assert isinstance(test.result.a, pd.Series)
         assert isinstance(test.result.b, pd.Series)
-        assert isinstance(test.result.a_stats, DescriptiveStats)
-        assert isinstance(test.result.b_stats, DescriptiveStats)
+        assert isinstance(test.result.a_stats, ContinuousStats)
+        assert isinstance(test.result.b_stats, ContinuousStats)
         assert isinstance(test.profile, StatTestProfileTwo)
         logging.debug(test.result)
 

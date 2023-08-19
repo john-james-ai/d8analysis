@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday May 27th 2023 08:56:02 pm                                                  #
-# Modified   : Monday August 14th 2023 06:55:26 pm                                                 #
+# Modified   : Saturday August 19th 2023 05:32:40 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -27,7 +27,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 from d8analysis.visual.seaborn.config import SeabornCanvas
-from d8analysis import IMMUTABLE_TYPES
+from d8analysis.data.dataclass import IMMUTABLE_TYPES
 
 logger = logging.getLogger(__name__)
 # ------------------------------------------------------------------------------------------------ #

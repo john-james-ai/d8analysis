@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 11:41:00 pm                                                 #
-# Modified   : Saturday August 19th 2023 12:09:29 pm                                               #
+# Modified   : Saturday August 19th 2023 05:52:11 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -32,7 +32,7 @@ from d8analysis.quantitative.inferential.base import (
     StatisticalTest,
     StatTestProfile,
 )
-from d8analysis.quantitative.descriptive.continuous import DescriptiveStats
+from d8analysis.quantitative.descriptive.continuous import ContinuousStats
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -44,8 +44,8 @@ class TTestResult(StatTestResult):
     homoscedastic: bool = None
     a: np.ndarray = None
     b: np.ndarray = None
-    a_stats: DescriptiveStats = None
-    b_stats: DescriptiveStats = None
+    a_stats: ContinuousStats = None
+    b_stats: ContinuousStats = None
 
     @inject
     def __post_init__(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
@@ -219,8 +219,8 @@ class TTest(StatisticalTest):
 
         statistic, pvalue = stats.ttest_ind(a=self._a, b=self._b, equal_var=self._homoscedastic)
 
-        a_stats = DescriptiveStats.describe(self._a)
-        b_stats = DescriptiveStats.describe(self._b)
+        a_stats = ContinuousStats.describe(self._a)
+        b_stats = ContinuousStats.describe(self._b)
 
         dof = len(self._a) + len(self._b) - 2
 

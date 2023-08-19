@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday August 15th 2023 08:02:48 pm                                                #
-# Modified   : Tuesday August 15th 2023 08:26:53 pm                                                #
+# Modified   : Saturday August 19th 2023 05:53:22 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -46,7 +46,7 @@ class TestStats:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        stats = continuous.DescriptiveStats.describe(x=dataset["Income"])
+        stats = continuous.ContinuousStats.describe(x=dataset["Income"])
         assert stats.name == "Income"
         assert isinstance(stats.length, int)
         assert isinstance(stats.count, int)
@@ -91,7 +91,7 @@ class TestStats:  # pragma: no cover
         )
         logger.info(double_line)
         # ---------------------------------------------------------------------------------------- #
-        stats = categorical.DescriptiveStats.describe(x=dataset["Education"])
+        stats = categorical.CategoricalStats.describe(x=dataset["Education"])
         assert stats.name == "Education"
         assert isinstance(stats.length, int)
         assert isinstance(stats.count, int)

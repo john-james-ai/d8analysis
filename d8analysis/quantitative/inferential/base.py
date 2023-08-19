@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Saturday August 19th 2023 02:34:07 pm                                               #
+# Modified   : Saturday August 19th 2023 05:29:52 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -22,7 +22,7 @@ import logging
 from dataclasses import dataclass, fields
 import seaborn as sns
 
-from d8analysis import DataClass
+from d8analysis.data.dataclass import DataClass
 from d8analysis.service.io import IOService
 from d8analysis.visual.base import Canvas
 

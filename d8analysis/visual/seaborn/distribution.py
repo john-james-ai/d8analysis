@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 11:30:40 pm                                                 #
-# Modified   : Monday August 14th 2023 12:40:13 am                                                 #
+# Modified   : Saturday August 19th 2023 05:56:26 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -30,7 +30,7 @@ from d8analysis.visual.seaborn.plot import SeabornVisualizer
 
 
 # ------------------------------------------------------------------------------------------------ #
-class Histogram(SeabornVisual):
+class Histogram(SeabornVisual):  # pragma: no cover
     """Wrapper for the lineplot method in SeabornVisualizer."""
 
     @inject
@@ -80,7 +80,7 @@ class Histogram(SeabornVisual):
 
 
 # ------------------------------------------------------------------------------------------------ #
-class BoxPlot(SeabornVisual):
+class BoxPlot(SeabornVisual):  # pragma: no cover
     """Wrapper for the lineplot method in SeabornVisualizer."""
 
     @inject

@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday May 28th 2023 06:23:03 pm                                                    #
-# Modified   : Tuesday August 15th 2023 05:12:20 pm                                                #
+# Modified   : Saturday August 19th 2023 05:29:52 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -19,7 +19,7 @@
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
-from d8analysis import DataClass
+from d8analysis.data.dataclass import DataClass
 
 
 # ------------------------------------------------------------------------------------------------ #

@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday June 8th 2023 02:56:56 am                                                  #
-# Modified   : Saturday August 19th 2023 05:14:21 pm                                               #
+# Modified   : Saturday August 19th 2023 05:35:12 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -33,7 +33,7 @@ from d8analysis.visual.base import Canvas
 
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
-class DescriptiveStats(DescriptiveOne):
+class ContinuousStats(DescriptiveOne):
     name: str  # Name of the variable
     length: int  # total  length of variable
     count: int  # number of non-null values
@@ -73,7 +73,7 @@ class DescriptiveStats(DescriptiveOne):
 
 
 # ------------------------------------------------------------------------------------------------ #
-class FrequencyDistribution:
+class ContinuousFreqDistribution:
     """Computes the frequency distribution of a continuous random variable
 
     data (Union[pd.DataFrame, pd.Series]): DataFrame or Series that has a value_counts method.
