@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Monday August 14th 2023 02:40:46 pm                                                 #
+# Modified   : Saturday August 19th 2023 12:47:53 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -49,13 +49,15 @@ class KSTestResult(StatTestResult):
     b_name: str = "Sample 2"  # Name of Sample 2 if two sample test
 
     @inject
-    def __post_init__(self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]) -> None:
+    def __post_init__(
+        self, canvas: Canvas = Provide[D8AnalysisContainer.canvas.seaborn]
+    ) -> None:  # pragma: no cover
         super().__post_init__(canvas=canvas)
         self._ax1 = None
         self._ax2 = None
         self._ax3 = None
 
-    def plot(self) -> None:
+    def plot(self) -> None:  # pragma: no cover
         self._fig, (self._ax1, self._ax2, self._ax3) = plt.subplots(
             nrows=3, ncols=1, figsize=(12, 12)
         )
@@ -63,7 +65,7 @@ class KSTestResult(StatTestResult):
         self.plot_cdf()
         self.plot_pdf()
 
-    def plot_statistic(self, ax: plt.Axes = None) -> None:
+    def plot_statistic(self, ax: plt.Axes = None) -> None:  # pragma: no cover
         """Plots the test statistic and reject region
 
         Args:
@@ -115,7 +117,7 @@ class KSTestResult(StatTestResult):
         upper: float,
         lower_critical: float,
         upper_critical: float,
-    ) -> None:
+    ) -> None:  # pragma: no cover
         """Fills the area under the curve at the value of the hypothesis test statistic."""
 
         # Fill lower tail
@@ -184,7 +186,7 @@ class KSTestResult(StatTestResult):
         except IndexError:
             pass
 
-    def plot_cdf(self, ax: plt.Axes = None) -> None:
+    def plot_cdf(self, ax: plt.Axes = None) -> None:  # pragma: no cover
         """Plots the cumulative distribution function for two samples or the sample and the theoretical distribution.
 
         Args:
@@ -243,7 +245,7 @@ class KSTestResult(StatTestResult):
         self._ax2.set_title(title, fontsize=self._canvas.fontsize_title)
         plt.tight_layout()
 
-    def plot_pdf(self, ax: plt.Axes = None) -> None:
+    def plot_pdf(self, ax: plt.Axes = None) -> None:  # pragma: no cover
         """Plots the probability density function for the two samples or sample and theoretical distriubtion.
 
         Args:
@@ -352,9 +354,11 @@ class KSTest(StatisticalTest):
         # Conduct the two-sided ks test
         try:
             result = stats.kstest(rvs=self._a, cdf=self._b, alternative="two-sided")
-        except KeyError as e:
+        except (
+            AttributeError
+        ) as e:  # pragma: no cover - actually pytest-coverage not picking this up.
             msg = f"Distribution {self._reference_distribution} is not supported.\n{e}"
-            self._logger.error(msg)
+            self._logger.exception(msg)
             raise
 
         inference = self._infer(pvalue=result.pvalue)

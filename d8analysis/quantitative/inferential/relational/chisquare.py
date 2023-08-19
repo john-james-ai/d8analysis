@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday May 29th 2023 03:00:39 am                                                    #
-# Modified   : Monday August 14th 2023 03:14:00 pm                                                 #
+# Modified   : Saturday August 19th 2023 12:55:59 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -50,13 +50,13 @@ class ChiSquareIndependenceResult(StatTestResult):
         self._ax1 = None
         self._ax2 = None
 
-    def plot(self) -> None:
+    def plot(self) -> None:  # pragma: no cover
         """Renders three plots: Test Statistic, Cumulative Distribution and Probability Density Functions."""
         self._fig, (self._ax1, self._ax2) = plt.subplots(nrows=2, ncols=1, figsize=(12, 8))
         self.plot_statistic()
         self.plot_contingency()
 
-    def plot_statistic(self, ax: plt.Axes = None) -> None:
+    def plot_statistic(self, ax: plt.Axes = None) -> None:  # pragma: no cover
         """Plots the test statistic and reject region
 
         Args:
@@ -90,7 +90,7 @@ class ChiSquareIndependenceResult(StatTestResult):
         self._ax1.set_ylabel("Probability Density")
         plt.tight_layout()
 
-    def _fill_curve(self, critical: float, upper: float) -> None:
+    def _fill_curve(self, critical: float, upper: float) -> None:  # pragma: no cover
         """Fills the area under the curve at the value of the hypothesis test statistic."""
 
         # Fill Upper Tail
@@ -142,7 +142,7 @@ class ChiSquareIndependenceResult(StatTestResult):
         except IndexError:
             pass
 
-    def plot_contingency(self, ax: plt.Axes = None) -> None:
+    def plot_contingency(self, ax: plt.Axes = None) -> None:  # pragma: no cover
         """Plots the contingency table.
 
         Args:

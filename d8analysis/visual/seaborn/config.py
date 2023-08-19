@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday May 24th 2023 04:11:27 pm                                                 #
-# Modified   : Tuesday August 15th 2023 05:16:08 pm                                                #
+# Modified   : Saturday August 19th 2023 12:54:20 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -225,7 +225,9 @@ class SeabornCanvas(Canvas):
     countplot_config: CountDataClass = CountDataClass()
     barplot_config: BarDataClass = BarDataClass()
 
-    def get_figaxes(self, nplots: int = 1, figsize: tuple = None) -> SeabornCanvas:
+    def get_figaxes(
+        self, nplots: int = 1, figsize: tuple = None
+    ) -> SeabornCanvas:  # pragma: no cover
         """Configures the figure and axes objects.
 
         Args:

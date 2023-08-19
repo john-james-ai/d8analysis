@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Tuesday August 15th 2023 06:49:28 pm                                                #
+# Modified   : Saturday August 19th 2023 12:36:55 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -70,13 +70,10 @@ def mode():
     dotenv_file = dotenv.find_dotenv()
     dotenv.load_dotenv(dotenv_file)
     prior_mode = os.environ["MODE"]
-    prior_logging_level = LoggingConfig.get_level()
     os.environ["MODE"] = "test"
     dotenv.set_key(dotenv_file, "MODE", os.environ["MODE"])
-    LoggingConfig.set_level("DEBUG")
     yield
     os.environ["MODE"] = prior_mode
-    LoggingConfig.set_level(prior_logging_level)
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -90,11 +87,13 @@ def dataset():
 # ------------------------------------------------------------------------------------------------ #
 @pytest.fixture(scope="module", autouse=True)
 def container():
+    prior_logging_level = LoggingConfig.get_level()
+    LoggingConfig.set_level("DEBUG")
     container = D8AnalysisContainer()
     container.init_resources()
     container.wire(packages=["d8analysis"])
-
-    return container
+    yield container
+    LoggingConfig.set_level(prior_logging_level)
 
 
 # ------------------------------------------------------------------------------------------------ #

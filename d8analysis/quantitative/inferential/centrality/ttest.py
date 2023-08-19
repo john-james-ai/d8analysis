@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 11:41:00 pm                                                 #
-# Modified   : Tuesday August 15th 2023 08:00:44 pm                                                #
+# Modified   : Saturday August 19th 2023 12:09:29 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -52,7 +52,7 @@ class TTestResult(StatTestResult):
         super().__post_init__(canvas=canvas)
         _, self._ax = self._canvas.get_figaxes()
 
-    def plot(self) -> None:
+    def plot(self) -> None:  # pragma: no cover
         """Plots the test statistic and reject region"""
 
         # Render the probability distribution
@@ -87,7 +87,7 @@ class TTestResult(StatTestResult):
         upper: float,
         lower_critical: float,
         upper_critical: float,
-    ) -> None:
+    ) -> None:  # pragma: no cover
         """Fills the area under the curve at the value of the hypothesis test statistic."""
 
         # Fill lower tail
@@ -127,11 +127,15 @@ class TTestResult(StatTestResult):
                 ax=self._ax,
                 color=self._canvas.colors.dark_blue,
             )
+            ytext = 10
+            if np.isclose(statistic, 0, atol=1e-1):
+                ytext *= -2
+
             self._ax.annotate(
                 f"t = {str(statistic)}",
                 (x, y),
                 textcoords="offset points",
-                xytext=(0, 10),
+                xytext=(0, ytext),
                 ha="center",
             )
 
@@ -164,6 +168,8 @@ class TTestResult(StatTestResult):
             )
         except IndexError:
             pass
+
+        plt.tight_layout()
 
 
 # ------------------------------------------------------------------------------------------------ #

@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Monday August 14th 2023 08:38:37 pm                                                 #
+# Modified   : Saturday August 19th 2023 02:32:38 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -50,12 +50,12 @@ class SpearmanCorrelationResult(StatTestResult):
         self._ax1 = None
         self._ax2 = None
 
-    def plot(self) -> None:
+    def plot(self) -> None:  # pragma: no cover
         """Renders three plots: Test Statistic, Cumulative Distribution and Probability Density Functions."""
         # self.plot_statistic()
         self.plot_data()
 
-    def plot_statistic(self, ax: plt.Axes = None) -> None:
+    def plot_statistic(self, ax: plt.Axes = None) -> None:  # pragma: no cover
         """Plots the test statistic and reject region
 
         Args:
@@ -173,7 +173,7 @@ class SpearmanCorrelationResult(StatTestResult):
 
         self._logger.debug("Plot Statistic Complete.")
 
-    def plot_data(self, ax: plt.Axes = None) -> None:
+    def plot_data(self, ax: plt.Axes = None) -> None:  # pragma: no cover
         """Plots the data.
 
         Args:
@@ -200,7 +200,7 @@ class SpearmanCorrelationResult(StatTestResult):
             fontsize=self._canvas.fontsize_title,
         )
 
-        # plt.tight_layout()
+        plt.tight_layout()
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -267,7 +267,7 @@ class SpearmanCorrelationTest(StatisticalTest):
     def _report_results(self, r: float, pvalue: float, dof: float) -> str:
         return f"Spearman Correlation Test\nr({dof})={round(r,3)}, {self._report_pvalue(pvalue)}\n{self._interpret_r(r).capitalize()}"
 
-    def _interpret_r(self, r: float) -> str:
+    def _interpret_r(self, r: float) -> str:  # pragma: no cover
         """Interprets the value of the correlation[1]_
 
         .. [1] Mukaka MM. Statistics corner: A guide to appropriate use of correlation coefficient in medical research. Malawi Med J. 2012 Sep;24(3):69-71. PMID: 23638278; PMCID: PMC3576830.

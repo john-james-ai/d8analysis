@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday June 8th 2023 03:48:00 am                                                  #
-# Modified   : Tuesday August 15th 2023 08:00:21 pm                                                #
+# Modified   : Saturday August 19th 2023 12:08:08 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -54,6 +54,48 @@ class TestTTest:  # pragma: no cover
         male = dataset[dataset["Gender"] == "Male"]["Income"]
         female = dataset[dataset["Gender"] == "Female"]["Income"]
         test = TTest(a=male, b=female)
+        test.run()
+        assert "Independent" in test.result.test
+        assert isinstance(test.result.H0, str)
+        assert isinstance(test.result.pvalue, float)
+        assert test.result.alpha == 0.05
+        assert isinstance(test.result.a, pd.Series)
+        assert isinstance(test.result.b, pd.Series)
+        assert isinstance(test.result.a_stats, DescriptiveStats)
+        assert isinstance(test.result.b_stats, DescriptiveStats)
+        assert isinstance(test.profile, StatTestProfileTwo)
+        logging.debug(test.result)
+
+        # ---------------------------------------------------------------------------------------- #
+        end = datetime.now()
+        duration = round((end - start).total_seconds(), 1)
+
+        logger.info(
+            "\nCompleted {} {} in {} seconds at {} on {}".format(
+                self.__class__.__name__,
+                inspect.stack()[0][3],
+                duration,
+                end.strftime("%I:%M:%S %p"),
+                end.strftime("%m/%d/%Y"),
+            )
+        )
+        logger.info(single_line)
+
+    # ============================================================================================ #
+    def test_ttest2(self, dataset, caplog):
+        start = datetime.now()
+        logger.info(
+            "\n\nStarted {} {} at {} on {}".format(
+                self.__class__.__name__,
+                inspect.stack()[0][3],
+                start.strftime("%I:%M:%S %p"),
+                start.strftime("%m/%d/%Y"),
+            )
+        )
+        logger.info(double_line)
+        # ---------------------------------------------------------------------------------------- #
+        female = dataset[dataset["Gender"] == "Female"]["Income"]
+        test = TTest(a=female, b=female)
         test.run()
         assert "Independent" in test.result.test
         assert isinstance(test.result.H0, str)
