@@ -11,13 +11,12 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Saturday August 19th 2023 06:14:36 pm                                               #
+# Modified   : Saturday August 19th 2023 06:38:28 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from d8analysis.container import D8AnalysisContainer
-from d8analysis.service.config import LoggingConfig
 
 # Data Package
 # Generation
@@ -65,10 +64,3 @@ from d8analysis.visual.seaborn.distribution import (
 )
 from d8analysis.visual.seaborn.centrality import Barplot
 from d8analysis.visual.seaborn.grid import GridPlot
-
-# Dependencies
-prior_logging_level = LoggingConfig.get_level()
-LoggingConfig.set_level("WARNING")
-container = D8AnalysisContainer()
-container.init_resources()
-container.wire(packages=["d8analysis"])
