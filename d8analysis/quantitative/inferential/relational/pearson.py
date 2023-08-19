@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Wednesday June 7th 2023 08:15:08 pm                                                 #
-# Modified   : Saturday August 19th 2023 02:04:19 pm                                               #
+# Modified   : Saturday August 19th 2023 03:00:01 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -140,41 +140,41 @@ class PearsonCorrelationTest(StatisticalTest):
             pearson_result = stats.pearsonr(
                 x=self._data[self._a].values, y=self._data[self._b].values, alternative="two-sided"
             )
-            r = pearson_result.statistic
-            pvalue = pearson_result.pvalue
-            confidence_interval = pearson_result.confidence_interval(0.05)
-            self._logger.debug(pearson_result)
-            self._logger.debug(confidence_interval)
-
-            dof = len(self._data) - 2
-
-            result = self._report_results(r=r, pvalue=pvalue, dof=dof)
-
-            if pvalue > self._alpha:  # pragma: no cover
-                inference = f"The two variables had {self._interpret_r(r)}, r({dof})={round(r,2)}, {self._report_pvalue(pvalue)}.\nHowever, the pvalue, {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}% indicating that the correlation coefficient is not statistically significant."
-            else:
-                inference = f"The two variables had {self._interpret_r(r)}, r({dof})={round(r,2)}, {self._report_pvalue(pvalue)}.\nFurther, the pvalue, {round(pvalue,2)} is lower than level of significance {int(self._alpha*100)}% indicating that the correlation coefficient is statistically significant."
-
-            # Create the result object.
-            self._result = PearsonCorrelationResult(
-                test=self._profile.name,
-                H0=self._profile.H0,
-                statistic=self._profile.statistic,
-                hypothesis=self._profile.hypothesis,
-                value=r,
-                pvalue=pvalue,
-                result=result,
-                data=self._data,
-                a=self._a,
-                b=self._b,
-                inference=inference,
-                alpha=self._alpha,
-            )
-
         except Exception as e:
             msg = f"Unable to calculate pearson correlation.\n{e}"
             self._logger.exception(msg)
             raise
+
+        r = pearson_result.statistic
+        pvalue = pearson_result.pvalue
+        confidence_interval = pearson_result.confidence_interval(0.05)
+        self._logger.debug(pearson_result)
+        self._logger.debug(confidence_interval)
+
+        dof = len(self._data) - 2
+
+        result = self._report_results(r=r, pvalue=pvalue, dof=dof)
+
+        if pvalue > self._alpha:  # pragma: no cover
+            inference = f"The two variables had {self._interpret_r(r)}, r({dof})={round(r,2)}, {self._report_pvalue(pvalue)}.\nHowever, the pvalue, {round(pvalue,2)} is greater than level of significance {int(self._alpha*100)}% indicating that the correlation coefficient is not statistically significant."
+        else:
+            inference = f"The two variables had {self._interpret_r(r)}, r({dof})={round(r,2)}, {self._report_pvalue(pvalue)}.\nFurther, the pvalue, {round(pvalue,2)} is lower than level of significance {int(self._alpha*100)}% indicating that the correlation coefficient is statistically significant."
+
+        # Create the result object.
+        self._result = PearsonCorrelationResult(
+            test=self._profile.name,
+            H0=self._profile.H0,
+            statistic=self._profile.statistic,
+            hypothesis=self._profile.hypothesis,
+            value=r,
+            pvalue=pvalue,
+            result=result,
+            data=self._data,
+            a=self._a,
+            b=self._b,
+            inference=inference,
+            alpha=self._alpha,
+        )
 
     def _report_results(self, r: float, pvalue: float, dof: float) -> str:
         return f"Pearson Correlation Test\nr({dof})={round(r,2)}, {self._report_pvalue(pvalue)}\n{self._interpret_r(r=r).capitalize()}"
