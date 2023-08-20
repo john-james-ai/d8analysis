@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 08:23:33 am                                                 #
-# Modified   : Sunday August 20th 2023 04:04:15 pm                                                 #
+# Modified   : Sunday August 20th 2023 04:20:30 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -75,6 +75,9 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
 
 
         """
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax = self._canvas.get_figaxes()
 
@@ -123,6 +126,10 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
 
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax = self._canvas.get_figaxes()
 
@@ -177,6 +184,10 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
 
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax = self._canvas.get_figaxes()
 
@@ -227,6 +238,10 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
 
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax = self._canvas.get_figaxes()
 
@@ -272,6 +287,10 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
 
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax = self._canvas.get_figaxes()
 
@@ -320,6 +339,10 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
                 ax: (plt.Axes): A matplotlib Axes object. Optional. If not provide, one will be obtained from the canvas.
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax = self._canvas.get_figaxes()
 
@@ -365,6 +388,10 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
                 ax: (plt.Axes): A matplotlib Axes object. Optional. If not provide, one will be obtained from the canvas.
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax = self._canvas.get_figaxes()
 
@@ -415,6 +442,10 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
 
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax = self._canvas.get_figaxes()
 
@@ -460,6 +491,10 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
             ax: (plt.Axes): A matplotlib Axes object. Optional. If not provide, one will be obtained from the canvas.
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax = self._canvas.get_figaxes()
 
@@ -486,6 +521,7 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
             x="Top-N",
             y="% Total",
             ax=ax,
+            color=self._canvas.color.darkblue,
             palette=palette,
             *args,
             **kwargs,
@@ -534,6 +570,10 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
 
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax = self._canvas.get_figaxes()
 
@@ -578,6 +618,10 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
 
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         if ax is None:
             fig, ax1 = self._canvas.get_figaxes()
 
@@ -640,6 +684,9 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
 
         """
 
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
+
         palette = self._canvas.palette if hue is not None else None
 
         g = sns.pairplot(
@@ -675,6 +722,9 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
 
 
         """
+
+        sns.set_style(style=self._canvas.style)
+        sns.set_palette(palette=self._canvas.palette)
 
         palette = self._canvas.palette if hue is not None else None
 
