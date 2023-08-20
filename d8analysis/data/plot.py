@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 08:23:33 am                                                 #
-# Modified   : Sunday August 20th 2023 04:20:30 pm                                                 #
+# Modified   : Sunday August 20th 2023 04:25:21 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -513,7 +513,7 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
         values_pct = values / total * 100
         obs_pct = n / self._df.shape[0] * 100
 
-        d = {"Top-N": n, "% Total": np.round(values_pct, 2), "% Observations": np.round(obs_pct, 4)}
+        d = {"Top-N": n, "% Total": np.round(values_pct, 2), "% Observations": np.round(obs_pct, 2)}
         df = pd.DataFrame(data=d)
 
         ax = sns.barplot(
@@ -521,7 +521,7 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
             x="Top-N",
             y="% Total",
             ax=ax,
-            color=self._canvas.color.darkblue,
+            color=self._canvas.colors.dark_blue,
             palette=palette,
             *args,
             **kwargs,
@@ -530,11 +530,9 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
         if title is not None:
             ax.set_title(title)
 
-        annotation = f"% of {x}".capitalize()
-
         for idx, bar in enumerate(ax.patches):
             ax.annotate(
-                f"{annotation}: {np.round(values_pct[idx],2)}%\n% of Observations: {np.round(obs_pct[idx],4)}%",
+                f"{np.round(values_pct[idx],2)}% ({np.round(obs_pct[idx],2)}%)",
                 (bar.get_x() + bar.get_width() / 2, bar.get_height()),
                 ha="center",
                 va="center",
