@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 08:23:33 am                                                 #
-# Modified   : Sunday August 20th 2023 12:16:49 am                                                 #
+# Modified   : Sunday August 20th 2023 01:36:39 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -145,7 +145,7 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
         x: str = None,
         y: str = None,
         hue: str = None,
-        stat: str = "density",
+        stat: str = "count",
         element: str = "bars",
         fill: bool = True,
         title: str = None,

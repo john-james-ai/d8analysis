@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Saturday August 19th 2023 05:29:52 pm                                               #
+# Modified   : Sunday August 20th 2023 05:11:25 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,6 +24,8 @@ from datetime import datetime
 import dotenv
 import logging
 from dataclasses import dataclass
+
+import numpy as np
 
 from d8analysis.service.config import LoggingConfig
 from d8analysis.container import D8AnalysisContainer
@@ -79,7 +81,19 @@ def mode():
 # ------------------------------------------------------------------------------------------------ #
 @pytest.fixture(scope="module", autouse=False)
 def dataset():
-    return pd.read_csv(DATAFILE, index_col=None)
+    df = pd.read_csv(DATAFILE, index_col=None)
+    df = df.astype(
+        {
+            "Gender": "category",
+            "Age": np.int64,
+            "Income": np.int64,
+            "Children": np.int64,
+            "Marital Status": "category",
+            "Credit Rating": "category",
+            "Education": "category",
+        }
+    )
+    return df
 
 
 # ------------------------------------------------------------------------------------------------ #

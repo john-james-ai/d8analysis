@@ -11,20 +11,23 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:29:08 pm                                               #
-# Modified   : Sunday August 20th 2023 12:10:12 am                                                 #
+# Modified   : Sunday August 20th 2023 12:29:17 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from __future__ import annotations
+import inspect
 from abc import ABC, abstractmethod, abstractproperty
 import logging
 from typing import Any, Callable, Union, List
 
 import pandas as pd
+import numpy as np
 
 from d8analysis.data.plot import DatasetVisualizer
 from d8analysis.visual.seaborn.grid import GridPlot
+from d8analysis.quantitative.descriptive.stats import DescriptiveStats
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -170,6 +173,7 @@ class Dataset(ABC):
     # ------------------------------------------------------------------------------------------- #
     def describe(
         self,
+        x: list[str] = None,
         include: list[str] = None,
         exclude: list[str] = None,
         groupby: Union[str, list[str]] = None,
@@ -177,14 +181,55 @@ class Dataset(ABC):
         """Provides descriptive statistics for the dataset.
 
         Args:
+            x (list[str]): List of variables to incude. If non-Null, include and exclude will be ignored.
             include (list[str]): List of data types to include in the analysis.
             exclude (list[str]): List of data types to exclude from the analysis.
             groupby (str): Column used as a factor variable for descriptive statistics.
         """
+        self._logger.debug(f"\n\nEntering {inspect.stack()[0][3]}.")
+        nums, cats = self._filter_split_data(x=x, include=include, exclude=exclude, groupby=groupby)
+
+        stats = DescriptiveStats()
+
+        if not nums.empty:
+            stats.numeric = self._describe_numeric(nums, groupby=groupby)
+
+        if not cats.empty:
+            stats.categorical = self._describe_cat(cats, groupby=groupby)
+
+        return stats
+
+    # ------------------------------------------------------------------------------------------- #
+    def _describe_numeric(
+        self, df: pd.DataFrame, groupby: Union[str, list[str]] = None
+    ) -> pd.DataFrame:
+        """Describes numeric columns."""
+        self._logger.debug(f"\n\nEntering {inspect.stack()[0][3]}.")
+        self._logger.debug(f"\n\n{df.head()}")
+        d = {}
         if groupby is None:
-            return self._df.describe(include=include, exclude=exclude).T
+            describe = df.describe()
+            d["skew"] = df.skew()
+            d["kurtosis"] = df.kurtosis()
+            sk = pd.DataFrame.from_dict(data=d, orient="columns")
+            describe = pd.concat([describe.T, sk], axis=1)
+
         else:
-            return self._df.groupby(by=groupby).describe(include=include, exclude=exclude)
+            describe = df.groupby(by=groupby).describe()
+            sk = df.groupby(by=groupby).skew()
+            describe = pd.concat([describe.T, sk], axis=1)
+
+        self._logger.debug(f"\n\nExiting {inspect.stack()[0][3]}.")
+        return describe
+
+    # ------------------------------------------------------------------------------------------- #
+    def _describe_cat(
+        self, df: pd.DataFrame, groupby: Union[str, list[str]] = None
+    ) -> pd.DataFrame:
+        if groupby is None:
+            return df.describe().T
+        else:
+            return df.groupby(by=groupby).describe().T
 
     # ------------------------------------------------------------------------------------------- #
     def unique(self, columns: list = None) -> pd.DataFrame:
@@ -245,14 +290,19 @@ class Dataset(ABC):
             freq = self._format(freq)
         return freq
 
+    # ------------------------------------------------------------------------------------------- #
     @property
     def plot(self) -> DatasetVisualizer:  # pragma: no cover
         return DatasetVisualizer(df=self._df)
 
+    # ------------------------------------------------------------------------------------------- #
     @property
     def gridplot(cls) -> GridPlot:  # pragma: no cover
         return GridPlot()
 
+    # ------------------------------------------------------------------------------------------- #
+    #                                PRIVATE METHODS                                              #
+    # ------------------------------------------------------------------------------------------- #
     def _format(self, df: pd.DataFrame) -> pd.DataFrame:
         """Returns the resulting dataframe with capitalized column names."""
         df.columns = [col.capitalize() for col in df.columns]
@@ -275,3 +325,38 @@ class Dataset(ABC):
             return True
         except Exception:
             return False
+
+    def _filter_split_data(
+        self,
+        x: list[str] = None,
+        groupby: list[str] = None,
+        include: list[str] = None,
+        exclude: list[str] = None,
+    ) -> pd.DataFrame:
+        """Filters and splits the dataframe into numeric and categorical data dataframes according to the provided arguments"""
+        self._logger.debug(f"\n\nEntering {inspect.stack()[0][3]}.")
+        # Filter by include / exclude data type arguments
+        df = self._df
+        if include is not None:
+            df = self._df.select_dtypes(include=include)
+        if exclude is not None:
+            df = self._df.select_dtypes(exclude=exclude)
+
+        # Filter by x
+        if x is not None:
+            df = df[x]
+            if isinstance(df, pd.Series):
+                df = df.to_frame()
+
+        # Split into data type homogeneous dataframes
+        nums = df.select_dtypes(include=[np.number])
+        cats = df.select_dtypes(exclude=[np.number])
+
+        # If columns remain and groupby argument is non-Null, add it back to the nums/cats dataframes, if not already present.
+        if groupby is not None:
+            if not nums.empty and groupby not in nums.columns:
+                nums = pd.concat([nums, self._df[groupby]], axis=1)
+            if not cats.empty and groupby not in cats.columns:
+                cats = pd.concat([cats, self._df[groupby]], axis=1)
+
+        return nums, cats
