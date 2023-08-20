@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Saturday August 19th 2023 07:19:11 pm                                               #
+# Modified   : Saturday August 19th 2023 10:59:31 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -30,11 +30,9 @@ from d8analysis.data.generation import RVSDistribution  # noqa F402
 # - Quantitative Package
 # -- Descriptive Subpackage
 from d8analysis.quantitative.descriptive.categorical import (  # noqa F402
-    CategoricalFreqDistribution,
     CategoricalStats,
 )
 from d8analysis.quantitative.descriptive.continuous import (  # noqa F402
-    ContinuousFreqDistribution,
     ContinuousStats,
 )
 

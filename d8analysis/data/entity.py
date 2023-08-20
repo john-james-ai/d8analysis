@@ -4,21 +4,21 @@
 # Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.12                                                                             #
-# Filename   : /d8analysis/data/dataclass.py                                                       #
+# Filename   : /d8analysis/data/entity.py                                                          #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
-# Created    : Saturday August 19th 2023 05:28:25 pm                                               #
-# Modified   : Saturday August 19th 2023 09:53:34 pm                                               #
+# Created    : Saturday August 19th 2023 09:17:13 pm                                               #
+# Modified   : Sunday August 20th 2023 12:07:13 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 from abc import ABC
-from dataclasses import dataclass
 from datetime import datetime
+from dataclasses import dataclass
 
 import pandas as pd
 
@@ -27,9 +27,11 @@ from d8analysis.data import IMMUTABLE_TYPES, SEQUENCE_TYPES
 
 # ------------------------------------------------------------------------------------------------ #
 @dataclass
-class DataClass(ABC):
-    def __repr__(self) -> str:  # pragma: no cover tested, but missing in coverage
-        s = "{}({})".format(
+class Entity(ABC):  # noqa
+    """Base Class for Data Transfer Objects"""
+
+    def __repr__(self) -> str:  # pragma: no cover
+        return "{}({})".format(
             self.__class__.__name__,
             ", ".join(
                 "{}={!r}".format(k, v)
@@ -37,7 +39,6 @@ class DataClass(ABC):
                 if type(v) in IMMUTABLE_TYPES
             ),
         )
-        return s
 
     def __str__(self) -> str:
         width = 32
@@ -46,7 +47,6 @@ class DataClass(ABC):
         d = self.as_dict()
         for k, v in d.items():
             if type(v) in IMMUTABLE_TYPES:
-                k = k.capitalize()
                 s += f"\n{k.rjust(width,' ')} | {v}"
         s += "\n\n"
         return s

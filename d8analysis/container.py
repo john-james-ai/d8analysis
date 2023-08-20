@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday March 27th 2023 07:02:56 pm                                                  #
-# Modified   : Saturday August 19th 2023 07:05:10 pm                                               #
+# Modified   : Sunday August 20th 2023 12:11:17 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -66,7 +66,7 @@ class D8AnalysisContainer(containers.DeclarativeContainer):
     visualizer = providers.Container(VisualizerContainer, canvas=canvas.seaborn)
 
 
-if __name__ == "__main__":
+if __name__ == "__main__":  # pragma: no cover
     # Dependencies
     LoggingConfig.set_level("WARNING")
     container = D8AnalysisContainer()

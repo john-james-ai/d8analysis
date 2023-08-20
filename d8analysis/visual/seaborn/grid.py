@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday August 15th 2023 04:04:08 pm                                                #
-# Modified   : Saturday August 19th 2023 07:25:59 pm                                               #
+# Modified   : Saturday August 19th 2023 11:41:54 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -29,7 +29,7 @@ from d8analysis.container import D8AnalysisContainer
 
 
 # ------------------------------------------------------------------------------------------------ #
-class GridPlot:
+class GridPlot:  # pragma: no cover
     """Encapsulates a single or multi-plot visualization
 
     Args:
@@ -41,12 +41,19 @@ class GridPlot:
     @inject
     def __init__(
         self,
-        title: str = None,
         canvas: type[SeabornCanvas] = Provide[D8AnalysisContainer.canvas.seaborn],
     ) -> None:
-        self._title = title
+        self._title = None
         self._canvas = canvas
         self._plots = []
+
+    @property
+    def title(self) -> str:
+        return self._title
+
+    @title.setter
+    def title(self, title: str) -> None:
+        self._title = title
 
     def add_plot(self, plot: SeabornVisual) -> None:
         """Adds a plot object to the visualization

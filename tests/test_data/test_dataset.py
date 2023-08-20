@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday August 15th 2023 05:59:13 pm                                                #
-# Modified   : Tuesday August 15th 2023 06:24:40 pm                                                #
+# Modified   : Saturday August 19th 2023 11:55:11 pm                                               #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -24,7 +24,7 @@ import logging
 import pandas as pd
 import numpy as np
 
-from d8analysis.data.dataset import CreditScoreDataset
+from d8analysis.data.credit import CreditScoreDataset, Consumer
 
 # ------------------------------------------------------------------------------------------------ #
 logger = logging.getLogger(__name__)
@@ -142,7 +142,16 @@ class TestDataset:  # pragma: no cover
         # ---------------------------------------------------------------------------------------- #
         ds = CreditScoreDataset(df=dataset)
         item = ds[10]
-        assert isinstance(item, pd.Series)
+        assert isinstance(item, Consumer)
+        assert isinstance(item.Gender, str)
+        assert isinstance(item.Age, np.int64)
+        assert isinstance(item.Children, np.int64)
+        assert isinstance(item.Education, str)
+        assert isinstance(item.CreditRating, str)
+        assert isinstance(item.__repr__(), str)
+        assert isinstance(item.__str__(), str)
+        assert isinstance(item.as_dict(), dict)
+        assert isinstance(item.as_df(), pd.DataFrame)
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()
         duration = round((end - start).total_seconds(), 1)
@@ -333,6 +342,7 @@ class TestDataset:  # pragma: no cover
         df = ds.select(include=["Gender", "Education"])
         assert df.shape[1] == 2
         df = ds.select(exclude=["Gender"])
+        logger.debug(df.head())
         assert df.shape[1] == dataset.shape[1] - 1
         df = ds.select()
         assert df.shape[1] == 8
@@ -512,6 +522,74 @@ class TestDataset:  # pragma: no cover
 
         logger.info(
             "\nCompleted {} {} in {} seconds at {} on {}".format(
+                self.__class__.__name__,
+                inspect.stack()[0][3],
+                duration,
+                end.strftime("%I:%M:%S %p"),
+                end.strftime("%m/%d/%Y"),
+            )
+        )
+        logger.info(single_line)
+
+    # ============================================================================================ #
+    def test_frequency(self, dataset, caplog):
+        start = datetime.now()
+        logger.info(
+            "\n\nStarted {} {} at {} on {}".format(
+                self.__class__.__name__,
+                inspect.stack()[0][3],
+                start.strftime("%I:%M:%S %p"),
+                start.strftime("%m/%d/%Y"),
+            )
+        )
+        logger.info(double_line)
+        # ---------------------------------------------------------------------------------------- #
+        ds = CreditScoreDataset(df=dataset)
+        df = ds.frequency(x=["Education", "Credit Rating"])
+        assert isinstance(df, pd.DataFrame)
+        assert "Cumulative" in df.columns
+        logger.debug(f"\n{df}")
+
+        # ---------------------------------------------------------------------------------------- #
+        end = datetime.now()
+        duration = round((end - start).total_seconds(), 1)
+
+        logger.info(
+            "\n\tCompleted {} {} in {} seconds at {} on {}".format(
+                self.__class__.__name__,
+                inspect.stack()[0][3],
+                duration,
+                end.strftime("%I:%M:%S %p"),
+                end.strftime("%m/%d/%Y"),
+            )
+        )
+        logger.info(single_line)
+
+    # ============================================================================================ #
+    def test_histable(self, dataset, caplog):
+        start = datetime.now()
+        logger.info(
+            "\n\nStarted {} {} at {} on {}".format(
+                self.__class__.__name__,
+                inspect.stack()[0][3],
+                start.strftime("%I:%M:%S %p"),
+                start.strftime("%m/%d/%Y"),
+            )
+        )
+        logger.info(double_line)
+        # ---------------------------------------------------------------------------------------- #
+        ds = CreditScoreDataset(df=dataset)
+        df = ds.frequency(x="Income", bins=4)
+        assert isinstance(df, pd.DataFrame)
+        assert "Cumulative" in df.columns
+        logger.debug(f"\n{df}")
+
+        # ---------------------------------------------------------------------------------------- #
+        end = datetime.now()
+        duration = round((end - start).total_seconds(), 1)
+
+        logger.info(
+            "\n\tCompleted {} {} in {} seconds at {} on {}".format(
                 self.__class__.__name__,
                 inspect.stack()[0][3],
                 duration,
