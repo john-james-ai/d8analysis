@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:29:08 pm                                               #
-# Modified   : Sunday August 20th 2023 12:29:17 pm                                                 #
+# Modified   : Sunday August 20th 2023 02:22:02 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -165,6 +165,22 @@ class Dataset(ABC):
             msg = f"Exception of type {type(e)} occurred.\n{e}"
             self._logger.exception(msg)
             raise
+
+    # ------------------------------------------------------------------------------------------- #
+    def top_n(self, x: str, n: int = 10) -> pd.DataFrame:
+        """Returns the observations with the top n values in the x column.
+
+        Args:
+            x (str): Name of a column in the dataset.
+            n (int): The top n observations to return.
+        """
+        try:
+            df = self._df.sort_values(by=x, ascending=False, axis=0)
+            return df.head(n)
+        except KeyError as e:
+            msg = f"{x} is not a valid variable in the dataset."
+            self._logger.exception(msg)
+            raise KeyError(f"{msg}\n{e}")
 
     # ------------------------------------------------------------------------------------------- #
     def head(self, n: int = 5) -> pd.DataFrame:

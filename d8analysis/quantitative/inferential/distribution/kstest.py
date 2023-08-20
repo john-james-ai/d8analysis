@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday June 6th 2023 01:45:05 am                                                   #
-# Modified   : Saturday August 19th 2023 12:47:53 pm                                               #
+# Modified   : Sunday August 20th 2023 02:28:34 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -387,7 +387,7 @@ class KSTest(StatisticalTest):
             alpha=self._alpha,
         )
 
-    def _infer(self, pvalue: float) -> str:
+    def _infer(self, pvalue: float) -> str:  # pragma: no cover
         """Formats the inference for the hypothesis based upon whether it is one or two sample"""
         if isinstance(self._b, str):
             if pvalue > self._alpha:

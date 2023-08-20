@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 08:23:33 am                                                 #
-# Modified   : Sunday August 20th 2023 01:36:39 am                                                 #
+# Modified   : Sunday August 20th 2023 01:27:56 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -527,7 +527,7 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
             label="Cumulative Distribution Function",
             legend=True,
         )
-        title = "Probability Density Function and Cumulative Distribution Function"
+        title = title or "Probability Density Function / Cumulative Distribution Function"
 
         h1, l1 = ax1.get_legend_handles_labels()
         h2, l2 = ax2.get_legend_handles_labels()

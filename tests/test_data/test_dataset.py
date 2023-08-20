@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday August 15th 2023 05:59:13 pm                                                #
-# Modified   : Sunday August 20th 2023 12:35:11 pm                                                 #
+# Modified   : Sunday August 20th 2023 02:26:29 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -810,6 +810,43 @@ class TestDataset:  # pragma: no cover
         assert isinstance(df, pd.DataFrame)
         assert "Cumulative" in df.columns
         logger.debug(f"\n{df}")
+
+        # ---------------------------------------------------------------------------------------- #
+        end = datetime.now()
+        duration = round((end - start).total_seconds(), 1)
+
+        logger.info(
+            "\n\tCompleted {} {} in {} seconds at {} on {}".format(
+                self.__class__.__name__,
+                inspect.stack()[0][3],
+                duration,
+                end.strftime("%I:%M:%S %p"),
+                end.strftime("%m/%d/%Y"),
+            )
+        )
+        logger.info(single_line)
+
+    # ============================================================================================ #
+    def test_top_n(self, dataset, caplog):
+        start = datetime.now()
+        logger.info(
+            "\n\nStarted {} {} at {} on {}".format(
+                self.__class__.__name__,
+                inspect.stack()[0][3],
+                start.strftime("%I:%M:%S %p"),
+                start.strftime("%m/%d/%Y"),
+            )
+        )
+        logger.info(double_line)
+        # ---------------------------------------------------------------------------------------- #
+        ds = CreditScoreDataset(df=dataset)
+        df = ds.top_n(x="Income", n=10)
+        assert isinstance(df, pd.DataFrame)
+        assert df.shape[0] == 10
+        logger.debug(f"\n{df}")
+
+        with pytest.raises(KeyError):
+            ds.top_n(x="fake", n=5)
 
         # ---------------------------------------------------------------------------------------- #
         end = datetime.now()
