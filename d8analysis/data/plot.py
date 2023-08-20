@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 13th 2023 08:23:33 am                                                 #
-# Modified   : Sunday August 20th 2023 01:27:56 pm                                                 #
+# Modified   : Sunday August 20th 2023 04:04:15 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -19,6 +19,7 @@
 """Wrapper for several Seaborn plotting functions."""
 from typing import List
 
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -431,6 +432,79 @@ class DatasetVisualizer(Visualizer):  # pragma: no cover
         )
         if title is not None:
             ax.set_title(title)
+
+    def topn_plot(
+        self,
+        x: str = None,
+        n: list[int] = [5, 10, 20, 50, 100],
+        hue: str = None,
+        title: str = None,
+        ax: plt.Axes = None,
+        *args,
+        **kwargs,
+    ) -> None:
+        """Bar plot showing the top n values for a continuous or discrete variable.
+
+        Plots a range of top n values in the logspace for the designated column. Top n
+        values are displayed as percent of total value and percent of observations
+        represented by the top n group.
+
+        Args:
+            data (Union[pd.DataFrame, np.ndarray]): Input data structure. Either a long-form
+                collection of vectors that can be assigned to named variables or a wide-form dataset
+                that will be internally reshaped
+            x (str): Keys in data.
+            n (list(int)): List of top n values to report.
+            hue (str): Grouping variable that will produce lines with different colors. Can be either categorical or numeric, although color mapping will behave differently in latter case.
+            title (str): Title for the plot. Optional
+            ax: (plt.Axes): A matplotlib Axes object. Optional. If not provide, one will be obtained from the canvas.
+
+        """
+        if ax is None:
+            fig, ax = self._canvas.get_figaxes()
+
+        palette = self._canvas.palette if hue is not None else None
+
+        values = []
+        total = self._df[x].sum(axis=0)
+        sorted = self._df.sort_values(by=x, ascending=False, axis=0)
+
+        n = np.array(n)
+
+        for idx in n:
+            values.append(sorted[x][:idx].sum())
+
+        # Normalize the values and counts by total and number of observations.
+        values_pct = values / total * 100
+        obs_pct = n / self._df.shape[0] * 100
+
+        d = {"Top-N": n, "% Total": np.round(values_pct, 2), "% Observations": np.round(obs_pct, 4)}
+        df = pd.DataFrame(data=d)
+
+        ax = sns.barplot(
+            data=df,
+            x="Top-N",
+            y="% Total",
+            ax=ax,
+            palette=palette,
+            *args,
+            **kwargs,
+        )
+        title = title or f"Top-N {x.capitalize()} Analysis"
+        if title is not None:
+            ax.set_title(title)
+
+        annotation = f"% of {x}".capitalize()
+
+        for idx, bar in enumerate(ax.patches):
+            ax.annotate(
+                f"{annotation}: {np.round(values_pct[idx],2)}%\n% of Observations: {np.round(obs_pct[idx],4)}%",
+                (bar.get_x() + bar.get_width() / 2, bar.get_height()),
+                ha="center",
+                va="center",
+                xytext=(0, 10),
+                textcoords="offset points",
+            )
 
     def histpdfplot(
         self,
