@@ -11,20 +11,15 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Saturday August 19th 2023 10:59:31 pm                                               #
+# Modified   : Sunday August 20th 2023 07:30:01 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
-from d8analysis.container import D8AnalysisContainer
-
-container = D8AnalysisContainer()
-container.init_resources()
-container.wire(packages=["d8analysis"])
-
 # Data Package
 # Generation
 from d8analysis.data.generation import RVSDistribution  # noqa F402
+from d8analysis.data.dataset import Dataset  # noqa F402
 
 # Qualitative Package
 # - Quantitative Package
