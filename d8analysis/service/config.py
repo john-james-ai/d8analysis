@@ -11,20 +11,25 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday August 15th 2023 05:36:24 pm                                                #
-# Modified   : Monday August 21st 2023 02:37:10 am                                                 #
+# Modified   : Monday August 21st 2023 02:45:40 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 import os
+from dotenv import load_dotenv
+
 from d8analysis.service.io import IOService
+
+# ------------------------------------------------------------------------------------------------ #
+load_dotenv()
 
 
 # ------------------------------------------------------------------------------------------------ #
 class LoggingConfig:  # pragma: no cover
     """Manages logging configuration"""
 
-    __filepath = os.path.abspath(os.path.join("config", "logging.yml"))
+    __filepath = os.getenv("LOGGING_CONFIG_FILEPATH")
 
     @classmethod
     def get(cls) -> dict:
