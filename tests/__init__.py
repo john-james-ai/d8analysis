@@ -11,11 +11,8 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Tuesday August 15th 2023 04:26:43 pm                                                #
+# Modified   : Monday August 21st 2023 01:55:10 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
-import logging
-
-logging.getLogger("matplotlib").setLevel(logging.WARNING)

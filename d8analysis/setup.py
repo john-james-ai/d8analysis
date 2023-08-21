@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
 # Project    : Exploratory Data Analysis Framework                                                 #
-# Version    : 0.0.9                                                                               #
+# Version    : 0.1.19                                                                              #
 # Python     : 3.10.10                                                                             #
 # Filename   : /d8analysis/setup.py                                                                #
 # ------------------------------------------------------------------------------------------------ #
@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 04:58:20 pm                                                    #
-# Modified   : Thursday August 10th 2023 10:27:33 pm                                               #
+# Modified   : Monday August 21st 2023 01:59:51 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -40,7 +40,7 @@ def save_as_yaml(df: pd.DataFrame, destination: str) -> None:  # pragma: no cove
 
 def report(df: pd.DataFrame) -> None:  # pragma: no cover
     report = df[["name", "analysis", "hypothesis", "H0"]]
-    print(f"Statistical Tests Loaded\n{report}")
+    logger.info(f"Statistical Tests Loaded\n{report}")
 
 
 def main():  # pragma: no cover

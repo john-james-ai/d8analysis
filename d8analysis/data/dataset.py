@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Thursday August 10th 2023 08:29:08 pm                                               #
-# Modified   : Sunday August 20th 2023 02:22:02 pm                                                 #
+# Modified   : Monday August 21st 2023 01:51:03 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -29,6 +29,9 @@ from d8analysis.data.plot import DatasetVisualizer
 from d8analysis.visual.seaborn.grid import GridPlot
 from d8analysis.quantitative.descriptive.stats import DescriptiveStats
 
+# ------------------------------------------------------------------------------------------------ #
+logger = logging.getLogger(__name__)
+
 
 # ------------------------------------------------------------------------------------------------ #
 #                                            DATASET                                               #
@@ -42,7 +45,6 @@ class Dataset(ABC):
 
     def __init__(self, df: pd.DataFrame) -> None:
         self._df = df
-        self._logger = logging.getLogger(f"{self.__class__.__name__}")
 
     def __len__(self):
         """Returns the length of the dataset."""
@@ -163,7 +165,7 @@ class Dataset(ABC):
             return self._format(df=df)
         except Exception as e:
             msg = f"Exception of type {type(e)} occurred.\n{e}"
-            self._logger.exception(msg)
+            logger.exception(msg)
             raise
 
     # ------------------------------------------------------------------------------------------- #
@@ -179,7 +181,7 @@ class Dataset(ABC):
             return df.head(n)
         except KeyError as e:
             msg = f"{x} is not a valid variable in the dataset."
-            self._logger.exception(msg)
+            logger.exception(msg)
             raise KeyError(f"{msg}\n{e}")
 
     # ------------------------------------------------------------------------------------------- #
@@ -202,7 +204,7 @@ class Dataset(ABC):
             exclude (list[str]): List of data types to exclude from the analysis.
             groupby (str): Column used as a factor variable for descriptive statistics.
         """
-        self._logger.debug(f"\n\nEntering {inspect.stack()[0][3]}.")
+        logger.debug(f"\n\nEntering {inspect.stack()[0][3]}.")
         nums, cats = self._filter_split_data(x=x, include=include, exclude=exclude, groupby=groupby)
 
         stats = DescriptiveStats()
@@ -220,8 +222,8 @@ class Dataset(ABC):
         self, df: pd.DataFrame, groupby: Union[str, list[str]] = None
     ) -> pd.DataFrame:
         """Describes numeric columns."""
-        self._logger.debug(f"\n\nEntering {inspect.stack()[0][3]}.")
-        self._logger.debug(f"\n\n{df.head()}")
+        logger.debug(f"\n\nEntering {inspect.stack()[0][3]}.")
+        logger.debug(f"\n\n{df.head()}")
         d = {}
         if groupby is None:
             describe = df.describe()
@@ -235,7 +237,7 @@ class Dataset(ABC):
             sk = df.groupby(by=groupby).skew()
             describe = pd.concat([describe.T, sk], axis=1)
 
-        self._logger.debug(f"\n\nExiting {inspect.stack()[0][3]}.")
+        logger.debug(f"\n\nExiting {inspect.stack()[0][3]}.")
         return describe
 
     # ------------------------------------------------------------------------------------------- #
@@ -350,7 +352,7 @@ class Dataset(ABC):
         exclude: list[str] = None,
     ) -> pd.DataFrame:
         """Filters and splits the dataframe into numeric and categorical data dataframes according to the provided arguments"""
-        self._logger.debug(f"\n\nEntering {inspect.stack()[0][3]}.")
+        logger.debug(f"\n\nEntering {inspect.stack()[0][3]}.")
         # Filter by include / exclude data type arguments
         df = self._df
         if include is not None:

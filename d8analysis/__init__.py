@@ -11,70 +11,11 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Monday August 21st 2023 04:15:01 am                                                 #
+# Modified   : Monday August 21st 2023 01:48:53 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
+import logging
 
-# from d8analysis.service.config import LoggingConfig
-from d8analysis.container import D8AnalysisContainer
-
-
-# ------------------------------------------------------------------------------------------------ #
-# LoggingConfig.set_level("INFO")
-container = D8AnalysisContainer()
-container.init_resources()
-container.wire(packages=["d8analysis"])
-# Data Package
-from d8analysis.data.generation import RVSDistribution  # noqa F402
-from d8analysis.data.dataset import Dataset  # noqa F402
-
-# Qualitative Package
-# - Quantitative Package
-# -- Descriptive Subpackage
-from d8analysis.quantitative.descriptive.categorical import (  # noqa F402
-    CategoricalStats,
-)
-from d8analysis.quantitative.descriptive.continuous import (  # noqa F402
-    ContinuousStats,
-)
-
-# Inferential Subpackage
-from d8analysis.quantitative.inferential.centrality.ttest import TTest, TTestResult  # noqa F402
-from d8analysis.quantitative.inferential.distribution.kstest import (  # noqa F402
-    KSTest,
-    KSTestResult,
-)
-from d8analysis.quantitative.inferential.relational.chisquare import (  # noqa F402
-    ChiSquareIndependenceResult,
-    ChiSquareIndependenceTest,
-)
-from d8analysis.quantitative.inferential.relational.pearson import (  # noqa F402
-    PearsonCorrelationResult,
-    PearsonCorrelationTest,
-)
-from d8analysis.quantitative.inferential.relational.spearman import (  # noqa F402
-    SpearmanCorrelationResult,
-    SpearmanCorrelationTest,
-)
-
-# Visualization Package
-# - Seaborn
-from d8analysis.visual.seaborn.association import (  # noqa F402
-    PairPlot,
-    ScatterPlot,
-    JointPlot,
-    LinePlot,
-)  # noqa F402
-from d8analysis.visual.seaborn.distribution import (  # noqa F402
-    Histogram,
-    HistPDFPlot,
-    ECDFPlot,
-    KDEPlot,
-    BoxPlot,
-    ViolinPlot,
-    PdfCdfPlot,
-)
-from d8analysis.visual.seaborn.centrality import Barplot  # noqa F402
-from d8analysis.visual.seaborn.grid import GridPlot  # noqa F402
+logging.getLogger(__name__).addHandler(logging.NullHandler())

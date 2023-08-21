@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Saturday May 27th 2023 08:56:02 pm                                                  #
-# Modified   : Saturday August 19th 2023 05:32:40 pm                                               #
+# Modified   : Monday August 21st 2023 01:52:15 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -29,6 +29,7 @@ import seaborn as sns
 from d8analysis.visual.seaborn.config import SeabornCanvas
 from d8analysis.data.dataclass import IMMUTABLE_TYPES
 
+# ------------------------------------------------------------------------------------------------ #
 logger = logging.getLogger(__name__)
 # ------------------------------------------------------------------------------------------------ #
 NUM_POINTS = 5000
@@ -722,7 +723,6 @@ class RVSDistribution:
     }
 
     def __init__(self) -> None:
-        self._logger = logging.getLogger(f"{self.__class__.__name__}")
         self._rvs = None
         self._pdf = None
         self._cdf = None
@@ -763,7 +763,7 @@ class RVSDistribution:
             )
         except KeyError as e:  # pragma: no cover
             msg = f"{distribution} is not supported.\n{e}"
-            self._logger.debug(msg)
+            logger.debug(msg)
             raise NotImplementedError(msg)
         return self
 

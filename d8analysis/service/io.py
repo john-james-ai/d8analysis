@@ -1,17 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
 # ================================================================================================ #
-# Project    : Enter Project Name in Workspace Settings                                            #
+# Project    : Exploratory Data Analysis Framework                                                 #
 # Version    : 0.1.19                                                                              #
 # Python     : 3.10.11                                                                             #
 # Filename   : /d8analysis/service/io.py                                                           #
 # ------------------------------------------------------------------------------------------------ #
 # Author     : John James                                                                          #
 # Email      : john.james.ai.studio@gmail.com                                                      #
-# URL        : Enter URL in Workspace Settings                                                     #
+# URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday May 29th 2023 12:58:24 am                                                    #
-# Modified   : Thursday August 10th 2023 10:32:13 pm                                               #
+# Modified   : Monday August 21st 2023 01:54:44 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -46,15 +46,12 @@ import json
 import pyarrow.parquet as pq
 from typing import Any, Union, List
 
-
+# ------------------------------------------------------------------------------------------------ #
+logger = logging.getLogger(__name__)
 # ------------------------------------------------------------------------------------------------ #
 
 
 class IO(ABC):  # pragma: no cover
-    _logger = logging.getLogger(
-        f"{__module__}.{__name__}",
-    )
-
     @classmethod
     def read(cls, filepath: str, *args, **kwargs) -> Any:
         data = cls._read(filepath, **kwargs)
@@ -177,7 +174,7 @@ class YamlIO(IO):  # pragma: no cover
             try:
                 return yaml.safe_load(f)
             except yaml.YAMLError as e:  # pragma: no cover
-                cls._logger.error(e)
+                logger.error(e)
                 raise IOError(e)
             finally:
                 f.close()
@@ -188,7 +185,7 @@ class YamlIO(IO):  # pragma: no cover
             try:
                 yaml.dump(data, f)
             except yaml.YAMLError as e:  # pragma: no cover
-                cls._logger.error(e)
+                logger.error(e)
                 raise IOError(e)
             finally:
                 f.close()
@@ -206,7 +203,7 @@ class PickleIO(IO):  # pragma: no cover
             try:
                 return pickle.load(f)
             except pickle.PickleError() as e:  # pragma: no cover
-                cls._logger.error(e)
+                logger.error(e)
                 raise IOError(e)
             finally:
                 f.close()
@@ -219,7 +216,7 @@ class PickleIO(IO):  # pragma: no cover
             try:
                 pickle.dump(data, f)
             except pickle.PickleError() as e:  # pragma: no cover
-                cls._logger.error(e)
+                logger.error(e)
                 raise (e)
             finally:
                 f.close()
@@ -284,13 +281,13 @@ class JsonIO(IO):  # pragma: no cover
                         json.dump(datum, json_file, indent=2)
                     else:
                         msg = "JsonIO supports dictionaries and lists of dictionaries only."
-                        cls._logger.error(msg)
+                        logger.error(msg)
                         raise ValueError(msg)
             else:
                 try:
                     json.dump(data, json_file, indent=2)
                 except json.JSONDecodeError as e:
-                    cls._logger.error(f"Exception of type {type(e)} occurred.\n{e}")
+                    logger.error(f"Exception of type {type(e)} occurred.\n{e}")
                     raise
 
 
@@ -334,9 +331,9 @@ class IOService:  # pragma: no cover
         except TypeError:
             if filepath is None:
                 msg = "Filepath is None"
-                cls._logger.error(msg)
+                logger.error(msg)
                 raise ValueError(msg)
         except KeyError:
             msg = "File type {} is not supported.".format(file_format)
-            cls._logger.error(msg)
+            logger.error(msg)
             raise ValueError(msg)

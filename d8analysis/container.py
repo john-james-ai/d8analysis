@@ -11,30 +11,16 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday March 27th 2023 07:02:56 pm                                                  #
-# Modified   : Monday August 21st 2023 04:17:25 am                                                 #
+# Modified   : Monday August 21st 2023 01:49:41 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 """Framework Dependency Container"""
-import logging.config  # pragma: no cover
-
 from dependency_injector import containers, providers
 
 from d8analysis.visual.seaborn.config import SeabornCanvas
 from d8analysis.visual.seaborn.plot import SeabornVisualizer
-
-
-# ------------------------------------------------------------------------------------------------ #
-#                                        LOGGING                                                   #
-# ------------------------------------------------------------------------------------------------ #
-class LoggingContainer(containers.DeclarativeContainer):
-    config = providers.Configuration()
-
-    logging = providers.Resource(
-        logging.config.dictConfig,
-        config=config,
-    )
 
 
 # ------------------------------------------------------------------------------------------------ #
@@ -56,10 +42,6 @@ class CanvasContainer(containers.DeclarativeContainer):
 #                                          FRAMEWORK                                               #
 # ------------------------------------------------------------------------------------------------ #
 class D8AnalysisContainer(containers.DeclarativeContainer):
-    log_config = providers.Configuration(yaml_files=["./config/logging.yml"])
-
-    logs = providers.Container(LoggingContainer, config=log_config.logging)
-
     canvas = providers.Container(CanvasContainer)
 
     visualizer = providers.Container(VisualizerContainer, canvas=canvas.seaborn)

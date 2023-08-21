@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday June 5th 2023 12:13:09 am                                                    #
-# Modified   : Saturday August 19th 2023 05:29:52 pm                                               #
+# Modified   : Monday August 21st 2023 01:55:39 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -26,6 +26,8 @@ from d8analysis.data.dataclass import DataClass
 from d8analysis.service.io import IOService
 from d8analysis.visual.base import Canvas
 
+# ------------------------------------------------------------------------------------------------ #
+logger = logging.getLogger(__name__)
 # ------------------------------------------------------------------------------------------------ #
 ANALYSIS_TYPES = {
     "univariate": "Univariate",

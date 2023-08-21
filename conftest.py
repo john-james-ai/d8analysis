@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:12:03 pm                                                    #
-# Modified   : Sunday August 20th 2023 05:11:25 am                                                 #
+# Modified   : Monday August 21st 2023 01:59:12 pm                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -27,14 +27,12 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from d8analysis.service.config import LoggingConfig
 from d8analysis.container import D8AnalysisContainer
 from d8analysis.data.dataclass import DataClass
 
 # ------------------------------------------------------------------------------------------------ #
 logging.getLogger("matplotlib").setLevel(logging.WARNING)
 # ------------------------------------------------------------------------------------------------ #
-LOGGING_CONFIG = "config/logging.yml"
 DATAFILE = "data/Credit Score Classification Dataset.csv"
 RESET_SCRIPT = "tests/scripts/reset.sh"
 
@@ -101,13 +99,9 @@ def dataset():
 # ------------------------------------------------------------------------------------------------ #
 @pytest.fixture(scope="module", autouse=True)
 def container():
-    prior_logging_level = LoggingConfig.get_level()
-    LoggingConfig.set_level("DEBUG")
     container = D8AnalysisContainer()
     container.init_resources()
     container.wire(packages=["d8analysis"])
-    yield container
-    LoggingConfig.set_level(prior_logging_level)
 
 
 # ------------------------------------------------------------------------------------------------ #
