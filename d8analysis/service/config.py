@@ -11,11 +11,12 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday August 15th 2023 05:36:24 pm                                                #
-# Modified   : Tuesday August 15th 2023 05:50:54 pm                                                #
+# Modified   : Monday August 21st 2023 02:37:10 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
+import os
 from d8analysis.service.io import IOService
 
 
@@ -23,7 +24,7 @@ from d8analysis.service.io import IOService
 class LoggingConfig:  # pragma: no cover
     """Manages logging configuration"""
 
-    __filepath = "config/logging.yml"
+    __filepath = os.path.abspath(os.path.join("config", "logging.yml"))
 
     @classmethod
     def get(cls) -> dict:

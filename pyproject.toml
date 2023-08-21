@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "d8analysis"
-version = "0.2.12"
+version = "0.2.13"
 description = "Exploratory Data Analysis Framework"
 authors = [
     "John James <john.james.ai.studio@gmail.com>",
