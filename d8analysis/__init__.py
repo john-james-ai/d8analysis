@@ -11,21 +11,21 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Friday May 26th 2023 11:59:46 pm                                                    #
-# Modified   : Monday August 21st 2023 03:39:15 am                                                 #
+# Modified   : Monday August 21st 2023 04:00:38 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
 # ================================================================================================ #
 
-# from d8analysis.service.config import LoggingConfig
-# from d8analysis.container import D8AnalysisContainer
+from d8analysis.service.config import LoggingConfig
+from d8analysis.container import D8AnalysisContainer
 
 
 # ------------------------------------------------------------------------------------------------ #
-# LoggingConfig.set_level("WARNING")
-# container = D8AnalysisContainer()
-# container.init_resources()
-# container.wire(modules=[__name__], packages=["d8analysis"])
+LoggingConfig.set_level("INFO")
+container = D8AnalysisContainer()
+container.init_resources()
+container.wire(modules=[__name__], packages=["d8analysis"])
 # Data Package
 from d8analysis.data.generation import RVSDistribution  # noqa F402
 from d8analysis.data.dataset import Dataset  # noqa F402
