@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Monday March 27th 2023 07:02:56 pm                                                  #
-# Modified   : Monday August 21st 2023 03:53:00 am                                                 #
+# Modified   : Monday August 21st 2023 04:17:25 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -56,7 +56,7 @@ class CanvasContainer(containers.DeclarativeContainer):
 #                                          FRAMEWORK                                               #
 # ------------------------------------------------------------------------------------------------ #
 class D8AnalysisContainer(containers.DeclarativeContainer):
-    log_config = providers.Configuration(yaml_files=["config/logging.yml"])
+    log_config = providers.Configuration(yaml_files=["./config/logging.yml"])
 
     logs = providers.Container(LoggingContainer, config=log_config.logging)
 

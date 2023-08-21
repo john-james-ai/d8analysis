@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Sunday August 20th 2023 07:22:18 pm                                                 #
-# Modified   : Monday August 21st 2023 04:04:43 am                                                 #
+# Modified   : Monday August 21st 2023 04:15:45 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -26,4 +26,4 @@ if __name__ == "__main__":  # pragma: no cover
     # LoggingConfig.set_level("INFO")
     container = D8AnalysisContainer()
     container.init_resources()
-    container.wire(modules=[__name__], packages=["d8analysis"])
+    container.wire(packages=["d8analysis"])
