@@ -11,7 +11,7 @@
 # URL        : https://github.com/john-james-ai/d8analysis                                         #
 # ------------------------------------------------------------------------------------------------ #
 # Created    : Tuesday August 15th 2023 05:36:24 pm                                                #
-# Modified   : Monday August 21st 2023 02:45:40 am                                                 #
+# Modified   : Monday August 21st 2023 03:34:11 am                                                 #
 # ------------------------------------------------------------------------------------------------ #
 # License    : MIT License                                                                         #
 # Copyright  : (c) 2023 John James                                                                 #
@@ -34,13 +34,13 @@ class LoggingConfig:  # pragma: no cover
     @classmethod
     def get(cls) -> dict:
         """Returns the configuration"""
-        return IOService.read(cls.__filepath)
+        return IOService.read(LoggingConfig.__filepath)
 
     @classmethod
     def get_level(cls) -> str:
         """Retursn logging level for the console."""
 
-        config = IOService.read(cls.__filepath)
+        config = IOService.read(LoggingConfig.__filepath)
         return config["logging"]["handlers"]["console"]["level"]
 
     @classmethod
@@ -51,6 +51,6 @@ class LoggingConfig:  # pragma: no cover
             level (str): The logging level in all caps.
         """
 
-        config = IOService.read(cls.__filepath)
+        config = IOService.read(LoggingConfig.__filepath)
         config["logging"]["handlers"]["console"]["level"] = level
-        IOService.write(cls.__filepath, data=config)
+        IOService.write(filepath=LoggingConfig.__filepath, data=config)

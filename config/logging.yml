@@ -12,7 +12,7 @@ logging:
     console:
       class: logging.StreamHandler
       formatter: console
-      level: WARNING
+      level: INFO
       stream: ext://sys.stderr
     file:
       backupCount: 0
